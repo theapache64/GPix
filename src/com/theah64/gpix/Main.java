@@ -26,6 +26,7 @@ public class Main {
     private static final String FLAG_ORIGINAL = "o";
     private static final String FLAG_OUTPUT_DIRECTORY = "d";
     private static final String FLAG_BOTH_ORIGINAL_AND_THUMB = "b";
+    private static final String FLAG_KEEP_FILE_NAME = "f";
 
     private static final String FLAG_COUNT = "c";
 
@@ -35,6 +36,7 @@ public class Main {
             .addOption(FLAG_OUTPUT_DIRECTORY, true, "Directory to parse the data")
             .addOption(FLAG_THUMBNAIL, false, "Download thumbnail only")
             .addOption(FLAG_ORIGINAL, false, "Download original only")
+            .addOption(FLAG_KEEP_FILE_NAME, false, "To keep original file name")//TODO: NOT IMPLEMENTED
             .addOption(FLAG_BOTH_ORIGINAL_AND_THUMB, false, "Download  both thumbnail and image");
 
     private static final String DEFAULT_GPIX_DIR_NAME = "gpix";
@@ -131,6 +133,7 @@ public class Main {
                     final int totalImages = images.size();
 
                     System.out.println(totalImages + " images found");
+                    System.out.println("Preparing download for " + imgCount + " image(s).");
 
                     int download = 0;
 
@@ -161,7 +164,8 @@ public class Main {
                                 System.out.println("ERROR while downloading " + image.getImageUrl());
                             }
 
-                            System.out.print(((++download * 100) / totalImages) + "% finished\r");
+                            final int perc = (++download * 100) / imgCount;
+                            System.out.print(perc + "% finished\r");
 
                         } else {
                             break;
