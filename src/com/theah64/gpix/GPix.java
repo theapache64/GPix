@@ -1,8 +1,10 @@
 package com.theah64.gpix;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.List;
 public class GPix {
 
     private static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
-    private static final String HIT_URL_FORMAT = "https://www.google.co.in/ajax/pi/imgdisc?imgdii=%s";
+    private static final String D1 = "<div class=\"rg_meta\">";
+    private static final String D2 = "</div></div><!--n-->";
 
     private static GPix instance = new GPix();
 
@@ -21,74 +24,53 @@ public class GPix {
         return instance;
     }
 
-    public List<Image> search(String keyword) throws NoImageFoundException, Exception {
+    public List<Image> search(String keyword) throws NoImageFoundException, IOException, JSONException {
 
         List<GPix.Image> imageList = null;
 
         final String url = String.format(SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
-
+        System.out.println("URL : " + url);
         final String r1 = NetworkHelper.downloadHtml(url);
+        if (r1.contains(D1)) {
 
-        final String[] r2Arr = r1.split("var data=\\[");
+            final String[] r2Arr = r1.split(D1);
 
-        if (r2Arr.length >= 2) {
+            final JSONArray jaRs = new JSONArray();
 
-            //Here r3 = valid json image ids.
-            final String r3 = r2Arr[1].split(",\\d+]")[0];
-
-            if (!r3.trim().isEmpty()) {
-
-                final JSONArray jaGIds = new JSONArray(r3);
-
-                final List<String> gIdList = new ArrayList<String>();
-
-                for (int i = 0; i < jaGIds.length(); i++) {
-
-                    final JSONArray jaGIdNode = jaGIds.getJSONArray(i);
-
-                    final String gId = jaGIdNode.getString(0);
-                    gIdList.add(gId);
+            //Looping through r2Arr
+            for (final String r2ArrNode : r2Arr) {
+                if (r2ArrNode.contains(D2)) {
+                    final String r3 = r2ArrNode.split(D2)[0];
+                    jaRs.put(new JSONObject(r3));
                 }
-
-                if (!gIdList.isEmpty()) {
-
-                    //For now, we are only downloading the primary result data.
-                    final String primarySearchId = gIdList.get(0);
-                    final String hitUrl = String.format(HIT_URL_FORMAT, URLEncoder.encode(primarySearchId, "UTF-8"));
-
-                    final String h1 = NetworkHelper.downloadHtml(hitUrl);
-                    final String h2 = h1.split(",\\d+]")[0];
-
-                    if (!h2.trim().isEmpty()) {
-                        final String h2p5 = h2.replaceAll("(/\\*|\\*/)", "");
-                        final JSONArray jaH3 = new JSONObject(h2p5).getJSONArray("rel");
-
-                        imageList = new ArrayList<Image>(jaH3.length());
-
-                        for (int i = 0; i < jaH3.length(); i++) {
-
-                            final JSONObject joImageNode = jaH3.getJSONObject(i);
-
-                            final String thumbImageUrl = joImageNode.getString("tu");
-                            final String imageUrl = joImageNode.getString("ou");
-
-                            final int height = Integer.parseInt(joImageNode.getString("oh"));
-                            final int width = Integer.parseInt(joImageNode.getString("ow"));
-
-
-                            imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
-                        }
-
-                    }
-
-                }
-
             }
 
+            if (jaRs.length() > 0) {
 
+                //Converting to GPixImage
+                imageList = new ArrayList<Image>(jaRs.length());
+
+                for (int i = 0; i < jaRs.length(); i++) {
+
+                    final JSONObject joImageNode = jaRs.getJSONObject(i);
+
+                    final String thumbImageUrl = joImageNode.getString("tu");
+                    final String imageUrl = joImageNode.getString("ou");
+
+                    final int height = joImageNode.getInt("oh");
+                    final int width = joImageNode.getInt("ow");
+
+                    imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
+                }
+
+
+            }
         }
 
-        if (imageList == null || imageList.isEmpty()) {
+
+        if (imageList == null || imageList.isEmpty())
+
+        {
             throw new NoImageFoundException("No image found for " + keyword);
         }
 

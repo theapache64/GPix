@@ -1,8 +1,6 @@
 package com.theah64.gpix;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -31,5 +29,23 @@ public class NetworkHelper {
 
         final String data = sb.toString();
         return !data.isEmpty() ? data : null;
+    }
+
+    public static void download(File toFolder, String downloadUrl) throws IOException {
+        final URL url = new URL(downloadUrl);
+        final byte[] buffer = new byte[1024];
+        final BufferedInputStream bis = new BufferedInputStream(url.openStream());
+        final FileOutputStream fos = new FileOutputStream(toFolder + File.separator + getFileNameFromUrl(downloadUrl));
+        int len;
+        while ((len = bis.read(buffer, 0, 1024)) != -1) {
+            fos.write(buffer, 0, len);
+        }
+        bis.close();
+        fos.close();
+    }
+
+    private static String getFileNameFromUrl(String downloadUrl) {
+        final String[] parts = downloadUrl.split("/");
+        return parts[parts.length - 1];
     }
 }
