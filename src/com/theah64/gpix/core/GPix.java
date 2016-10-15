@@ -1,5 +1,6 @@
-package com.theah64.gpix;
+package com.theah64.gpix.core;
 
+import com.theah64.gpix.core.models.Image;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,20 +25,21 @@ public class GPix {
         return instance;
     }
 
-    public List<Image> search(String keyword) throws NoImageFoundException, IOException, JSONException {
+    public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
 
-        List<GPix.Image> imageList = null;
+        System.out.println("Searching images for " + keyword);
 
+        List<Image> imageList = null;
         final String url = String.format(SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
-        System.out.println("URL : " + url);
         final String r1 = NetworkHelper.downloadHtml(url);
+
         if (r1.contains(D1)) {
 
             final String[] r2Arr = r1.split(D1);
 
             final JSONArray jaRs = new JSONArray();
 
-            //Looping through r2Arr
+            //Looping through r2Arr html
             for (final String r2ArrNode : r2Arr) {
                 if (r2ArrNode.contains(D2)) {
                     final String r3 = r2ArrNode.split(D2)[0];
@@ -63,63 +65,24 @@ public class GPix {
                     imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
                 }
 
-
             }
         }
 
 
-        if (imageList == null || imageList.isEmpty())
-
-        {
-            throw new NoImageFoundException("No image found for " + keyword);
+        if (imageList == null || imageList.isEmpty()) {
+            throw new GPixException("No image found for " + keyword);
         }
 
+        System.out.println(imageList.size() + " images found.");
 
         return imageList;
     }
 
-
-    class NoImageFoundException extends Exception {
-        public NoImageFoundException(String message) {
+    public static class GPixException extends Exception {
+        public GPixException(String message) {
             super(message);
         }
     }
 
-    static class Image {
-        private final String thumbImageUrl, imageUrl;
-        private final int height, width;
 
-        public Image(String thumbImageUrl, String imageUrl, int height, int width) {
-            this.thumbImageUrl = thumbImageUrl;
-            this.imageUrl = imageUrl;
-            this.height = height;
-            this.width = width;
-        }
-
-        public String getThumbImageUrl() {
-            return thumbImageUrl;
-        }
-
-        public String getImageUrl() {
-            return imageUrl;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        @Override
-        public String toString() {
-            return "Image{" +
-                    "thumbImageUrl='" + thumbImageUrl + '\'' +
-                    ", imageUrl='" + imageUrl + '\'' +
-                    ", height=" + height +
-                    ", width=" + width +
-                    '}';
-        }
-    }
 }

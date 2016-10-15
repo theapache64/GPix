@@ -1,11 +1,11 @@
-package com.theah64.gpix;
+package com.theah64.gpix.core;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by shifar on 14/10/16.
+ * Created by shifar on 15/10/16.
  */
 public class NetworkHelper {
 
@@ -17,7 +17,7 @@ public class NetworkHelper {
         final HttpURLConnection urlCon = (HttpURLConnection) theURL.openConnection();
         urlCon.addRequestProperty("User-Agent", FAKE_USER_AGENT);
 
-        final BufferedReader br = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
+        final BufferedReader br = new BufferedReader(new InputStreamReader(urlCon.getResponseCode() == 200 ? urlCon.getInputStream() : urlCon.getErrorStream()));
         final StringBuilder sb = new StringBuilder();
         String line;
 
