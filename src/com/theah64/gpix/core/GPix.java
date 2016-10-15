@@ -27,7 +27,6 @@ public class GPix {
 
     public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
 
-        System.out.println("Searching images for " + keyword);
 
         List<Image> imageList = null;
         final String url = String.format(SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
@@ -57,7 +56,8 @@ public class GPix {
                     final JSONObject joImageNode = jaRs.getJSONObject(i);
 
                     final String thumbImageUrl = joImageNode.getString("tu");
-                    final String imageUrl = joImageNode.getString("ou");
+                    //Secured url -> normal
+                    final String imageUrl = joImageNode.getString("ou").replaceAll("https://", "http://");
 
                     final int height = joImageNode.getInt("oh");
                     final int width = joImageNode.getInt("ow");
@@ -72,8 +72,6 @@ public class GPix {
         if (imageList == null || imageList.isEmpty()) {
             throw new GPixException("No image found for " + keyword);
         }
-
-        System.out.println(imageList.size() + " images found.");
 
         return imageList;
     }

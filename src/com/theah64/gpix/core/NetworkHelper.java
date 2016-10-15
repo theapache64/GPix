@@ -1,5 +1,7 @@
 package com.theah64.gpix.core;
 
+import com.sun.istack.internal.Nullable;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,17 +33,32 @@ public class NetworkHelper {
         return !data.isEmpty() ? data : null;
     }
 
-    public static void download(File toFolder, String downloadUrl) throws IOException {
-        final URL url = new URL(downloadUrl);
-        final byte[] buffer = new byte[1024];
-        final BufferedInputStream bis = new BufferedInputStream(url.openStream());
-        final FileOutputStream fos = new FileOutputStream(toFolder + File.separator + getFileNameFromUrl(downloadUrl));
-        int len;
-        while ((len = bis.read(buffer, 0, 1024)) != -1) {
-            fos.write(buffer, 0, len);
+    public static boolean download(File toFolder, String downloadUrl, @Nullable final String fileNameToSave) {
+
+        try {
+
+            final URL url = new URL(downloadUrl);
+            final HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+            urlCon.addRequestProperty("User-Agent", FAKE_USER_AGENT);
+
+            final byte[] buffer = new byte[1024];
+            final BufferedInputStream bis = new BufferedInputStream(urlCon.getInputStream());
+            final FileOutputStream fos = new FileOutputStream(toFolder + File.separator + (fileNameToSave == null ? getFileNameFromUrl(downloadUrl) : fileNameToSave));
+
+            int len;
+            while ((len = bis.read(buffer, 0, 1024)) != -1) {
+                fos.write(buffer, 0, len);
+            }
+
+            bis.close();
+            fos.close();
+
+            return true;
+
+        } catch (IOException e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return false;
         }
-        bis.close();
-        fos.close();
     }
 
     private static String getFileNameFromUrl(String downloadUrl) {
