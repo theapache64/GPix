@@ -12,7 +12,7 @@ public final class HeaderSecurity {
     private static final String REASON_API_KEY_MISSING = "API key is missing";
     private static final String REASON_INVALID_API_KEY = "Invalid API key";
     private final String authorization;
-    private String victimId;
+    private String userId;
 
     public HeaderSecurity(final String authorization) throws Exception {
         //Collecting header from passed request
@@ -31,15 +31,15 @@ public final class HeaderSecurity {
         }
 
         final Users users = Users.getInstance();
-        this.victimId = users.get(Users.COLUMN_API_KEY, this.authorization, Users.COLUMN_ID);
-        if (this.victimId == null) {
+        this.userId = users.get(Users.COLUMN_API_KEY, this.authorization, Users.COLUMN_ID);
+        if (this.userId == null) {
             throw new Exception("No victim found with the api_key " + this.authorization);
         }
 
     }
 
-    public String getVictimId() {
-        return this.victimId;
+    public String getUserId() {
+        return this.userId;
     }
 
     public String getFailureReason() {
