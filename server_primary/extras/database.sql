@@ -3,10 +3,10 @@ CREATE DATABASE IF NOT EXISTS `gpix`;
 USE `gpix`;
 
 CREATE TABLE `servers`(
-  id INT(11) NOT NULL AUTO_INCREMENT,
+  id INT(11) NOT NULL AUTO_INCREMENT, o
   x_name VARCHAR (10) NOT NULL,
   domain_name VARCHAR(60) NOT NULL,
-
+  is_active TINYINT(4) CHECK(is_active IN (0,1)) NOT NULL DEFAULT 1,
   PRIMARY KEY (id)
 );
 
