@@ -5,12 +5,11 @@ package com.theah64.gpix.server.primary.models;
  */
 public class User {
 
-    private final String id, email, passHash, apiKey;
+    private final String id, email, apiKey;
 
-    public User(String id, String email, String passHash, String apiKey) {
+    public User(String id, String email, String apiKey) {
         this.id = id;
         this.email = email;
-        this.passHash = passHash;
         this.apiKey = apiKey;
     }
 
@@ -20,10 +19,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassHash() {
-        return passHash;
     }
 
     public String getApiKey() {
