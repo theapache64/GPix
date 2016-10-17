@@ -19,5 +19,4 @@ public class Users extends BaseTable<User> {
         return instance;
     }
 
-
 }
