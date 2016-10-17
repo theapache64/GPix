@@ -4,6 +4,7 @@ import com.theah64.gpix.server.primary.core.GPix;
 import com.theah64.gpix.server.primary.core.Image;
 import com.theah64.gpix.server.primary.database.tables.Requests;
 import com.theah64.gpix.server.primary.database.tables.Users;
+import com.theah64.gpix.server.primary.utils.APIResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,6 +21,7 @@ public class GPixServlet extends AdvancedBaseServlet {
     private static final String KEY_THUMB_URL = "thumb_url";
     private static final String KEY_HEIGHT = "height";
     private static final String KEY_WIDTH = "width";
+    private static final String KEY_IMAGES = "images";
 
     @Override
     protected boolean isSecureServlet() {
@@ -43,9 +45,15 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             final JSONObject joImage = new JSONObject();
 
-            joImage.put(KEY_IMAGE_URL, )
+            joImage.put(KEY_IMAGE_URL, image.getImageUrl());
+            joImage.put(KEY_THUMB_URL, image.getThumbImageUrl());
+            joImage.put(KEY_WIDTH, image.getWidth());
+            joImage.put(KEY_HEIGHT, image.getHeight());
 
+            jaImages.put(joImage);
         }
+
+        getWriter().write(new APIResponse(jaImages.length() + " images(s) available", KEY_IMAGES, jaImages.toString()).getResponse());
 
     }
 }
