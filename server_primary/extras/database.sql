@@ -14,8 +14,7 @@ CREATE TABLE `users`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   email VARCHAR(100) NOT NULL,
   api_key VARCHAR (10) NOT NULL,
-  PRIMARY KEY (id),
-  UNIQUE KEY (email)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE `requests`(
