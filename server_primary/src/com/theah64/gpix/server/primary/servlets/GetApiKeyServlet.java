@@ -4,6 +4,7 @@ import com.theah64.gpix.server.primary.database.tables.Users;
 import com.theah64.gpix.server.primary.models.User;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.DarKnight;
+import com.theah64.gpix.server.primary.utils.MailHelper;
 import com.theah64.gpix.server.primary.utils.RandomString;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,6 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
     private static final String INPUT_EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final Pattern emailPattern = Pattern.compile(INPUT_EMAIL_REGEX);
 
-    private static final String KEY_PASSWORD = "password";
     private static final int API_KEY_LENGTH = 10;
 
     @Override
@@ -33,7 +33,7 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
 
     @Override
     protected String[] getRequiredParameters() {
-        return new String[]{Users.COLUMN_EMAIL, KEY_PASSWORD};
+        return new String[]{Users.COLUMN_EMAIL};
     }
 
     @Override
@@ -51,23 +51,23 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
             final Users users = Users.getInstance();
             final User user = users.get(Users.COLUMN_EMAIL, email);
 
-            final String password = getStringParameter(KEY_PASSWORD);
-            final String passHash = DarKnight.getEncrypted(password);
 
-            final String apiKey;
-            if (user.getPassHash().equals(passHash)) {
-                apiKey = user.getApiKey();
-            } else {
+            final String apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
 
-                apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
+            final boolean isAdded = users.add(new User(null, email, apiKey));
 
-                final boolean isAdded = users.add(new User(null, email, passHash, apiKey));
-                if (!isAdded) {
-                    throw new Exception("Failed to add new user");
+            if (isAdded) {
+
+                if (MailHelper.sendApiKey(email, apiKey)) {
+                    getWriter().write(new APIResponse("API key sent to " + email).getResponse());
+                } else {
+                    getWriter().write(new APIResponse("Failed to generate new api key for " + email).getResponse());
                 }
+
+            } else {
+                throw new Exception("Failed to add new user");
             }
 
-            getWriter().write(new APIResponse("API key retrieved", Users.COLUMN_API_KEY, apiKey).getResponse());
 
         } else {
             throw new Exception("Invalid email");
