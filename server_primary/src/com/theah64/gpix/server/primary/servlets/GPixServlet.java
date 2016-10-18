@@ -42,7 +42,7 @@ public class GPixServlet extends AdvancedBaseServlet {
     protected void doAdvancedPost() throws Exception {
 
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
-        final int limit = getInt
+        final String limitString = getStringParameter(Requests.COLUMN_LIMI)
 
         final List<Image> images = Images.getInstance().getAll()
 
