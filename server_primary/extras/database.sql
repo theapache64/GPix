@@ -16,7 +16,7 @@ USE `gpix`;
 
 CREATE TABLE `servers`(
   id INT(11) NOT NULL AUTO_INCREMENT,
-  x_name VARCHAR (10) NOT NULL,
+  _name VARCHAR (10) NOT NULL,
   domain_name VARCHAR(60) NOT NULL,
   is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
   PRIMARY KEY (id)
@@ -34,7 +34,7 @@ CREATE TABLE `requests`(
   server_id INT(11) NOT NULL,
   user_id INT(11) NOT NULL,
   keyword VARCHAR (20) NOT NULL,
-  limit INT(11) NOT NULL,
+  _limit INT(11) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY(id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -43,13 +43,19 @@ CREATE TABLE `requests`(
 
 CREATE TABLE `images`(
   id INT(11) NOT NULL AUTO_INCREMENT,
-  request_id INT(11) NOT NULL,
   image_url TEXT NOT NULL,
   thumb_url TEXT NOT NULL,
   width INT(4) NOT NULL,
   height INT(4) NOT NULL,
   is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
-  PRIMARY KEY(id),
-  FOREIGN KEY (request_id) REFERENCES requests(id) ON UPDATE CASCADE ON DELETE CASCADE
+  PRIMARY KEY(id)
 );
 
+CREATE TABLE request_image_rel(
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  request_id INT(11) NOT NULL,
+  image_id INT(11) NOT NULL,
+  PRIMARY KEY(id),
+  FOREIGN KEY (request_id) REFERENCES requests(id) ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY (image_id) REFERENCES images(id) ON UPDATE CASCADE ON DELETE CASCADE
+);

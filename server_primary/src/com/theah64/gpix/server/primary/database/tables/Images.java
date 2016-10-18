@@ -70,5 +70,13 @@ public class Images extends BaseTable<Image> {
         }
         return images;
     }
+
+    public boolean addAll(List<Image> images) {
+        boolean isEverythingOk = false;
+        final String existenceQuery = "SELECT id FROM images WHERE image_url = ? AND thumb_url = ? AND width = ? AND height = ? LIMIT 1";
+        final String insertQuery = "INSERT INTO images (request_id,image_url, thumb_url, width, height, is_active ) VALUES (?, ?, ?, ?, ?, ?);";
+
+        return isEverythingOk;
+    }
 }
 

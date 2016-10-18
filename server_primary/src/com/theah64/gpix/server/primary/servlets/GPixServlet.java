@@ -4,7 +4,6 @@ import com.theah64.gpix.server.primary.core.GPix;
 import com.theah64.gpix.server.primary.core.Image;
 import com.theah64.gpix.server.primary.database.tables.Images;
 import com.theah64.gpix.server.primary.database.tables.Requests;
-import com.theah64.gpix.server.primary.database.tables.Users;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +22,8 @@ import java.util.List;
 public class GPixServlet extends AdvancedBaseServlet {
 
 
+    private static final int DEFAULT_RESULT_LIMIT = 100;
+
     @Override
     protected boolean isSecureServlet() {
         return true;
@@ -39,12 +40,21 @@ public class GPixServlet extends AdvancedBaseServlet {
     }
 
     @Override
-    protected void doAdvancedPost() throws Exception {
+    protected void doAdvancedPost() throws Exception l {
 
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
-        final String limitString = getStringParameter(Requests.COLUMN_LIMI)
+        final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
 
-        final List<Image> images = Images.getInstance().getAll()
+        final Images imagesTable = Images.getInstance();
+
+        List<Image> images = imagesTable.getAll(keyword, limit);
+
+        if (images == null) {
+            //Images not available or available images are expired. so collect fresh data
+            images = GPix.getInstance().search(keyword);
+
+            final boolean isEveryThinOk = imagesTable.addAll(images);
+        }
 
         final JSONArray jaImages = new JSONArray();
 
@@ -65,6 +75,7 @@ public class GPixServlet extends AdvancedBaseServlet {
         joData.put(Images.TABLE_NAME_IMAGES, jaImages);
 
         getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
+
 
     }
 }
