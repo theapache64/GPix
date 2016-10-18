@@ -1,8 +1,4 @@
-server_primary/.idea/workspace.xml
-server_primary/.idea/tasks.xml
-server_primary/.idea/dataSources.local.xml
-server_primary/.idea/dataSources.local.ids
-server_primary/.idea/dataSources.xml
+
 
 
 out
@@ -18,3 +14,9 @@ out
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+server_primary/.idea/workspace.xml
+server_primary/.idea/tasks.xml
+server_primary/.idea/dataSources.local.xml
+server_primary/.idea/dataSources.local.ids
+server_primary/.idea/dataSources.xml
