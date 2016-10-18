@@ -4,6 +4,7 @@ import com.theah64.gpix.server.primary.core.GPix;
 import com.theah64.gpix.server.primary.core.Image;
 import com.theah64.gpix.server.primary.database.tables.Images;
 import com.theah64.gpix.server.primary.database.tables.Requests;
+import com.theah64.gpix.server.primary.models.Request;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +45,8 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
+
+        final String requestId = Requests.getInstance().addv3(new Request());
 
         final Images imagesTable = Images.getInstance();
 

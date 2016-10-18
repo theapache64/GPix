@@ -71,10 +71,79 @@ public class Images extends BaseTable<Image> {
         return images;
     }
 
-    public boolean addAll(List<Image> images) {
+    public boolean addAll(final String requestId, List<Image> images) {
+
         boolean isEverythingOk = false;
+
         final String existenceQuery = "SELECT id FROM images WHERE image_url = ? AND thumb_url = ? AND width = ? AND height = ? LIMIT 1";
-        final String insertQuery = "INSERT INTO images (request_id,image_url, thumb_url, width, height, is_active ) VALUES (?, ?, ?, ?, ?, ?);";
+        final String insertImageQuery = "INSERT INTO images (image_url, thumb_url, width, height ) VALUES (?, ?, ?, ?);";
+        final String insertRelQuery = "INSERT INTO request_image_rel (request_id, image_id) VALUES (?,?);";
+
+
+        final java.sql.Connection con = Connection.getConnection();
+        try {
+
+            final PreparedStatement exPs = con.prepareStatement(existenceQuery);
+            final PreparedStatement iiPs = con.prepareStatement(insertImageQuery, PreparedStatement.RETURN_GENERATED_KEYS);
+            final PreparedStatement irPs = con.prepareStatement(insertRelQuery);
+
+            for (Image image : images) {
+
+                //Checking existence
+                exPs.setString(1, image.getImageUrl());
+                exPs.setString(2, image.getThumbImageUrl());
+                exPs.setInt(3, image.getWidth());
+                exPs.setInt(4, image.getHeight());
+
+                final ResultSet rsEx = exPs.executeQuery();
+                String imageId = null;
+
+                if (rsEx.first()) {
+                    //Image available in db, no need to add
+                    imageId = rsEx.getString(Images.COLUMN_ID);
+                } else {
+                    //Image not available so insert
+                    iiPs.setString(1, image.getImageUrl());
+                    iiPs.setString(2, image.getThumbImageUrl());
+                    iiPs.setInt(3, image.getWidth());
+                    iiPs.setInt(4, image.getHeight());
+
+                    if (iiPs.executeUpdate() == 1) {
+                        final ResultSet rsIi = iiPs.getGeneratedKeys();
+                        if (rsIi.first()) {
+                            imageId = rsIi.getString(1);
+                        }
+                        rsIi.close();
+                    }
+
+                }
+
+                //here image id must be not null.
+                if (imageId == null) {
+                    throw new IllegalArgumentException("Failed to get image id");
+                }
+
+                //here both image_id and request id is not null. so adding relation.
+                irPs.setString(1, requestId);
+                irPs.setString(2, imageId);
+
+                rsEx.close();
+
+            }
+
+            exPs.close();
+            iiPs.close();
+            irPs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
 
         return isEverythingOk;
     }
