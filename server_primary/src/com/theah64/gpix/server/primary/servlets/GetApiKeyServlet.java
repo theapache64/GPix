@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 /**
  * Created by theapache64 on 15/10/16.
  */
-@WebServlet(urlPatterns = {AdvancedBaseServlet.VERSION_CODE + "/get_api_key"})
+    @WebServlet(urlPatterns = {AdvancedBaseServlet.VERSION_CODE + "/get_api_key"})
 public class GetApiKeyServlet extends AdvancedBaseServlet {
 
     private static final String INPUT_EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -48,13 +48,9 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
 
         if (emailPattern.matcher(email).matches()) {
 
-            final Users users = Users.getInstance();
-            final User user = users.get(Users.COLUMN_EMAIL, email);
-
-
             final String apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
 
-            final boolean isAdded = users.add(new User(null, email, apiKey));
+            final boolean isAdded = Users.getInstance().add(new User(null, email, apiKey));
 
             if (isAdded) {
 

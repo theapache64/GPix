@@ -9,7 +9,11 @@ import com.theah64.gpix.server.primary.utils.APIResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,6 +34,11 @@ public class GPixServlet extends AdvancedBaseServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
+
+    @Override
     protected void doAdvancedPost() throws Exception {
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
 
@@ -42,15 +51,18 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             final JSONObject joImage = new JSONObject();
 
-            joImage.put(Images.KEY_IMAGE_URL, image.getImageUrl());
-            joImage.put(Images.KEY_THUMB_URL, image.getThumbImageUrl());
-            joImage.put(Images.KEY_WIDTH, image.getWidth());
-            joImage.put(Images.KEY_HEIGHT, image.getHeight());
+            joImage.put(Images.COLUMN_IMAGE_URL, image.getImageUrl());
+            joImage.put(Images.COLUMN_THUMB_URL, image.getThumbImageUrl());
+            joImage.put(Images.COLUMN_WIDTH, image.getWidth());
+            joImage.put(Images.COLUMN_HEIGHT, image.getHeight());
 
             jaImages.put(joImage);
         }
 
-        getWriter().write(new APIResponse(jaImages.length() + " images(s) available", Images.TABLE_NAME_IMAGES, jaImages.toString()).getResponse());
+        final JSONObject joData = new JSONObject();
+        joData.put(Images.TABLE_NAME_IMAGES, jaImages);
+
+        getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
 
     }
 }
