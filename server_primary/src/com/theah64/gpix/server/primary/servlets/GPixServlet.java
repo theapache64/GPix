@@ -40,9 +40,11 @@ public class GPixServlet extends AdvancedBaseServlet {
 
     @Override
     protected void doAdvancedPost() throws Exception {
-        final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
 
-        final List<Image> images = GPix.getInstance().search(keyword);
+        final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
+        final int limit = getInt
+
+        final List<Image> images = Images.getInstance().getAll()
 
         final JSONArray jaImages = new JSONArray();
 
