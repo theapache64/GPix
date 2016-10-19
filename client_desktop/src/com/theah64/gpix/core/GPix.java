@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class GPix {
 
-    private static final String API_URL_FORMAT = "http://192.168.0.118:8080/v1/gpix?keyword=%s";
+    private static final String API_URL_FORMAT = "http://192.168.43.234:8080/v1/gpix?keyword=%s";
     private static final String AUTHORIZATION = "WYAfuHwjCu";
 
     private static GPix instance = new GPix();
