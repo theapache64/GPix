@@ -5,6 +5,7 @@ import com.theah64.gpix.server.primary.core.Image;
 import com.theah64.gpix.server.primary.database.tables.Images;
 import com.theah64.gpix.server.primary.database.tables.Requests;
 import com.theah64.gpix.server.primary.models.Request;
+import com.theah64.gpix.server.primary.models.Server;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -56,7 +57,7 @@ public class GPixServlet extends AdvancedBaseServlet {
         if (images == null) {
 
             //Getting least used server
-            final Server`
+            final Server
 
             //Images not available or available images are expired. so collect fresh data
             images = GPix.getInstance().search(keyword);
