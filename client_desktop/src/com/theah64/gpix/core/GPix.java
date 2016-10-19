@@ -17,7 +17,7 @@ public class GPix {
 
     private static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
     private static final String D1 = "<div class=\"rg_meta\">";
-    private static final String D2 = "</div></div><!--n-->";
+    private static final String D2 = "</div></div><!--n-->";    
 
     private static GPix instance = new GPix();
 

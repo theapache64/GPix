@@ -20,3 +20,9 @@ server_primary/.idea/tasks.xml
 server_primary/.idea/dataSources.local.xml
 server_primary/.idea/dataSources.local.ids
 server_primary/.idea/dataSources.xml
+
+client_desktop/.idea/workspace.xml
+client_desktop/.idea/tasks.xml
+client_desktop/.idea/dataSources.local.xml
+client_desktop/.idea/dataSources.local.ids
+client_desktop/.idea/dataSources.xml

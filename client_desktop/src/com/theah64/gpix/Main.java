@@ -141,9 +141,9 @@ public class Main {
 
                         if (i < totalImages) {
 
-
                             final Image image = images.get(i);
                             boolean isDownloaded = false;
+
                             switch (downloadFlag) {
 
                                 case DOWNLOAD_FLAG_THUMB_ONLY:
