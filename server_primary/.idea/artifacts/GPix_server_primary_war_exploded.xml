@@ -11,6 +11,7 @@
           <element id="library" level="project" name="json" />
           <element id="library" level="application" name="mysql-connector-java-5.1.35-bin" />
           <element id="library" level="project" name="mail" />
+          <element id="library" level="project" name="mysql-connector-java-5.1.35-bin" />
         </element>
       </element>
     </root>

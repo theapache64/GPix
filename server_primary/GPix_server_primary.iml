@@ -21,7 +21,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="json" level="project" />
     <orderEntry type="library" name="servlet-api" level="application" />
-    <orderEntry type="library" name="mysql-connector-java-5.1.35-bin" level="application" />
     <orderEntry type="library" name="mail" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-5.1.35-bin" level="project" />
   </component>
 </module>
