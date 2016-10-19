@@ -123,6 +123,7 @@ public class GPixServlet extends AdvancedBaseServlet {
             }
 
             final JSONObject joData = new JSONObject();
+            joData.put(KEY_ERROR, false);
             joData.put(Images.TABLE_NAME_IMAGES, jaImages);
 
             getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
