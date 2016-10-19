@@ -26,9 +26,16 @@ public class Requests extends BaseTable<Request> {
 
     @Override
     public String addv3(Request request) {
+
         String newRequestId = null;
-        final String query = "INSERT INTO requests (user_id, keyword,limit) VALUES (?,?,?);";
+
+        final String query = "INSERT INTO requests (user_id, keyword,_limit) VALUES (?,?,?);";
+        final String queryFormatted = String.format("INSERT INTO requests (user_id, keyword, _limit) VALUES ('%s','%s',%d);", request.getUserId(), request.getKeyword(), request.getLimit());
+
+        System.out.println(queryFormatted);
+
         final java.sql.Connection con = Connection.getConnection();
+
         try {
             final PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 

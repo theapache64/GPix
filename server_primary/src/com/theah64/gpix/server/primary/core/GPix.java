@@ -55,8 +55,6 @@ public class GPix {
 
         List<Image> imageList = null;
 
-        System.out.println("Result : " + firstData);
-
         if (firstData.contains(D1)) {
 
             final String[] r2Arr = firstData.split(D1);

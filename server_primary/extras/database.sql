@@ -57,7 +57,7 @@ CREATE TABLE `images`(
   PRIMARY KEY(id)
 );
 
-CREATE TABLE request_image_rel(
+CREATE TABLE request_image_rel (
   id INT(11) NOT NULL AUTO_INCREMENT,
   request_id INT(11) NOT NULL,
   image_id INT(11) NOT NULL,

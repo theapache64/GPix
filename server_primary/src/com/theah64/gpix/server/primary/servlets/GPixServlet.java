@@ -66,6 +66,7 @@ public class GPixServlet extends AdvancedBaseServlet {
             for (final Server server : servers) {
 
                 final String url = GPix.getEncodedUrl(server.getDataUrlFormat(), keyword);
+                System.out.println("URL: " + url);
                 final String googleData = NetworkHelper.downloadHtml(url, server.getAuthorizationKey());
 
                 if (googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {

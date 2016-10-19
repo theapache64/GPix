@@ -35,7 +35,8 @@ public class Images extends BaseTable<Image> {
     public List<Image> getAll(String keyword, final int limit, final int validity) {
         List<Image> images = null;
 
-        final String query = String.format("SELECT i.image_url, i.thumb_url, i.height, i.width FROM images i INNER JOIN requests r ON r.id = i.request_id WHERE r.keyword = ? AND IFNULL(DATEDIFF(NOW(),r.created_at),0) <= %d LIMIT %d;", validity, limit);
+        final String query = String.format("SELECT i.image_url, i.thumb_url, i.height, i.width FROM images i INNER JOIN request_image_rel rr ON rr.image_id = i.id INNER JOIN requests r ON r.id = rr.request_id WHERE r.keyword = ? AND IFNULL(DATEDIFF(NOW(),r.created_at),0) <= %d LIMIT %d;", validity, limit);
+
         final java.sql.Connection con = Connection.getConnection();
         try {
             final PreparedStatement ps = con.prepareStatement(query);
