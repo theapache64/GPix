@@ -3,8 +3,8 @@ package com.theah64.gpix;
 import com.sun.istack.internal.NotNull;
 import com.theah64.gpix.core.CommonUtils;
 import com.theah64.gpix.core.GPix;
+import com.theah64.gpix.core.Image;
 import com.theah64.gpix.core.NetworkHelper;
-import com.theah64.gpix.core.models.Image;
 import org.apache.commons.cli.*;
 import org.json.JSONException;
 

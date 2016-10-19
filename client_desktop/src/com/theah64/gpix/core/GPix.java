@@ -1,11 +1,12 @@
 package com.theah64.gpix.core;
 
-import com.theah64.gpix.core.models.Image;
+import com.sun.istack.internal.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,8 @@ import java.util.List;
  */
 public class GPix {
 
-    private static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
-    private static final String D1 = "<div class=\"rg_meta\">";
-    private static final String D2 = "</div></div><!--n-->";    
+    private static final String API_URL_FORMAT = "http://192.168.0.118:8080/v1/gpix/?keyword=%s";
+    private static final String AUTHORIZATION = "WYAfuHwjCu";
 
     private static GPix instance = new GPix();
 
@@ -25,54 +25,52 @@ public class GPix {
         return instance;
     }
 
-    public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
 
+    @NotNull
+    public List<Image> search(String keyword) throws GPixException, IOException, JSONException {
 
-        List<Image> imageList = null;
-        final String url = String.format(SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
-        final String r1 = NetworkHelper.downloadHtml(url);
+        final String url = getEncodedUrl(API_URL_FORMAT, keyword);
 
-        if (r1.contains(D1)) {
+        System.out.println("URL: " + url);
+        final String jsonData = NetworkHelper.downloadHtml(url, AUTHORIZATION);
 
-            final String[] r2Arr = r1.split(D1);
+        if (jsonData != null) {
 
-            final JSONArray jaRs = new JSONArray();
+            final JSONObject joResp = new JSONObject(jsonData);
 
-            //Looping through r2Arr html
-            for (final String r2ArrNode : r2Arr) {
-                if (r2ArrNode.contains(D2)) {
-                    final String r3 = r2ArrNode.split(D2)[0];
-                    jaRs.put(new JSONObject(r3));
-                }
+            final boolean hasError = joResp.getBoolean("error");
+            final String message = joResp.getString("message");
+
+            if (!hasError) {
+                final JSONArray jaImages = joResp.getJSONObject("data").getJSONArray("images");
+                return parse(jaImages);
+            } else {
+                throw new GPixException(message);
             }
 
-            if (jaRs.length() > 0) {
 
-                //Converting to GPixImage
-                imageList = new ArrayList<Image>(jaRs.length());
-
-                for (int i = 0; i < jaRs.length(); i++) {
-
-                    final JSONObject joImageNode = jaRs.getJSONObject(i);
-
-                    final String thumbImageUrl = joImageNode.getString("tu");
-                    //Secured url -> normal
-                    final String imageUrl = joImageNode.getString("ou").replaceAll("https://", "http://");
-
-                    final int height = joImageNode.getInt("oh");
-                    final int width = joImageNode.getInt("ow");
-
-                    imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
-                }
-
-            }
+        } else {
+            throw new GPixException("Empty server response");
         }
+    }
 
+    public static String getEncodedUrl(String url, String data) throws UnsupportedEncodingException {
+        return String.format(url, URLEncoder.encode(data, "UTF-8"));
+    }
 
-        if (imageList == null || imageList.isEmpty()) {
-            throw new GPixException("No image found for " + keyword);
+    public static List<Image> parse(JSONArray jaImages) throws JSONException {
+        List<Image> imageList = new ArrayList<Image>(jaImages.length());
+        for (int i = 0; i < jaImages.length(); i++) {
+            final JSONObject joImage = jaImages.getJSONObject(i);
+
+            final String imageUrl = joImage.getString("image_url");
+            final String thumbUrl = joImage.getString("thumb_url");
+            final int width = joImage.getInt("width");
+            final int height = joImage.getInt("height");
+
+            imageList.add(new Image(thumbUrl, imageUrl, height, width));
+
         }
-
         return imageList;
     }
 

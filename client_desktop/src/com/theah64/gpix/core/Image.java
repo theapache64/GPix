@@ -1,4 +1,4 @@
-package com.theah64.gpix.core.models;
+package com.theah64.gpix.core;
 
 /**
  * Created by shifar on 15/10/16.
