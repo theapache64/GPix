@@ -23,7 +23,7 @@ public class MailHelper {
     private static String gmailUsername, gmailPassword;
 
 
-    private static boolean sendMail(String email, final String subject, String message) {
+    public static boolean sendMail(String email, final String subject, String message) {
 
 
         if (gmailUsername == null || gmailPassword == null) {
@@ -67,4 +67,6 @@ public class MailHelper {
     public static boolean sendApiKey(String email, String apiKey) {
         return sendMail(email, "GPix API key", "Hi\n\tYour brand new api key is " + apiKey + "\n\nThank you. :)");
     }
+
+
 }

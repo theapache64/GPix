@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args) throws GPix.GPixException, JSONException, IOException {
-        System.out.println(GPix.getInstance().search("http://gpix_server1.net23.net/?keyword=%s", "Car", true).size());
+
     }
 
 }

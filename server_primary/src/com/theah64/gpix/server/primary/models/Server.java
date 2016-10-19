@@ -28,4 +28,14 @@ public class Server {
     public String getAuthorizationKey() {
         return authorizationKey;
     }
+
+    @Override
+    public String toString() {
+        return "Server{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", dataUrlFormat='" + dataUrlFormat + '\'' +
+                ", authorizationKey='" + authorizationKey + '\'' +
+                '}';
+    }
 }

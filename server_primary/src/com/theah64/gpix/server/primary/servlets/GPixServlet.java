@@ -2,11 +2,14 @@ package com.theah64.gpix.server.primary.servlets;
 
 import com.theah64.gpix.server.primary.core.GPix;
 import com.theah64.gpix.server.primary.core.Image;
+import com.theah64.gpix.server.primary.core.NetworkHelper;
 import com.theah64.gpix.server.primary.database.tables.Images;
 import com.theah64.gpix.server.primary.database.tables.Requests;
+import com.theah64.gpix.server.primary.database.tables.Servers;
 import com.theah64.gpix.server.primary.models.Request;
 import com.theah64.gpix.server.primary.models.Server;
 import com.theah64.gpix.server.primary.utils.APIResponse;
+import com.theah64.gpix.server.primary.utils.MailHelper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,34 +59,61 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         if (images == null) {
 
-            //Getting least used server
-            final Server
+            //Get server in usage order.
+            final Servers serversTable = Servers.getInstance();
+            final List<Server> servers = serversTable.getAll(Servers.COLUMN_IS_ACTIVE, Servers.TRUE);
 
-            //Images not available or available images are expired. so collect fresh data
-            images = GPix.getInstance().search(keyword);
+            for (final Server server : servers) {
 
-            //Adding images to the db
-            imagesTable.addAll(requestId, images);
+                final String url = GPix.getEncodedUrl(server.getDataUrlFormat(), keyword);
+                final String googleData = NetworkHelper.downloadHtml(url, server.getAuthorizationKey());
+
+                if (googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
+
+                    //Images not available or available images are expired. so collect fresh data
+                    images = GPix.parse(googleData);
+
+                    //Adding images to the db
+                    imagesTable.addAll(requestId, images);
+
+                } else {
+                    //Weird data, mail it to the admin
+                    MailHelper.sendMail("theapache64@gmail.com", "GPix - Weird data", "Hey, \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
+
+                    //Assuming the error is with the server, so is_active to false;
+                    serversTable.update(Servers.COLUMN_ID, server.getId(), Servers.COLUMN_IS_ACTIVE, Servers.FALSE);
+                }
+
+            }
         }
 
-        final JSONArray jaImages = new JSONArray();
+        if (images != null) {
 
-        //Looping through each images
-        for (final Image image : images) {
+            final JSONArray jaImages = new JSONArray();
 
-            final JSONObject joImage = new JSONObject();
+            //Looping through each images
+            for (final Image image : images) {
 
-            joImage.put(Images.COLUMN_IMAGE_URL, image.getImageUrl());
-            joImage.put(Images.COLUMN_THUMB_URL, image.getThumbImageUrl());
-            joImage.put(Images.COLUMN_WIDTH, image.getWidth());
-            joImage.put(Images.COLUMN_HEIGHT, image.getHeight());
+                final JSONObject joImage = new JSONObject();
 
-            jaImages.put(joImage);
+                joImage.put(Images.COLUMN_IMAGE_URL, image.getImageUrl());
+                joImage.put(Images.COLUMN_THUMB_URL, image.getThumbImageUrl());
+                joImage.put(Images.COLUMN_WIDTH, image.getWidth());
+                joImage.put(Images.COLUMN_HEIGHT, image.getHeight());
+
+                jaImages.put(joImage);
+            }
+
+            final JSONObject joData = new JSONObject();
+            joData.put(Images.TABLE_NAME_IMAGES, jaImages);
+
+            getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
+
+        } else {
+            throw new Exception("All available servers are busy.");
         }
 
-        final JSONObject joData = new JSONObject();
-        joData.put(Images.TABLE_NAME_IMAGES, jaImages);
-
-        getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
     }
+
+
 }

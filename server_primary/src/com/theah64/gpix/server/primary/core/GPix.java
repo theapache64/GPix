@@ -17,8 +17,8 @@ import java.util.List;
 public class GPix {
 
     private static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
-    private static final String D1 = "<div class=\"rg_meta\">";
-    private static final String D2 = "</div></div><!--n-->";
+    public static final String D1 = "<div class=\"rg_meta\">";
+    public static final String D2 = "</div></div><!--n-->";
 
     private static GPix instance = new GPix();
 
@@ -32,19 +32,34 @@ public class GPix {
     }*/
 
     @NotNull
-    public List<Image> search(String searchUrlFormat, String keyword, final boolean isCustomServer) throws GPixException, IOException, JSONException {
+    public List<Image> search(String searchUrlFormat, String keyword, String authorization) throws GPixException, IOException, JSONException {
+
+        final String url = getEncodedUrl(searchUrlFormat, keyword);
+        System.out.println("URL: " + url);
+        final String r1 = NetworkHelper.downloadHtml(url, authorization);
+
+        final List<Image> imageList = parse(r1);
+
+        if (imageList == null || imageList.isEmpty()) {
+            throw new GPixException("No image found for " + keyword);
+        }
+
+        return imageList;
+    }
+
+    public static String getEncodedUrl(String url, String data) throws UnsupportedEncodingException {
+        return String.format(url, URLEncoder.encode(data, "UTF-8"));
+    }
+
+    public static List<Image> parse(String firstData) throws JSONException {
 
         List<Image> imageList = null;
 
-        final String url = String.format(searchUrlFormat, URLEncoder.encode(keyword, "UTF-8"));
-        System.out.println("URL: " + url);
-        final String r1 = NetworkHelper.downloadHtml(url, isCustomServer);
+        System.out.println("Result : " + firstData);
 
-        System.out.println("Result : " + r1);
+        if (firstData.contains(D1)) {
 
-        if (r1.contains(D1)) {
-
-            final String[] r2Arr = r1.split(D1);
+            final String[] r2Arr = firstData.split(D1);
 
             final JSONArray jaRs = new JSONArray();
 
@@ -76,11 +91,6 @@ public class GPix {
                 }
 
             }
-        }
-
-
-        if (imageList == null || imageList.isEmpty()) {
-            throw new GPixException("No image found for " + keyword);
         }
 
         return imageList;
