@@ -26,10 +26,10 @@ public class GPix {
         return instance;
     }
 
-    @NotNull
+/*    @NotNull
     public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
         return search(SEARCH_URL_FORMAT, keyword, false);
-    }
+    }*/
 
     @NotNull
     public List<Image> search(String searchUrlFormat, String keyword, final boolean isCustomServer) throws GPixException, IOException, JSONException {

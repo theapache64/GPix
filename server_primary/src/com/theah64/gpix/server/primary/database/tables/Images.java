@@ -22,7 +22,7 @@ public class Images extends BaseTable<Image> {
     public static final String TABLE_NAME_IMAGES = "images";
 
     private static final Images instance = new Images();
-    private static final int MAX_RESULT_VALIDITY_IN_DAYS = 5;
+    public static final int MAX_RESULT_VALIDITY_IN_DAYS = 5;
 
     private Images() {
         super(TABLE_NAME_IMAGES);
@@ -32,10 +32,10 @@ public class Images extends BaseTable<Image> {
         return instance;
     }
 
-    public List<Image> getAll(String keyword, final int limit) {
+    public List<Image> getAll(String keyword, final int limit, final int validity) {
         List<Image> images = null;
 
-        final String query = String.format("SELECT i.image_url, i.thumb_url, i.height, i.width FROM images i INNER JOIN requests r ON r.id = i.request_id WHERE r.keyword = ? AND IFNULL(DATEDIFF(NOW(),r.created_at),0) <= %d LIMIT %d;", MAX_RESULT_VALIDITY_IN_DAYS, limit);
+        final String query = String.format("SELECT i.image_url, i.thumb_url, i.height, i.width FROM images i INNER JOIN requests r ON r.id = i.request_id WHERE r.keyword = ? AND IFNULL(DATEDIFF(NOW(),r.created_at),0) <= %d LIMIT %d;", validity, limit);
         final java.sql.Connection con = Connection.getConnection();
         try {
             final PreparedStatement ps = con.prepareStatement(query);

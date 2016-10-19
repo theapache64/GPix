@@ -51,9 +51,13 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         final Images imagesTable = Images.getInstance();
 
-        List<Image> images = imagesTable.getAll(keyword, limit);
+        List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
         if (images == null) {
+
+            //Getting least used server
+            final Server`
+
             //Images not available or available images are expired. so collect fresh data
             images = GPix.getInstance().search(keyword);
 

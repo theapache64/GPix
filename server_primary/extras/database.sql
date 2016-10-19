@@ -17,12 +17,13 @@ USE `gpix`;
 CREATE TABLE `servers`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   _name VARCHAR (10) NOT NULL,
-  domain_name VARCHAR(60) NOT NULL,
+  _authorization VARCHAR (10) NOT NULL,
+  data_url_format VARCHAR(60) NOT NULL,
   is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
   PRIMARY KEY (id)
 );
 
-
+INSERT INTO servers (_name, _authorization, data_url_format) VALUES ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s');
 
 CREATE TABLE `users`(
   id INT(11) NOT NULL AUTO_INCREMENT,
