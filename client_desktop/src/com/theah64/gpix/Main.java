@@ -1,7 +1,6 @@
 package com.theah64.gpix;
 
 import com.sun.istack.internal.NotNull;
-import com.theah64.gpix.core.CommonUtils;
 import com.theah64.gpix.core.GPix;
 import com.theah64.gpix.core.Image;
 import com.theah64.gpix.core.NetworkHelper;
@@ -74,7 +73,7 @@ public class Main {
 
                 System.out.println("Output directory : " + outputDir);
 
-                final int imgCount = CommonUtils.parseInt(cmd.getOptionValue(FLAG_COUNT), MAX_COUNT);
+                final int imgCount = parseInt(cmd.getOptionValue(FLAG_COUNT), MAX_COUNT);
 
                 if (imgCount > MAX_COUNT) {
                     System.out.println("WARNING: Max count can only be <=" + MAX_COUNT);
@@ -216,6 +215,20 @@ public class Main {
         }
 
         return "";
+    }
+
+    private static int parseInt(String string, int defValue) {
+
+        if (string != null) {
+
+            try {
+                return Integer.parseInt(string);
+            } catch (NumberFormatException e) {
+                return defValue;
+            }
+        }
+
+        return defValue;
     }
 
 }
