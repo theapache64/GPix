@@ -32,6 +32,8 @@ CREATE TABLE `users`(
   PRIMARY KEY (id)
 );
 
+INSERT INTO users (email,api_key) VALUES ('test@gmail.com','WYAfuHwjCu');
+
 CREATE TABLE `requests`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   server_id INT(11),
