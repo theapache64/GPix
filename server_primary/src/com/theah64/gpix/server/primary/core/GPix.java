@@ -1,5 +1,6 @@
 package com.theah64.gpix.server.primary.core;
 
+import com.sun.istack.internal.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ public class GPix {
         return instance;
     }
 
+    @NotNull
     public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
 
 

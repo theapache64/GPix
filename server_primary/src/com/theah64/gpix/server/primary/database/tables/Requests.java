@@ -9,6 +9,7 @@ public class Requests extends BaseTable<Request> {
 
     private static final Requests instance = new Requests();
     public static final String COLUMN_KEYWORD = "keyword";
+    public static final String COLUMN_LIMIT = "limit";
 
     private Requests() {
         super("requests");

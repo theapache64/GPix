@@ -101,6 +101,21 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
     }
 
 
+    public int getIntParameter(String key, int defValue) {
+
+        final String value = getStringParameter(key);
+
+        if (value != null) {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return defValue;
+    }
+
     public boolean getBooleanParameter(String key) {
         return request.getBooleanParameter(key);
     }
