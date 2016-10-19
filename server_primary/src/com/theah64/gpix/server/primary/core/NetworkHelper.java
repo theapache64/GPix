@@ -12,12 +12,18 @@ import java.net.URL;
 class NetworkHelper {
 
     private static final String FAKE_USER_AGENT = "Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36";
+    private static final String SERVER_SECRET = "mySecretServerKey";
 
-    public static String downloadHtml(final String url) throws IOException {
+    public static String downloadHtml(final String url, boolean isCustomServer) throws IOException {
 
         final URL theURL = new URL(url);
         final HttpURLConnection urlCon = (HttpURLConnection) theURL.openConnection();
         urlCon.addRequestProperty("User-Agent", FAKE_USER_AGENT);
+
+        if (isCustomServer) {
+            //custom gpix server so add auth
+            urlCon.addRequestProperty("Authorization", SERVER_SECRET);
+        }
 
         final BufferedReader br = new BufferedReader(new InputStreamReader(urlCon.getResponseCode() == 200 ? urlCon.getInputStream() : urlCon.getErrorStream()));
         final StringBuilder sb = new StringBuilder();

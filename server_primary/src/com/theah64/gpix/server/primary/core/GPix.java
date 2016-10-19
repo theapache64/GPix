@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +28,19 @@ public class GPix {
 
     @NotNull
     public List<Image> search(String keyword) throws IOException, JSONException, GPixException {
+        return search(SEARCH_URL_FORMAT, keyword, false);
+    }
 
+    @NotNull
+    public List<Image> search(String searchUrlFormat, String keyword, final boolean isCustomServer) throws GPixException, IOException, JSONException {
 
         List<Image> imageList = null;
-        final String url = String.format(SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
-        final String r1 = NetworkHelper.downloadHtml(url);
+
+        final String url = String.format(searchUrlFormat, URLEncoder.encode(keyword, "UTF-8"));
+        System.out.println("URL: " + url);
+        final String r1 = NetworkHelper.downloadHtml(url, isCustomServer);
+
+        System.out.println("Result : " + r1);
 
         if (r1.contains(D1)) {
 

@@ -19,5 +19,10 @@ public class Requests extends BaseTable<Request> {
         return instance;
     }
 
-
+    @Override
+    public String addv3(Request newInstance) {
+        String newRequestId = null;
+        final String query = "INSERT INTO requests (user_id, keyword,limit) VALUES (?,?,?);";
+        return newRequestId;
+    }
 }

@@ -41,12 +41,13 @@ public class GPixServlet extends AdvancedBaseServlet {
     }
 
     @Override
-    protected void doAdvancedPost() throws Exception l {
+    protected void doAdvancedPost() throws Exception {
 
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
+        final String userId = getHeaderSecurity().getUserId();
 
-        final String requestId = Requests.getInstance().addv3(new Request());
+        final String requestId = Requests.getInstance().addv3(new Request(userId, keyword, limit));
 
         final Images imagesTable = Images.getInstance();
 
@@ -56,7 +57,8 @@ public class GPixServlet extends AdvancedBaseServlet {
             //Images not available or available images are expired. so collect fresh data
             images = GPix.getInstance().search(keyword);
 
-            final boolean isEveryThinOk = imagesTable.addAll(images);
+            //Adding images to the db
+            imagesTable.addAll(requestId, images);
         }
 
         final JSONArray jaImages = new JSONArray();
@@ -78,7 +80,5 @@ public class GPixServlet extends AdvancedBaseServlet {
         joData.put(Images.TABLE_NAME_IMAGES, jaImages);
 
         getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
-
-
     }
 }

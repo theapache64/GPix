@@ -71,7 +71,7 @@ public class Images extends BaseTable<Image> {
         return images;
     }
 
-    public boolean addAll(final String requestId, List<Image> images) {
+    public void addAll(final String requestId, List<Image> images) {
 
         boolean isEverythingOk = false;
 
@@ -134,18 +134,24 @@ public class Images extends BaseTable<Image> {
             exPs.close();
             iiPs.close();
             irPs.close();
+
+            isEverythingOk = true;
         } catch (SQLException e) {
             e.printStackTrace();
+            isEverythingOk = false;
         } finally {
             try {
                 con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
+                isEverythingOk = false;
             }
         }
 
+        if (!isEverythingOk) {
+            throw new IllegalArgumentException("Something went wrong while adding images to the database.");
+        }
 
-        return isEverythingOk;
     }
 }
 

@@ -22,6 +22,8 @@ CREATE TABLE `servers`(
   PRIMARY KEY (id)
 );
 
+
+
 CREATE TABLE `users`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   email VARCHAR(100) NOT NULL,
@@ -31,7 +33,7 @@ CREATE TABLE `users`(
 
 CREATE TABLE `requests`(
   id INT(11) NOT NULL AUTO_INCREMENT,
-  server_id INT(11) NOT NULL,
+  server_id INT(11),
   user_id INT(11) NOT NULL,
   keyword VARCHAR (20) NOT NULL,
   _limit INT(11) NOT NULL,
