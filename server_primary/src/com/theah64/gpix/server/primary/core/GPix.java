@@ -35,6 +35,7 @@ public class GPix {
     public List<Image> search(String searchUrlFormat, String keyword, String authorization) throws GPixException, IOException, JSONException {
 
         final String url = getEncodedUrl(searchUrlFormat, keyword);
+
         System.out.println("URL: " + url);
         final String r1 = NetworkHelper.downloadHtml(url, authorization);
 

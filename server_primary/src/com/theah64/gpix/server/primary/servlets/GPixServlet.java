@@ -70,16 +70,23 @@ public class GPixServlet extends AdvancedBaseServlet {
 
                 final String requestId = Requests.getInstance().addv3(new Request(userId, server.getId(), keyword, limit));
 
-                if (googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
+                if (googleData != null && googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
                     //Images not available or available images are expired. so collect fresh data
-                    images = GPix.parse(googleData);
+                    final List<Image> googleImages = GPix.parse(googleData);
+                    images = googleImages;
 
 
-                    //Adding images to the db
-                    imagesTable.addAll(requestId, images);
+                    //Adding images in a different thread.
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            imagesTable.addAll(requestId, googleImages);
+                        }
+                    }).start();
 
-                    //Jumping out from the loop, no need to check next server. data collected.
+
+                    //Jumping out from the loop, no need to check next server cuz the data has been collected.
                     break;
 
                 } else {

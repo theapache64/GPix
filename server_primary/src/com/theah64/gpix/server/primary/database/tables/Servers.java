@@ -31,7 +31,7 @@ public class Servers extends BaseTable<Server> {
     @Override
     public List<Server> getAll(String whereColumn, String whereColumnValue) {
         List<Server> servers = null;
-        final String query = String.format("SELECT s.id, s._name, s.authorization_key, s.data_url_format, COUNT(r.id) AS request_handled FROM servers s LEFT JOIN requests r ON r.server_id = s.id WHERE s.%s = ? GROUP BY s.id ORDER BY request_handled DESC;", whereColumn);
+        final String query = String.format("SELECT s.id, s._name, s.authorization_key, s.data_url_format, COUNT(r.id) AS request_handled FROM servers s LEFT JOIN requests r ON r.server_id = s.id WHERE s.%s = ? GROUP BY s.id ORDER BY request_handled;", whereColumn);
         final java.sql.Connection con = Connection.getConnection();
         try {
             final PreparedStatement ps = con.prepareStatement(query);
