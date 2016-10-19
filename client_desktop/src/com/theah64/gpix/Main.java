@@ -3,8 +3,8 @@ package com.theah64.gpix;
 import com.sun.istack.internal.NotNull;
 import com.theah64.gpix.core.CommonUtils;
 import com.theah64.gpix.core.GPix;
+import com.theah64.gpix.core.Image;
 import com.theah64.gpix.core.NetworkHelper;
-import com.theah64.gpix.core.models.Image;
 import org.apache.commons.cli.*;
 import org.json.JSONException;
 
@@ -26,7 +26,9 @@ public class Main {
     private static final String FLAG_ORIGINAL = "o";
     private static final String FLAG_OUTPUT_DIRECTORY = "d";
     private static final String FLAG_BOTH_ORIGINAL_AND_THUMB = "b";
+
     private static final String FLAG_KEEP_FILE_NAME = "f";
+    private static final String FLAG_ZIPPED_OUTPUT = "z";
 
     private static final String FLAG_COUNT = "c";
 
@@ -36,7 +38,10 @@ public class Main {
             .addOption(FLAG_OUTPUT_DIRECTORY, true, "Directory to parse the data")
             .addOption(FLAG_THUMBNAIL, false, "Download thumbnail only")
             .addOption(FLAG_ORIGINAL, false, "Download original only")
+
             .addOption(FLAG_KEEP_FILE_NAME, false, "To keep original file name")//TODO: NOT IMPLEMENTED
+            .addOption(FLAG_ZIPPED_OUTPUT, false, "To get output as zipped file")//TODO: NOT IMPLEMENTED
+
             .addOption(FLAG_BOTH_ORIGINAL_AND_THUMB, false, "Download  both thumbnail and image");
 
     private static final String DEFAULT_GPIX_DIR_NAME = "gpix";
@@ -141,9 +146,9 @@ public class Main {
 
                         if (i < totalImages) {
 
-
                             final Image image = images.get(i);
                             boolean isDownloaded = false;
+
                             switch (downloadFlag) {
 
                                 case DOWNLOAD_FLAG_THUMB_ONLY:
