@@ -29,10 +29,7 @@ public class Requests extends BaseTable<Request> {
 
         String newRequestId = null;
 
-        final String query = "INSERT INTO requests (user_id, keyword,_limit) VALUES (?,?,?);";
-        final String queryFormatted = String.format("INSERT INTO requests (user_id, keyword, _limit) VALUES ('%s','%s',%d);", request.getUserId(), request.getKeyword(), request.getLimit());
-
-        System.out.println(queryFormatted);
+        final String query = "INSERT INTO requests (user_id,server_id, keyword,_limit) VALUES (?,?,?,?);";
 
         final java.sql.Connection con = Connection.getConnection();
 
@@ -40,13 +37,15 @@ public class Requests extends BaseTable<Request> {
             final PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, request.getUserId());
-            ps.setString(2, request.getKeyword());
-            ps.setInt(3, request.getLimit());
+            ps.setString(2, request.getServerId());
+            ps.setString(3, request.getKeyword());
+            ps.setInt(4, request.getLimit());
 
             if (ps.executeUpdate() == 1) {
                 final ResultSet rs = ps.getGeneratedKeys();
                 if (rs.first()) {
                     newRequestId = rs.getString(1);
+                    System.out.println("New request id is " + newRequestId);
                 }
                 rs.close();
             }

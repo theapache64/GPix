@@ -51,7 +51,6 @@ public class GPixServlet extends AdvancedBaseServlet {
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
         final String userId = getHeaderSecurity().getUserId();
 
-        final String requestId = Requests.getInstance().addv3(new Request(userId, keyword, limit));
 
         final Images imagesTable = Images.getInstance();
 
@@ -69,15 +68,23 @@ public class GPixServlet extends AdvancedBaseServlet {
                 System.out.println("URL: " + url);
                 final String googleData = NetworkHelper.downloadHtml(url, server.getAuthorizationKey());
 
+                final String requestId = Requests.getInstance().addv3(new Request(userId, server.getId(), keyword, limit));
+
                 if (googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
                     //Images not available or available images are expired. so collect fresh data
                     images = GPix.parse(googleData);
 
+
                     //Adding images to the db
                     imagesTable.addAll(requestId, images);
 
+                    //Jumping out from the loop, no need to check next server. data collected.
+                    break;
+
                 } else {
+
+
                     //Weird data, mail it to the admin
                     MailHelper.sendMail("theapache64@gmail.com", "GPix - Weird data", "Hey, \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
 
@@ -86,6 +93,9 @@ public class GPixServlet extends AdvancedBaseServlet {
                 }
 
             }
+        } else {
+            //Adding temp request.
+            Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
         }
 
         if (images != null) {

@@ -23,7 +23,8 @@ CREATE TABLE `servers`(
   PRIMARY KEY (id)
 );
 
-INSERT INTO servers (_name, authorization_key, data_url_format) VALUES ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s');
+INSERT INTO servers (_name, authorization_key, data_url_format)
+ VALUES ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s');
 
 CREATE TABLE `users`(
   id INT(11) NOT NULL AUTO_INCREMENT,

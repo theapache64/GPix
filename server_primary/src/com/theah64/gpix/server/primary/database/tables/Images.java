@@ -128,6 +128,10 @@ public class Images extends BaseTable<Image> {
                 irPs.setString(1, requestId);
                 irPs.setString(2, imageId);
 
+                if (irPs.executeUpdate() != 1) {
+                    throw new IllegalArgumentException("Failed to add request-image relation");
+                }
+
                 rsEx.close();
 
             }
