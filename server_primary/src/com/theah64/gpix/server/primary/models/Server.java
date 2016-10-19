@@ -5,12 +5,14 @@ package com.theah64.gpix.server.primary.models;
  */
 public class Server {
     private final String id, name, dataUrlFormat, authorizationKey;
+    private final int requestHandled;
 
-    public Server(String id, String name, String dataUrlFormat, String authorizationKey) {
+    public Server(String id, String name, String dataUrlFormat, String authorizationKey, int requestHandled) {
         this.id = id;
         this.name = name;
         this.dataUrlFormat = dataUrlFormat;
         this.authorizationKey = authorizationKey;
+        this.requestHandled = requestHandled;
     }
 
     public String getId() {
@@ -29,6 +31,10 @@ public class Server {
         return authorizationKey;
     }
 
+    public int getRequestHandled() {
+        return requestHandled;
+    }
+
     @Override
     public String toString() {
         return "Server{" +
@@ -36,6 +42,7 @@ public class Server {
                 ", name='" + name + '\'' +
                 ", dataUrlFormat='" + dataUrlFormat + '\'' +
                 ", authorizationKey='" + authorizationKey + '\'' +
+                ", requestHandled=" + requestHandled +
                 '}';
     }
 }

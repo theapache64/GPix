@@ -17,13 +17,13 @@ USE `gpix`;
 CREATE TABLE `servers`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   _name VARCHAR (10) NOT NULL,
-  _authorization VARCHAR (10) NOT NULL,
-  data_url_format VARCHAR(60) NOT NULL,
+  authorization_key VARCHAR (20) NOT NULL,
+  data_url_format TEXT NOT NULL,
   is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
   PRIMARY KEY (id)
 );
 
-INSERT INTO servers (_name, _authorization, data_url_format) VALUES ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s');
+INSERT INTO servers (_name, authorization_key, data_url_format) VALUES ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s');
 
 CREATE TABLE `users`(
   id INT(11) NOT NULL AUTO_INCREMENT,
@@ -44,6 +44,7 @@ CREATE TABLE `requests`(
   FOREIGN KEY (server_id) REFERENCES servers(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+
 CREATE TABLE `images`(
   id INT(11) NOT NULL AUTO_INCREMENT,
   image_url TEXT NOT NULL,
@@ -62,3 +63,4 @@ CREATE TABLE request_image_rel(
   FOREIGN KEY (request_id) REFERENCES requests(id) ON UPDATE CASCADE ON DELETE CASCADE,
   FOREIGN KEY (image_id) REFERENCES images(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
