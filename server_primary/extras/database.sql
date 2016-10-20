@@ -27,7 +27,8 @@
   INSERT INTO servers (_name, authorization_key, data_url_format) VALUES
   ('SERVER 1', 'mySecretServerKey', 'http://gpix_server1.net23.net/?keyword=%s'),
   ('SERVER 2', 'mySecretServerKey', 'http://gpix-server2.000webhostapp.com/?keyword=%s'),
-  ('SERVER 3', 'mySecretServerKey', 'http://gpix-server3.000webhostapp.com/?keyword=%s');
+  ('SERVER 3', 'mySecretServerKey', 'http://gpix-server3.000webhostapp.com/?keyword=%s'),
+  ('SERVER 4', 'mySecretServerKey', 'http://gpix_server4.netai.net/?keyword=%s');
 
   CREATE TABLE `users`(
     id INT(11) NOT NULL AUTO_INCREMENT,

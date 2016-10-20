@@ -11,6 +11,7 @@ import com.theah64.gpix.server.primary.models.Server;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.MailHelper;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public class GPixServlet extends AdvancedBaseServlet {
     }
 
     @Override
-    protected void doAdvancedPost() throws Exception {
+    protected void doAdvancedPost() throws IOException, JSONException, GPix.GPixException {
 
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
@@ -56,7 +58,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
-        if (images == null) {
+        if (images == null || images.size() < limit) {
 
             //Get server in usage order.
             final Servers serversTable = Servers.getInstance();
@@ -128,7 +130,7 @@ public class GPixServlet extends AdvancedBaseServlet {
             getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
 
         } else {
-            throw new Exception("All available servers are busy.");
+            throw new GPix.GPixException("All available servers are busy.");
         }
 
     }

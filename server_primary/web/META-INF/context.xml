@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
 
-    <!--    <Resource name="jdbc/xrob"
+    <!--    <Resource name="jdbc/gpix"
                   auth="Container"
                   type="javax.sql.DataSource"
                   maxActive="100"
@@ -10,14 +10,12 @@
                   maxIdle="30"
                   maxWait="10000"
                   username="root" password="mike" driverClassName="com.mysql.jdbc.Driver"
-                  url="jdbc:mysql://localhost:3306/xrob"/>-->
+                  url="jdbc:mysql://localhost:3306/gpix"/>-->
 
     <Resource
             name="jdbc/gpix"
             auth="Container"
             type="javax.sql.DataSource"
-            factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-            initialSize="5"
             maxActive="55"
             maxIdle="21"
             minIdle="13"
