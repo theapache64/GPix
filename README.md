@@ -59,7 +59,7 @@ GET - http://gpix-shifz.rhcloud.com/v1/gpix?keyword=Car
 ## CLI
 Download the latest `jar` file from the release and run it from terminal/cmd.
 `java -jar gpix.jar -help`
-
+```
 usage: gpix [-b] [-d <arg>] [-f] [-help] [-k <arg>] [-n <arg>] [-o] [-t]
        [-z]
 To download bulk images
@@ -75,7 +75,7 @@ To download bulk images
  -z         To get output as zipped file (coming soon)
  
 Please shoot issues to theapache64@gmail.com
-
+```
 ## GUI
 (coming soon)
 
