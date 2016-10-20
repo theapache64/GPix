@@ -23,9 +23,9 @@ GET - http://gpix-shifz.rhcloud.com/v1/get_api_key?email=theapache64@gmail.com
 Result - 
 ```json
 {
-message: "API key sent to theapache64@gmail.com",
-error: true,
-error_code: 1
+    "message": "API key sent to theapache64@gmail.com",
+    "error": true,
+    "error_code": 1
 }
 ```
 
