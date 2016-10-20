@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class GPix {
 
-    private static final String API_URL_FORMAT = "http://192.168.43.234:8080/v1/gpix?keyword=%s";
+    private static final String API_URL_FORMAT = "http://gpix-shifz.rhcloud.com/v1/gpix?keyword=%s";
     private static final String AUTHORIZATION = "WYAfuHwjCu";
 
     private static GPix instance = new GPix();
@@ -60,6 +60,7 @@ public class GPix {
 
     public static List<Image> parse(JSONArray jaImages) throws JSONException {
         List<Image> imageList = new ArrayList<Image>(jaImages.length());
+
         for (int i = 0; i < jaImages.length(); i++) {
             final JSONObject joImage = jaImages.getJSONObject(i);
 

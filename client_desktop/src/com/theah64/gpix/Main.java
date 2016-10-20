@@ -89,7 +89,7 @@ public class Main {
                     System.out.println("Output directory : " + outputDir);
 
                     final int imgCount = parseInt(cmd.getOptionValue(FLAG_COUNT), DEFAULT_COUNT);
-                    
+
                     System.out.println("Image count : " + imgCount);
 
                     File oneDir = null, imgDir = null, thumbDir = null;
@@ -188,13 +188,9 @@ public class Main {
 
                         }
 
-                        System.out.print("\rFinished!");
 
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } catch (JSONException | IOException e) {
+                        throw new GPix.GPixException(e.getMessage());
                     }
 
 
@@ -203,7 +199,7 @@ public class Main {
                 }
 
             } catch (GPix.GPixException e) {
-                e.printStackTrace();
+                System.out.println("ERROR: " + e.getMessage());
             }
 
 
