@@ -159,6 +159,14 @@ public class Main {
                                 final Image image = images.get(i);
                                 boolean isDownloaded = false;
 
+                                final String fileName;
+
+                                if (cmd.hasOption(FLAG_KEEP_FILE_NAME)) {
+                                    fileName = getFileNameFromUrl(image.getImageUrl());
+                                } else {
+                                    fileName = getFileName(keyword + "_" + i, image.getImageUrl());
+                                }
+
 
                                 switch (downloadFlag) {
 
@@ -171,7 +179,7 @@ public class Main {
                                         break;
 
                                     case DOWNLOAD_FLAG_BOTH_THUMB_AND_IMAGE:
-                                        final String fileName = getFileName(keyword + "_" + i, image.getImageUrl());
+
                                         NetworkHelper.download(thumbDir, image.getThumbImageUrl(), fileName);
                                         isDownloaded = NetworkHelper.download(imgDir, image.getImageUrl(), fileName);
                                         break;
@@ -228,6 +236,10 @@ public class Main {
         }
 
         //Couldn't find an extension, so return the complete file name from the url.
+        return getFileNameFromUrl(imageUrl);
+    }
+
+    private static String getFileNameFromUrl(String imageUrl) {
         final String[] slashParts = imageUrl.split("/");
         return slashParts[slashParts.length - 1];
     }
