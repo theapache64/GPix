@@ -40,7 +40,7 @@
             testOnBorrow="true"
             removeAbandoned="true"
             removeAbandonedTimeout="233"
-   
+
             driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://35.161.57.139:3306/gpix?allowMultiQueries=true"
             />
