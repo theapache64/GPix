@@ -5,7 +5,7 @@
       <element id="artifact" artifact-name="GPix_server_primary:war exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
-          <element id="library" level="project" name="mysql-connector-java-5.1.35-bin" />
+          <element id="library" level="application" name="mysql-connector-java-5.1.35-bin" />
         </element>
       </element>
     </root>

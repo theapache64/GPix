@@ -58,7 +58,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
-        if (images == null || images.size() < limit) {
+        if (images == null || images.size() < limit && limit <= 100) {
 
             //Get server in usage order.
             final Servers serversTable = Servers.getInstance();
@@ -77,7 +77,6 @@ public class GPixServlet extends AdvancedBaseServlet {
                     //Images not available or available images are expired. so collect fresh data
                     final List<Image> googleImages = GPix.parse(googleData);
                     images = googleImages;
-
 
                     //Adding images in a different thread.
                     new Thread(new Runnable() {
@@ -103,6 +102,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             }
         } else {
+
             //Adding temp request.
             Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
         }
@@ -111,9 +111,13 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             final JSONArray jaImages = new JSONArray();
 
-            //Looping through each images
-            for (final Image image : images) {
 
+            final int smallestIndex = images.size() >= limit ? limit : images.size();
+
+            //Looping through each images
+            for (int i = 0; i < smallestIndex; i++) {
+
+                final Image image = images.get(i);
                 final JSONObject joImage = new JSONObject();
 
                 joImage.put(Images.COLUMN_IMAGE_URL, image.getImageUrl());

@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 public class Connection {
 
-    public static final boolean debugMode = false;
+    public static final boolean debugMode = true;
     private static DataSource ds;
 
     public static java.sql.Connection getConnection() {
@@ -23,7 +23,7 @@ public class Connection {
             if (ds == null) {
                 final Context initContext = new InitialContext();
                 Context envContext = (Context) initContext.lookup("java:/comp/env");
-                ds = (DataSource) envContext.lookup(debugMode ? "jdbc/gpix" : "jdbc/MySQLDS");
+                ds = (DataSource) envContext.lookup(debugMode ? "jdbc/gpixLocal" : "jdbc/gpixRemote");
             }
 
             return ds.getConnection();

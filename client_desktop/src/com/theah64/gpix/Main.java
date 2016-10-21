@@ -202,6 +202,7 @@ public class Main {
                         System.out.println("download finished");
 
                         if (cmd.hasOption(FLAG_ZIPPED_OUTPUT)) {
+
                             final Zipper zipper = new Zipper(outputDir, outputDir + ".zip");
                             zipper.setCallback(new Zipper.ZipperProgressCallback() {
                                 @Override
