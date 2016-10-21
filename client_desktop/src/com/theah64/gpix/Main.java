@@ -52,9 +52,9 @@ public class Main {
 
     public static void main(String[] args) throws ParseException {
 
-   /*     if (true) {
+        /*if (true) {
             final String url = "https://webdesignledger.com/wp-content/uploads/2009/06/small_icons_1.jpg";
-            NetworkHelper.download(new File("/home/shifar/Desktop"), url, "iconss.jpg");
+            System.out.println(getFileName("hello", url));
             return;
         }*/
 
@@ -159,19 +159,21 @@ public class Main {
                                 final Image image = images.get(i);
                                 boolean isDownloaded = false;
 
+
                                 switch (downloadFlag) {
 
                                     case DOWNLOAD_FLAG_THUMB_ONLY:
-                                        isDownloaded = NetworkHelper.download(oneDir, image.getThumbImageUrl(), keyword + "_" + i + getFileExtension(image.getThumbImageUrl()));
+                                        isDownloaded = NetworkHelper.download(oneDir, image.getThumbImageUrl(), getFileName(keyword + "_" + i, image.getImageUrl()));
                                         break;
 
                                     case DOWNLOAD_FLAG_ORIGINAL_ONLY:
-                                        isDownloaded = NetworkHelper.download(oneDir, image.getImageUrl(), keyword + "_" + i + getFileExtension(image.getImageUrl()));
+                                        isDownloaded = NetworkHelper.download(oneDir, image.getImageUrl(), getFileName(keyword + "_" + i, image.getImageUrl()));
                                         break;
 
                                     case DOWNLOAD_FLAG_BOTH_THUMB_AND_IMAGE:
-                                        NetworkHelper.download(thumbDir, image.getThumbImageUrl(), keyword + "_" + i + getFileExtension(image.getThumbImageUrl()));
-                                        isDownloaded = NetworkHelper.download(imgDir, image.getImageUrl(), keyword + "_" + i + getFileExtension(image.getImageUrl()));
+                                        final String fileName = getFileName(keyword + "_" + i, image.getImageUrl());
+                                        NetworkHelper.download(thumbDir, image.getThumbImageUrl(), fileName);
+                                        isDownloaded = NetworkHelper.download(imgDir, image.getImageUrl(), fileName);
                                         break;
                                 }
 
@@ -210,7 +212,7 @@ public class Main {
 
     private static final String[] IMAGE_EXTENSIONS = {"jpg", "png", "jpeg"};
 
-    private static String getFileExtension(String imageUrl) {
+    private static String getFileName(final String fileName, String imageUrl) {
 
         if (imageUrl.contains(".")) {
             final String[] dotsSeps = imageUrl.split("\\.");
@@ -219,13 +221,15 @@ public class Main {
                 susExt = susExt.trim();
                 for (final String ext : IMAGE_EXTENSIONS) {
                     if (susExt.equals(ext)) {
-                        return "." + ext;
+                        return fileName + "." + ext;
                     }
                 }
             }
         }
 
-        return "";
+        //Couldn't find an extension, so return the complete file name from the url.
+        final String[] slashParts = imageUrl.split("/");
+        return slashParts[slashParts.length - 1];
     }
 
     private static int parseInt(String string, int defValue) {
