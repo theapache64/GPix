@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="gpix">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="gpix.war">
+      <element id="artifact" artifact-name="GPix_server_primary:war exploded" />
+    </root>
+  </artifact>
+</component>
