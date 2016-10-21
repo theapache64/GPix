@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class GPix {
 
-    private static final String API_URL_FORMAT = "http://gpix-shifz.rhcloud.com/v1/gpix?keyword=%s";
+    private static final String API_URL_FORMAT = "http://gpix-shifz.rhcloud.com/v1/gpix?keyword=%s&limit=%d";
     private static final String AUTHORIZATION = "WYAfuHwjCu";
 
     private static GPix instance = new GPix();
@@ -27,11 +27,10 @@ public class GPix {
 
 
     @NotNull
-    public List<Image> search(String keyword) throws GPixException, IOException, JSONException {
+    public List<Image> search(String keyword, int limit) throws GPixException, IOException, JSONException {
 
-        final String url = getEncodedUrl(API_URL_FORMAT, keyword);
+        final String url = String.format(API_URL_FORMAT, getEncoded(keyword), limit);
 
-        System.out.println("URL: " + url);
         final String jsonData = NetworkHelper.downloadHtml(url, AUTHORIZATION);
 
         if (jsonData != null) {
@@ -54,8 +53,8 @@ public class GPix {
         }
     }
 
-    public static String getEncodedUrl(String url, String data) throws UnsupportedEncodingException {
-        return String.format(url, URLEncoder.encode(data, "UTF-8"));
+    public static String getEncoded(String data) throws UnsupportedEncodingException {
+        return URLEncoder.encode(data, "UTF-8");
     }
 
     public static List<Image> parse(JSONArray jaImages) throws JSONException {

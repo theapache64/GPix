@@ -79,7 +79,7 @@ public class Main {
 
                 if (keyword != null) {
 
-                    System.out.println("Searching image : " + keyword);
+                    System.out.println("initializing gpix search : " + keyword);
 
                     String outputDir = cmd.getOptionValue(FLAG_OUTPUT_DIRECTORY);
 
@@ -87,11 +87,11 @@ public class Main {
                         outputDir = System.getProperty("user.dir") + File.separator + DEFAULT_GPIX_DIR_NAME + File.separator + keyword + "_" + System.currentTimeMillis();
                     }
 
-                    System.out.println("Output directory : " + outputDir);
+                    System.out.println("output directory : " + outputDir);
 
                     final int imgCount = parseInt(cmd.getOptionValue(FLAG_COUNT), DEFAULT_COUNT);
 
-                    System.out.println("Image count : " + imgCount);
+                    System.out.println("number of images : " + imgCount);
 
                     File oneDir = null, imgDir = null, thumbDir = null;
 
@@ -103,7 +103,7 @@ public class Main {
                         downloadFlag = DOWNLOAD_FLAG_THUMB_ONLY;
                         oneDir.mkdirs();
 
-                        System.out.println("MODE: Thumbnail only");
+                        System.out.println("mode: thumbnail only");
                     }
 
                     if (cmd.hasOption(FLAG_ORIGINAL)) {
@@ -112,7 +112,7 @@ public class Main {
                         downloadFlag = DOWNLOAD_FLAG_ORIGINAL_ONLY;
                         oneDir.mkdirs();
 
-                        System.out.println("MODE: Original image only");
+                        System.out.println("mode: original image only");
                     }
 
                     if (cmd.hasOption(FLAG_BOTH_ORIGINAL_AND_THUMB)) {
@@ -124,7 +124,7 @@ public class Main {
                         imgDir.mkdirs();
                         thumbDir.mkdirs();
 
-                        System.out.println("MODE: Both original and thumbnail.");
+                        System.out.println("mode: both original and thumbnail.");
                     }
 
                     if (downloadFlag == -1) {
@@ -133,7 +133,7 @@ public class Main {
                         oneDir = new File(outputDir);
                         oneDir.mkdirs();
 
-                        System.out.println("DEFAULT MODE: Thumbnail only");
+                        System.out.println("default mode: thumbnail only");
                     }
 
 
@@ -142,14 +142,14 @@ public class Main {
                     try {
 
 
-                        System.out.println("Search started, Please wait...");
-                        @NotNull final List<Image> images = gi.search(keyword);
+                        System.out.println("searching... please wait... this may take a minute.");
+                        @NotNull final List<Image> images = gi.search(keyword, imgCount);
 
 
                         final int totalImages = images.size();
 
                         System.out.println(totalImages + " images found");
-                        System.out.println("Preparing download for " + imgCount + " image(s).");
+                        System.out.println("preparing download for " + imgCount + " image(s).");
 
                         int download = 0;
 
@@ -187,7 +187,7 @@ public class Main {
                                 }
 
                                 if (!isDownloaded) {
-                                    System.out.println("ERROR while downloading " + image.getImageUrl());
+                                    System.out.println("error while downloading " + image.getImageUrl());
                                 }
 
                                 final int perc = (++download * 100) / imgCount;
@@ -199,13 +199,14 @@ public class Main {
 
                         }
 
+                        System.out.println("download finished");
 
                         if (cmd.hasOption(FLAG_ZIPPED_OUTPUT)) {
                             final Zipper zipper = new Zipper(outputDir, outputDir + ".zip");
                             zipper.setCallback(new Zipper.ZipperProgressCallback() {
                                 @Override
                                 public void onStart() {
-                                    System.out.println("Zipping output...");
+                                    System.out.println("zipping output...");
                                 }
 
                                 @Override
@@ -215,7 +216,7 @@ public class Main {
 
                                 @Override
                                 public void onFinish() {
-                                    System.out.println("Zipping finished");
+                                    System.out.println("zipping finished");
                                     zipper.deleteInput();
                                 }
                             });
@@ -228,11 +229,11 @@ public class Main {
 
 
                 } else {
-                    throw new GPix.GPixException("Keyword missing");
+                    throw new GPix.GPixException("keyword missing");
                 }
 
             } catch (GPix.GPixException e) {
-                System.out.println("ERROR: " + e.getMessage());
+                System.out.println("error : " + e.getMessage());
             }
 
 
