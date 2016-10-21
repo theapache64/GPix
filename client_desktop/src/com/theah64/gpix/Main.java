@@ -4,6 +4,7 @@ import com.sun.istack.internal.NotNull;
 import com.theah64.gpix.core.GPix;
 import com.theah64.gpix.core.Image;
 import com.theah64.gpix.core.NetworkHelper;
+import com.theah64.gpix.core.Zipper;
 import org.apache.commons.cli.*;
 import org.json.JSONException;
 
@@ -42,8 +43,8 @@ public class Main {
             .addOption(FLAG_THUMBNAIL, false, "Download thumbnail only")
             .addOption(FLAG_ORIGINAL, false, "Download original only")
 
-            .addOption(FLAG_KEEP_FILE_NAME, false, "To keep original file name (coming soon)")//TODO: NOT IMPLEMENTED
-            .addOption(FLAG_ZIPPED_OUTPUT, false, "To get output as zipped file (coming soon)")//TODO: NOT IMPLEMENTED
+            .addOption(FLAG_KEEP_FILE_NAME, false, "To keep original file name")
+            .addOption(FLAG_ZIPPED_OUTPUT, false, "To get output as zipped file")
 
             .addOption(FLAG_BOTH_ORIGINAL_AND_THUMB, false, "Download  both thumbnail and image");
 
@@ -53,7 +54,7 @@ public class Main {
     public static void main(String[] args) throws ParseException {
 
         /*if (true) {
-            final String url = "https://webdesignledger.com/wp-content/uploads/2009/06/small_icons_1.jpg";
+            final String url = "https://webdesignledger.com/wp-content/uploads/2009/06/small_icons_1.jpg?3423432.ppg24";
             System.out.println(getFileName("hello", url));
             return;
         }*/
@@ -199,6 +200,28 @@ public class Main {
                         }
 
 
+                        if (cmd.hasOption(FLAG_ZIPPED_OUTPUT)) {
+                            final Zipper zipper = new Zipper(outputDir, outputDir + ".zip");
+                            zipper.setCallback(new Zipper.ZipperProgressCallback() {
+                                @Override
+                                public void onStart() {
+                                    System.out.println("Zipping output...");
+                                }
+
+                                @Override
+                                public void onProgress(int perc) {
+                                    System.out.print(perc + "% finished\r");
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    System.out.println("Zipping finished");
+                                    zipper.deleteInput();
+                                }
+                            });
+                            zipper.startZipping();
+                        }
+
                     } catch (JSONException | IOException e) {
                         throw new GPix.GPixException(e.getMessage());
                     }
@@ -228,7 +251,7 @@ public class Main {
             if (susExt != null) {
                 susExt = susExt.trim();
                 for (final String ext : IMAGE_EXTENSIONS) {
-                    if (susExt.equals(ext)) {
+                    if (susExt.contains(ext)) {
                         return fileName + "." + ext;
                     }
                 }
@@ -241,7 +264,15 @@ public class Main {
 
     private static String getFileNameFromUrl(String imageUrl) {
         final String[] slashParts = imageUrl.split("/");
-        return slashParts[slashParts.length - 1];
+        String fileName = slashParts[slashParts.length - 1];
+        final String[] dotParts = fileName.split("\\.");
+        final String ext = dotParts[dotParts.length - 1];
+        for (final String supExt : IMAGE_EXTENSIONS) {
+            if (ext.contains(supExt)) {
+                fileName = fileName.substring(0, fileName.lastIndexOf(".")) + "." + supExt;
+            }
+        }
+        return fileName;
     }
 
     private static int parseInt(String string, int defValue) {
