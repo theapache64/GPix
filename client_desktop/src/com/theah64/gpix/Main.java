@@ -53,11 +53,11 @@ public class Main {
 
     public static void main(String[] args) throws ParseException {
 
-        /*if (true) {
+        if (false) {
             final String url = "https://webdesignledger.com/wp-content/uploads/2009/06/small_icons_1.jpg?3423432.ppg24";
-            System.out.println(getFileName("hello", url));
+            System.out.println(replaceExt("abc.fgdf.jpg", "png"));
             return;
-        }*/
+        }
 
 
         final CommandLineParser parse = new DefaultParser();
@@ -160,29 +160,29 @@ public class Main {
                                 final Image image = images.get(i);
                                 boolean isDownloaded = false;
 
-                                final String fileName;
+                                final String fullFileName;
 
                                 if (cmd.hasOption(FLAG_KEEP_FILE_NAME)) {
-                                    fileName = getFileNameFromUrl(image.getImageUrl());
+                                    fullFileName = getFileNameFromUrl(image.getImageUrl());
                                 } else {
-                                    fileName = getFileName(keyword + "_" + i, image.getImageUrl());
+                                    fullFileName = getFileName(keyword + "_" + i, image.getImageUrl());
                                 }
 
 
                                 switch (downloadFlag) {
 
                                     case DOWNLOAD_FLAG_THUMB_ONLY:
-                                        isDownloaded = NetworkHelper.download(oneDir, image.getThumbImageUrl(), getFileName(keyword + "_" + i, image.getImageUrl()));
+                                        isDownloaded = NetworkHelper.download(oneDir, image.getThumbImageUrl(), replaceExt(fullFileName, "jpg"));
                                         break;
 
                                     case DOWNLOAD_FLAG_ORIGINAL_ONLY:
-                                        isDownloaded = NetworkHelper.download(oneDir, image.getImageUrl(), getFileName(keyword + "_" + i, image.getImageUrl()));
+                                        isDownloaded = NetworkHelper.download(oneDir, image.getImageUrl(), fullFileName);
                                         break;
 
                                     case DOWNLOAD_FLAG_BOTH_THUMB_AND_IMAGE:
 
-                                        NetworkHelper.download(thumbDir, image.getThumbImageUrl(), fileName);
-                                        isDownloaded = NetworkHelper.download(imgDir, image.getImageUrl(), fileName);
+                                        NetworkHelper.download(thumbDir, image.getThumbImageUrl(), replaceExt(fullFileName, "jpg"));
+                                        isDownloaded = NetworkHelper.download(imgDir, image.getImageUrl(), fullFileName);
                                         break;
                                 }
 
@@ -243,6 +243,11 @@ public class Main {
     }
 
     private static final String[] IMAGE_EXTENSIONS = {"jpg", "png", "jpeg"};
+
+    private static String replaceExt(final String fullFileName, final String ext) {
+        final String fileNameWithOutExt = fullFileName.substring(0, fullFileName.lastIndexOf('.'));
+        return fileNameWithOutExt + "." + ext;
+    }
 
     private static String getFileName(final String fileName, String imageUrl) {
 
