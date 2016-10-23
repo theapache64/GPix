@@ -1,8 +1,8 @@
 # GPix
-GPix is an utility tool to download bulk images instantly.
+GPix - An unofficial google images client to download bulk images with just a KEYWORD.
 
 ## API
-GPix has it's own public API hosted at https://gpix-shifz.rhcloud.com
+GPix has it's own public API hosted at http://35.161.57.139:8080/gpix/v1
 
 #### How to use the API ?
 **Step 1 - Obtain the API key.**
@@ -12,9 +12,9 @@ replace [YOUR_EMAIL_ADDRESS] with your email address.
 
 **Step 2 - Get the JSON**
 
-Attach the API key with `Authorization` header and give a request to http://35.161.57.139:8080/gpix/v1/gpix?keyword=[KEYWORD].
+Attach the API key with `Authorization` header and give a `GET` request to http://35.161.57.139:8080/gpix/v1/gpix?keyword=[KEYWORD].
 
-#### Example
+#### API Usage example
 
 To get the API key
 
@@ -30,11 +30,11 @@ Result -
 ```
 
 To get some car images
-GET - http://35.161.57.139:8080/gpix/v1/gpix?keyword=Car
+GET - http://35.161.57.139:8080/gpix/v1/gpix?keyword=Car&limit=2
 
 ```json
 {
-  "message": "100 images(s) available",
+  "message": "2 images(s) available",
   "error": false,
   "data": {
     "images": [
@@ -56,10 +56,13 @@ GET - http://35.161.57.139:8080/gpix/v1/gpix?keyword=Car
 }
 ```
 
-## CLI
+## Command line interface
+
 Download the latest `jar` file from the release and run it from terminal/cmd.
 `java -jar gpix.jar -help`
 ```
+to get the help text.
+
 usage: gpix [-b] [-d <arg>] [-f] [-help] [-k <arg>] [-n <arg>] [-o] [-t]
        [-z]
 To download bulk images
