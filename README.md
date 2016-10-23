@@ -7,18 +7,18 @@ GPix has it's own public API hosted at https://gpix-shifz.rhcloud.com
 #### How to use the API ?
 **Step 1 - Obtain the API key.**
 
-To get the API key, visit http://gpix-shifz.rhcloud.com/v1/get_api_key?email=[YOUR_EMAIL_ADDRESS]
+To get the API key, visit http://35.161.57.139:8080/gpix/v1/get_api_key?email=[YOUR_EMAIL_ADDRESS]
 replace [YOUR_EMAIL_ADDRESS] with your email address.
 
 **Step 2 - Get the JSON**
 
-Attach the API key with `Authorization` header and give a request to http://gpix-shifz.rhcloud.com/v1/gpix?keyword=[KEYWORD].
+Attach the API key with `Authorization` header and give a request to http://35.161.57.139:8080/gpix/v1/gpix?keyword=[KEYWORD].
 
 #### Example
 
 To get the API key
 
-GET - http://gpix-shifz.rhcloud.com/v1/get_api_key?email=theapache64@gmail.com
+GET - http://35.161.57.139:8080/gpix/v1/get_api_key?email=theapache64@gmail.com
 
 Result - 
 ```json
@@ -30,7 +30,7 @@ Result -
 ```
 
 To get some car images
-GET - http://gpix-shifz.rhcloud.com/v1/gpix?keyword=Car
+GET - http://35.161.57.139:8080/gpix/v1/gpix?keyword=Car
 
 ```json
 {
