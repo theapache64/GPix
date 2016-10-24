@@ -1,0 +1,12 @@
+http://theapache64server1.6te.net/?keyword=%s
+http://theapache64server2.6te.net/?keyword=%s
+http://theapache64server3.6te.net/?keyword=%s
+http://theapache64server4.6te.net/?keyword=%s
+http://theapache64server5.6te.net/?keyword=%s
+http://theapache64server6.6te.net/?keyword=%s
+http://theapache64server7.6te.net/?keyword=%s
+http://theapache64server8.6te.net/?keyword=%s
+http://theapache64server9.6te.net/?keyword=%s
+http://theapache64server10.6te.net/?keyword=%s
+
+	
