@@ -28,3 +28,5 @@ client_desktop/.idea/dataSources.local.ids
 client_desktop/.idea/dataSources.xml
 
 client_desktop/gpix
+
+server_primary/web/META-INF/context.xml
