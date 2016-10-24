@@ -1,10 +1,12 @@
-http://theapache64server1.6te.net/?keyword=%s
-http://theapache64server2.6te.net/?keyword=%s
-http://theapache64server3.6te.net/?keyword=%s
-http://theapache64server4.6te.net/?keyword=%s
-http://theapache64server5.6te.net/?keyword=%s
-http://theapache64server6.6te.net/?keyword=%s
-http://theapache64server7.6te.net/?keyword=%s
-http://theapache64server8.6te.net/?keyword=%s
-http://theapache64server9.6te.net/?keyword=%s
-http://theapache64server10.6te.net/?keyword=%s
+
+INSERT INTO servers (_name,authorization_key,data_url_format) VALUES 
+('6te.net 1','mySecretServerKey','http://theapache64server1.6te.net/?keyword=%s'),
+('6te.net 2','mySecretServerKey','http://theapache64server2.6te.net/?keyword=%s'),
+('6te.net 3','mySecretServerKey','http://theapache64server3.6te.net/?keyword=%s'),
+('6te.net 4','mySecretServerKey','http://theapache64server4.6te.net/?keyword=%s'),
+('6te.net 5','mySecretServerKey','http://theapache64server5.6te.net/?keyword=%s'),
+('6te.net 6','mySecretServerKey','http://theapache64server6.6te.net/?keyword=%s'),
+('6te.net 7','mySecretServerKey','http://theapache64server7.6te.net/?keyword=%s'),
+('6te.net 8','mySecretServerKey','http://theapache64server8.6te.net/?keyword=%s'),
+('6te.net 9','mySecretServerKey','http://theapache64server9.6te.net/?keyword=%s'),
+('6te.net 10','mySecretServerKey','http://theapache64server10.6te.net/?keyword=%s');
