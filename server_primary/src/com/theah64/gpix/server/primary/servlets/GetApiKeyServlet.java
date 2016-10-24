@@ -2,10 +2,7 @@ package com.theah64.gpix.server.primary.servlets;
 
 import com.theah64.gpix.server.primary.database.tables.Users;
 import com.theah64.gpix.server.primary.models.User;
-import com.theah64.gpix.server.primary.utils.APIResponse;
-import com.theah64.gpix.server.primary.utils.DarKnight;
-import com.theah64.gpix.server.primary.utils.MailHelper;
-import com.theah64.gpix.server.primary.utils.RandomString;
+import com.theah64.gpix.server.primary.utils.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * Created by theapache64 on 15/10/16.
  */
-    @WebServlet(urlPatterns = {AdvancedBaseServlet.VERSION_CODE + "/get_api_key"})
+@WebServlet(urlPatterns = {AdvancedBaseServlet.VERSION_CODE + "/get_api_key"})
 public class GetApiKeyServlet extends AdvancedBaseServlet {
 
     private static final String INPUT_EMAIL_REGEX = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -37,12 +34,12 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         super.doPost(req, resp);
     }
 
     @Override
-    protected void doAdvancedPost() throws Exception {
+    protected void doAdvancedPost() throws Request.RequestException {
 
         final String email = getStringParameter(Users.COLUMN_EMAIL);
 
@@ -61,12 +58,12 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
                 }
 
             } else {
-                throw new Exception("Failed to add new user");
+                throw new Request.RequestException("Failed to add new user");
             }
 
 
         } else {
-            throw new Exception("Invalid email");
+            throw new Request.RequestException("Invalid email");
         }
     }
 }

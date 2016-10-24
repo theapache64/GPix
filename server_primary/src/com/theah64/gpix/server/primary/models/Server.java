@@ -37,7 +37,9 @@ public class Server {
 
     @Override
     public String toString() {
-        return "Server{" +
+        return "\n" +
+                "-----------------------\n" +
+                "Server{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", dataUrlFormat='" + dataUrlFormat + '\'' +

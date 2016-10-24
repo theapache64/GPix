@@ -4,6 +4,7 @@ import com.sun.istack.internal.Nullable;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
@@ -69,5 +70,11 @@ public class NetworkHelper {
     private static String getFileNameFromUrl(String downloadUrl) {
         final String[] parts = downloadUrl.split("/");
         return parts[parts.length - 1];
+    }
+
+    public static int getResponseRequestCode(String url) throws IOException {
+        final URL urlOb = new URL(url);
+        final HttpURLConnection urlCon = (HttpURLConnection) urlOb.openConnection();
+        return urlCon.getResponseCode();
     }
 }
