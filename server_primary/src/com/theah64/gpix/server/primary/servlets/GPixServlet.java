@@ -14,12 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -42,7 +40,7 @@ public class GPixServlet extends AdvancedBaseServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         super.doPost(req, resp);
     }
 
@@ -53,12 +51,11 @@ public class GPixServlet extends AdvancedBaseServlet {
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
         final String userId = getHeaderSecurity().getUserId();
 
-
         final Images imagesTable = Images.getInstance();
 
         List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
-        if (images == null || images.size() < limit && limit <= 100) {
+        if (images == null || (images.size() < limit && limit <= 100)) {
 
             //Get server in usage order.
             final Servers serversTable = Servers.getInstance();
@@ -101,6 +98,8 @@ public class GPixServlet extends AdvancedBaseServlet {
                 }
 
             }
+
+
         } else {
 
             //Adding temp request.
@@ -138,6 +137,5 @@ public class GPixServlet extends AdvancedBaseServlet {
         }
 
     }
-
 
 }

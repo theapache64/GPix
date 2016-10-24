@@ -14,12 +14,12 @@ public class Request {
     private final String[] requiredParams;
     private List<String> missingOrInvalidParams;
 
-    public Request(HttpServletRequest request, String[] requiredParams) throws Exception {
+    public Request(HttpServletRequest request, String[] requiredParams) throws RequestException {
         this.request = request;
         this.requiredParams = requiredParams;
 
         if (!hasAllParams()) {
-            throw new Exception(getErrorReport());
+            throw new RequestException(getErrorReport());
         }
     }
 
@@ -95,5 +95,11 @@ public class Request {
     public long getLongParameter(String key) {
         final String value = getStringParameter(key);
         return value != null ? Long.parseLong(value) : -1;
+    }
+
+    public class RequestException extends Exception {
+        public RequestException(String message) {
+            super(message);
+        }
     }
 }

@@ -1,8 +1,10 @@
 package com.theah64.gpix.server.primary.servlets;
 
+import com.theah64.gpix.server.primary.core.GPix;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.HeaderSecurity;
 import com.theah64.gpix.server.primary.utils.Request;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +28,11 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(getContentType());
+
         this.httpServletRequest = req;
+
         out = resp.getWriter();
 
         try {
@@ -42,7 +46,7 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
 
             doAdvancedPost();
 
-        } catch (Exception e) {
+        } catch (GPix.GPixException | JSONException | HeaderSecurity.AuthorizationException | Request.RequestException e) {
             e.printStackTrace();
             out.write(new APIResponse(e.getMessage()).toString());
         }
@@ -57,8 +61,13 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
 
     protected abstract String[] getRequiredParameters();
 
-    protected abstract void doAdvancedPost() throws Exception;
+    protected abstract void doAdvancedPost() throws Request.RequestException, IOException, JSONException, GPix.GPixException;
 
+    public class ServletException extends Exception {
+        public ServletException(String message) {
+            super(message);
+        }
+    }
 
     public HeaderSecurity getHeaderSecurity() {
         if (!isSecureServlet()) {

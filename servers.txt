@@ -8,5 +8,3 @@ http://theapache64server7.6te.net/?keyword=%s
 http://theapache64server8.6te.net/?keyword=%s
 http://theapache64server9.6te.net/?keyword=%s
 http://theapache64server10.6te.net/?keyword=%s
-
-	

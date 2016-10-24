@@ -14,7 +14,7 @@ public final class HeaderSecurity {
     private final String authorization;
     private String userId;
 
-    public HeaderSecurity(final String authorization) throws Exception {
+    public HeaderSecurity(final String authorization) throws AuthorizationException {
         //Collecting header from passed request
         this.authorization = authorization;
         isAuthorized();
@@ -23,17 +23,17 @@ public final class HeaderSecurity {
     /**
      * Used to identify if passed API-KEY has a valid victim.
      */
-    private void isAuthorized() throws Exception {
+    private void isAuthorized() throws AuthorizationException {
 
         if (this.authorization == null) {
             //No api key passed along with request
-            throw new Exception("Unauthorized access");
+            throw new AuthorizationException("Unauthorized access");
         }
 
         final Users users = Users.getInstance();
         this.userId = users.get(Users.COLUMN_API_KEY, this.authorization, Users.COLUMN_ID);
         if (this.userId == null) {
-            throw new Exception("No victim found with the api_key " + this.authorization);
+            throw new AuthorizationException("No victim found with the api_key " + this.authorization);
         }
 
     }
@@ -44,5 +44,11 @@ public final class HeaderSecurity {
 
     public String getFailureReason() {
         return this.authorization == null ? REASON_API_KEY_MISSING : REASON_INVALID_API_KEY;
+    }
+
+    public class AuthorizationException extends Exception {
+        public AuthorizationException(String message) {
+            super(message);
+        }
     }
 }
