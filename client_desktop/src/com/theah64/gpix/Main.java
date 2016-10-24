@@ -246,8 +246,11 @@ public class Main {
     private static final String[] IMAGE_EXTENSIONS = {"jpg", "png", "jpeg"};
 
     private static String replaceExt(final String fullFileName, final String ext) {
-        final String fileNameWithOutExt = fullFileName.substring(0, fullFileName.lastIndexOf('.'));
-        return fileNameWithOutExt + "." + ext;
+        if (fullFileName.contains(".")) {
+            final String fileNameWithOutExt = fullFileName.substring(0, fullFileName.lastIndexOf('.'));
+            return fileNameWithOutExt + "." + ext;
+        }
+        return fullFileName + "." + ext;
     }
 
     private static String getFileName(final String fileName, String imageUrl) {
