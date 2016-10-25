@@ -84,3 +84,5 @@ Please shoot issues to theapache64@gmail.com
 
 ## Android Application
 (coming soon)
+
+|loveweakensthebrain|
