@@ -18,12 +18,12 @@ Attach the API key with `Authorization` header and give a `GET` request to http:
 
 To get the API key
 
-GET - http://35.161.57.139:8080/gpix/v1/get_api_key?email=theapache64@gmail.com
+GET - http://35.161.57.139:8080/gpix/v1/get_api_key?email=example@something.com
 
 Result - 
 ```json
 {
-    "message": "API key sent to theapache64@gmail.com",
+    "message": "API key sent to example@something.com",
     "error": true,
     "error_code": 1
 }
