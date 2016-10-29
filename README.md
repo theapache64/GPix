@@ -24,8 +24,8 @@ Result -
 ```json
 {
     "message": "API key sent to example@something.com",
-    "error": true,
-    "error_code": 1
+    "error": false,
+    "error_code": 0
 }
 ```
 
