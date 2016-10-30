@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivImageThumb"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvImageDimension"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transBlack"
+        android:padding="10dp"
+        android:text="500x500"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

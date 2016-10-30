@@ -63,5 +63,12 @@ public abstract class BaseRecyclerViewAdapter<V extends RecyclerView.ViewHolder,
     public interface Callback {
         void onItemClick(int position);
     }
+
+    @Override
+    public void onBindViewHolder(V holder, int position) {
+        onBindViewHolder(holder, data.get(position));
+    }
+
+    public abstract void onBindViewHolder(V holder, M model);
 }
 
