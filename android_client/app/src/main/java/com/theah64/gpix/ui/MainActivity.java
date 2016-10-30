@@ -17,7 +17,12 @@ import com.theah64.gpix.ui.base.BaseRefreshableActivity;
 import com.theah64.gpix.util.APIRequestBuilder;
 import com.theah64.gpix.util.APIResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Request;
 
@@ -47,6 +52,23 @@ public class MainActivity extends BaseRefreshableActivity implements SearchView.
     @Override
     protected void handleAPIResponse(APIResponse apiResponse) throws JSONException {
 
+    }
+
+    public static List<Image> parse(JSONArray jaImages) throws JSONException {
+        List<Image> imageList = new ArrayList<Image>(jaImages.length());
+
+        for (int i = 0; i < jaImages.length(); i++) {
+            final JSONObject joImage = jaImages.getJSONObject(i);
+
+            final String imageUrl = joImage.getString("image_url");
+            final String thumbUrl = joImage.getString("thumb_url");
+            final int width = joImage.getInt("width");
+            final int height = joImage.getInt("height");
+
+            imageList.add(new Image(thumbUrl, imageUrl, height, width));
+
+        }
+        return imageList;
     }
 
     @Override
