@@ -5,6 +5,7 @@ package com.theah64.gpix.models;
  */
 public class Image {
 
+    public static final String KEY_IMAGE_URL = "image_url";
     private final String thumbImageUrl, imageUrl;
     private final int height, width;
 

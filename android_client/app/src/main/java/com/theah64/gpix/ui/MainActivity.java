@@ -82,7 +82,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         for (int i = 0; i < jaImages.length(); i++) {
             final JSONObject joImage = jaImages.getJSONObject(i);
 
-            final String imageUrl = joImage.getString("image_url");
+            final String imageUrl = joImage.getString(Image.KEY_IMAGE_URL);
             final String thumbUrl = joImage.getString("thumb_url");
             final int width = joImage.getInt("width");
             final int height = joImage.getInt("height");
