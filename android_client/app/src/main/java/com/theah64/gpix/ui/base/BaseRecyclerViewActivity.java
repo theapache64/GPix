@@ -26,9 +26,7 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseRefreshableActivit
     @Override
     protected void handleAPIResponse(APIResponse apiResponse) throws JSONException {
 
-
         setDataList(parseData(apiResponse));
-
 
         if (!dataList.isEmpty()) {
             //Rendering
@@ -53,7 +51,7 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseRefreshableActivit
     }
 
     public void setDataList(List<T> dataList) {
-        
+
         if (!this.dataList.isEmpty()) {
             this.dataList.clear();
         }
