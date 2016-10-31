@@ -16,16 +16,15 @@ import java.util.List;
  * Created by shifar on 15/9/16.
  */
 public abstract class BaseRecyclerViewAdapter<V extends RecyclerView.ViewHolder, M> extends RecyclerView.Adapter<V> {
-
-
+    
     private final Callback callback;
+
     @LayoutRes
     private final int layoutRowId;
     private List<M> data;
     private LayoutInflater inflater;
 
-
-    public BaseRecyclerViewAdapter(final List<M> data, int layoutRowId, @Nullable Callback callback) {
+    BaseRecyclerViewAdapter(final List<M> data, int layoutRowId, @Nullable Callback callback) {
         this.data = data;
         this.layoutRowId = layoutRowId;
         this.callback = callback;
