@@ -19,31 +19,24 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseRefreshableActivit
 
     //JSON keys
     protected static final String KEY_ID = "id";
-    protected final List<T> emptyListForParsing = new ArrayList<>();
-    private final List<T> fullDataList = new ArrayList<>();
+    private final List<T> dataList = new ArrayList<>();
 
     private BaseRecyclerViewAdapter<? extends RecyclerView.ViewHolder, T> adapter;
-
-
-    public List<T> getEmptyListForParsing() {
-        emptyListForParsing.clear();
-        return emptyListForParsing;
-    }
 
     @Override
     protected void handleAPIResponse(APIResponse apiResponse) throws JSONException {
 
 
-        setFullDataList(parseData(apiResponse));
+        setDataList(parseData(apiResponse));
 
 
-        if (!fullDataList.isEmpty()) {
+        if (!dataList.isEmpty()) {
             //Rendering
             if (adapter == null) {
-                adapter = getNewAdapter(fullDataList);
+                adapter = getNewAdapter(dataList);
                 getRecyclerView().setAdapter(adapter);
             } else {
-                adapter.setData(fullDataList);
+                adapter.setData(dataList);
                 adapter.notifyDataSetChanged();
             }
 
@@ -55,13 +48,17 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseRefreshableActivit
         }
     }
 
-    protected final List<T> getFullDataList() {
-        return fullDataList;
+    protected final List<T> getDataList() {
+        return dataList;
     }
 
-    public void setFullDataList(List<T> fullDataList) {
-        this.fullDataList.clear();
-        this.fullDataList.addAll(fullDataList);
+    public void setDataList(List<T> dataList) {
+        
+        if (!this.dataList.isEmpty()) {
+            this.dataList.clear();
+        }
+
+        this.dataList.addAll(dataList);
     }
 
     protected abstract String getErrorOnEmptyData();

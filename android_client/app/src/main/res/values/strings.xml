@@ -7,4 +7,5 @@
     <string name="network_error">Network error occurred!</string>
     <string name="server_error">Server error occurred</string>
     <string name="Searching">Searching…</string>
+    <string name="No_image_found">No image found</string>
 </resources>

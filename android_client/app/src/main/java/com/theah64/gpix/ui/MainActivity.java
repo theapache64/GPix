@@ -2,13 +2,18 @@ package com.theah64.gpix.ui;
 
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.theah64.gpix.R;
+import com.theah64.gpix.adapters.BaseRecyclerViewAdapter;
+import com.theah64.gpix.adapters.ImagesAdapter;
 import com.theah64.gpix.models.Image;
+import com.theah64.gpix.ui.base.BaseRecyclerViewActivity;
 import com.theah64.gpix.ui.base.BaseRefreshableActivity;
 import com.theah64.gpix.util.APIRequestBuilder;
 import com.theah64.gpix.util.APIResponse;
@@ -22,9 +27,10 @@ import java.util.List;
 
 import okhttp3.Request;
 
-public class MainActivity extends BaseRefreshableActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends BaseRecyclerViewActivity<Image> implements SearchView.OnQueryTextListener, BaseRecyclerViewAdapter.Callback {
 
     private String keyword;
+    private RecyclerView rvImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,10 @@ public class MainActivity extends BaseRefreshableActivity implements SearchView.
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        rvImages = (RecyclerView) findViewById(R.id.rvImages);
+        rvImages.setLayoutManager(new GridLayoutManager(this, 2));
+
     }
 
 
@@ -45,13 +55,29 @@ public class MainActivity extends BaseRefreshableActivity implements SearchView.
         return getString(R.string.Searching);
     }
 
-    @Override
-    protected void handleAPIResponse(APIResponse apiResponse) throws JSONException {
 
+    @Override
+    protected String getErrorOnEmptyData() {
+        return getString(R.string.No_image_found);
     }
 
-    public static List<Image> parse(JSONArray jaImages) throws JSONException {
-        List<Image> imageList = new ArrayList<Image>(jaImages.length());
+    @Override
+    protected RecyclerView getRecyclerView() {
+        return rvImages;
+    }
+
+    @Override
+    protected BaseRecyclerViewAdapter<? extends RecyclerView.ViewHolder, Image> getNewAdapter(List<Image> dataList) {
+        return new ImagesAdapter(dataList, R.layout.image_row, this);
+    }
+
+    @Override
+    protected List<Image> parseData(APIResponse apiResponse) throws JSONException {
+        return parse(apiResponse.getJSONObjectData().getJSONArray("images"));
+    }
+
+    private static List<Image> parse(JSONArray jaImages) throws JSONException {
+        List<Image> imageList = new ArrayList<>(jaImages.length());
 
         for (int i = 0; i < jaImages.length(); i++) {
             final JSONObject joImage = jaImages.getJSONObject(i);
@@ -86,5 +112,10 @@ public class MainActivity extends BaseRefreshableActivity implements SearchView.
     @Override
     public boolean onQueryTextChange(String newText) {
         return false;
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
     }
 }
