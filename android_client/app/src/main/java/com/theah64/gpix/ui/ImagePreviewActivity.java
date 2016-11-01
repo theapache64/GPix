@@ -2,9 +2,7 @@ package com.theah64.gpix.ui;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,31 +14,30 @@ import com.theah64.gpix.models.Image;
 import com.theah64.gpix.ui.base.BaseAppCompatActivity;
 
 
-public class ImagePreviewActivity extends BaseAppCompatActivity {
+public class ImagePreviewActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
     private ImageView tivImage;
     private FloatingActionButton fabRefresh;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
 
-        final String url = getStringOrThrow(Image.KEY_IMAGE_URL);
+        url = getStringOrThrow(Image.KEY_IMAGE_URL);
 
         tivImage = (ImageView) findViewById(R.id.tivImage);
+        tivImage.setOnClickListener(this);
         fabRefresh = (FloatingActionButton) findViewById(R.id.fabRefresh);
-        fabRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadImage(url);
-            }
-        });
+        fabRefresh.setOnClickListener(this);
 
-        loadImage(url);
+        loadImage();
     }
 
-    private void loadImage(final String url) {
+    private void loadImage() {
+
+        //Loading image
         ImageLoader.getInstance().displayImage(url, tivImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
@@ -64,4 +61,23 @@ public class ImagePreviewActivity extends BaseAppCompatActivity {
         });
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            
+            case R.id.fabRefresh:
+                loadImage();
+                break;
+
+            case R.id.tivImage:
+
+                if (fabRefresh.isShown()) {
+                    fabRefresh.hide();
+                } else {
+                    fabRefresh.show();
+                }
+
+                break;
+        }
+    }
 }
