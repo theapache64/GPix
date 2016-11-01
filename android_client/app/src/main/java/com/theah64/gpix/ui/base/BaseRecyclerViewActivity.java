@@ -29,6 +29,7 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseRefreshableActivit
         setDataList(parseData(apiResponse));
 
         if (!dataList.isEmpty()) {
+
             //Rendering
             if (adapter == null) {
                 adapter = getNewAdapter(dataList);

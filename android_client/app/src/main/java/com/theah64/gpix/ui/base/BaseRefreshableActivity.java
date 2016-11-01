@@ -25,8 +25,7 @@ import okhttp3.Response;
 public abstract class BaseRefreshableActivity extends BaseAppCompatActivity {
 
     private static final String X = BaseRefreshableActivity.class.getSimpleName();
-    private static final int TAG_REFRESH = 1;
-    private static final int TAG_SHARE = 2;
+
     protected ProgressManager progressMan;
     private DialogUtils dialogUtils;
     private FloatingActionButton fabRefresh;
@@ -44,7 +43,6 @@ public abstract class BaseRefreshableActivity extends BaseAppCompatActivity {
         dialogUtils = new DialogUtils(this);
         progressMan = new ProgressManager(this, mainViewId);
         this.fabRefresh = (FloatingActionButton) findViewById(R.id.fabRefresh);
-        this.fabRefresh.setTag(TAG_REFRESH);
 
         this.fabRefresh.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.theah64.gpix.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -29,7 +30,7 @@ import okhttp3.Request;
 
 public class MainActivity extends BaseRecyclerViewActivity<Image> implements SearchView.OnQueryTextListener, BaseRecyclerViewAdapter.Callback {
 
-    private String keyword;
+    private String keyword = "Car";
     private RecyclerView rvImages;
 
     @Override
@@ -42,6 +43,8 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         rvImages = (RecyclerView) findViewById(R.id.rvImages);
         rvImages.setLayoutManager(new GridLayoutManager(this, 2));
 
+
+        super.onBeforeFirstContentLoad(R.id.rvImages, null);
     }
 
 
@@ -106,6 +109,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.keyword = query;
+        onFabRefreshClick();
         return true;
     }
 
@@ -114,8 +118,12 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         return false;
     }
 
+
     @Override
     public void onItemClick(int position) {
-
+        final String imageUrl = getDataList().get(position).getImageUrl();
+        final Intent imagePreviewIntent = new Intent(this, ImagePreviewActivity.class);
+        imagePreviewIntent.putExtra(Image.KEY_IMAGE_URL, imageUrl);
+        startActivity(imagePreviewIntent);
     }
 }

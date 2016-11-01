@@ -3,6 +3,7 @@ package com.theah64.gpix.util;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -15,7 +16,10 @@ public class OkHttpHelper {
 
     public static final String METHOD_GET = "GET";
 
-    private static final OkHttpClient okHttpClient = new OkHttpClient();
+    private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.MINUTES)
+            .readTimeout(10, TimeUnit.MINUTES)
+            .build();
 
     private static final String X = OkHttpHelper.class.getSimpleName();
     private static OkHttpHelper instance = new OkHttpHelper();
