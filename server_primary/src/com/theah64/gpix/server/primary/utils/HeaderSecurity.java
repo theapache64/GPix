@@ -33,7 +33,7 @@ public final class HeaderSecurity {
         final Users users = Users.getInstance();
         this.userId = users.get(Users.COLUMN_API_KEY, this.authorization, Users.COLUMN_ID);
         if (this.userId == null) {
-            throw new AuthorizationException("No victim found with the api_key " + this.authorization);
+            throw new AuthorizationException("Invalid API KEY: " + this.authorization);
         }
 
     }

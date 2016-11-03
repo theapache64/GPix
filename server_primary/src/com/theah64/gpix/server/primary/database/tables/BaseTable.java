@@ -119,7 +119,7 @@ public class BaseTable<T> {
 
     public String get(String byColumn, String byValue, String columnToReturn) {
 
-        final String query = String.format("SELECT %s FROM %s WHERE %s = ? ORDER BY id DESC LIMIT 1", columnToReturn, tableName, byColumn);
+        final String query = String.format("SELECT %s FROM %s WHERE %s = ? AND is_active=1 ORDER BY id DESC LIMIT 1", columnToReturn, tableName, byColumn);
 
         String resultValue = null;
         final java.sql.Connection con = Connection.getConnection();
