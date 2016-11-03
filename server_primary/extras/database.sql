@@ -35,6 +35,7 @@
     id INT(11) NOT NULL AUTO_INCREMENT,
     email VARCHAR(100) NOT NULL,
     api_key VARCHAR (10) NOT NULL,
+    is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
     PRIMARY KEY (id)
   );
 
