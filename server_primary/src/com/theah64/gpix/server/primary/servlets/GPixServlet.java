@@ -91,7 +91,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
 
                     //Weird data, mail it to the admin
-                    MailHelper.sendMail("theapache64@gmail.com", "GPix - Weird data", "Hey, \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
+                    MailHelper.sendMail("theapache64@gmail.com", "GPix - MayDay|MayDay|MayDay - One DOWN!", "Hey, One of our server has been down! \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
 
                     //Assuming the error is with the server, so is_active to false;
                     serversTable.update(Servers.COLUMN_ID, server.getId(), Servers.COLUMN_IS_ACTIVE, Servers.FALSE);
