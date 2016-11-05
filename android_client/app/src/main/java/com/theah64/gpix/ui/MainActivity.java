@@ -7,15 +7,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.theah64.gpix.R;
 import com.theah64.gpix.adapters.BaseRecyclerViewAdapter;
 import com.theah64.gpix.adapters.ImagesAdapter;
 import com.theah64.gpix.models.Image;
 import com.theah64.gpix.ui.base.BaseRecyclerViewActivity;
-import com.theah64.gpix.ui.base.BaseRefreshableActivity;
 import com.theah64.gpix.util.APIRequestBuilder;
 import com.theah64.gpix.util.APIResponse;
 
@@ -28,8 +30,9 @@ import java.util.List;
 
 import okhttp3.Request;
 
-public class MainActivity extends BaseRecyclerViewActivity<Image> implements SearchView.OnQueryTextListener, BaseRecyclerViewAdapter.Callback {
+public class MainActivity extends BaseRecyclerViewActivity<Image> implements SearchView.OnQueryTextListener, BaseRecyclerViewAdapter.Callback, ImagesAdapter.ImageCallback {
 
+    private static final String X = MainActivity.class.getSimpleName();
     private String keyword = "Car";
     private RecyclerView rvImages;
 
@@ -43,8 +46,17 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         rvImages = (RecyclerView) findViewById(R.id.rvImages);
         rvImages.setLayoutManager(new GridLayoutManager(this, 2));
 
+        ((CheckBox) findViewById(R.id.cvSelectAll)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                for (final Image image : getDataList()) {
+                    image.setSelected(isChecked);
+                }
+                getAdapter().notifyDataSetChanged();
+            }
+        });
 
-        super.onBeforeFirstContentLoad(R.id.rvImages, null);
+        super.onBeforeFirstContentLoad(R.id.iMain, null);
     }
 
 
@@ -90,7 +102,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
             final int width = joImage.getInt("width");
             final int height = joImage.getInt("height");
 
-            imageList.add(new Image(thumbUrl, imageUrl, height, width));
+            imageList.add(new Image(thumbUrl, imageUrl, height, width, false));
 
         }
         return imageList;
@@ -125,5 +137,19 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         final Intent imagePreviewIntent = new Intent(this, ImagePreviewActivity.class);
         imagePreviewIntent.putExtra(Image.KEY_IMAGE_URL, imageUrl);
         startActivity(imagePreviewIntent);
+    }
+
+    @Override
+    public void onImageSelected(int position) {
+        final Image image = getDataList().get(position);
+        image.setSelected(true);
+        Log.d(X, "Image selected : " + image);
+    }
+
+    @Override
+    public void onImageUnSelected(int position) {
+        final Image image = getDataList().get(position);
+        image.setSelected(false);
+        Log.d(X, "Image unselected: " + image);
     }
 }

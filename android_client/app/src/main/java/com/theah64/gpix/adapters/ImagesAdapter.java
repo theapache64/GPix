@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class ImagesAdapter extends BaseRecyclerViewAdapter<ImagesAdapter.ViewHolder, Image> {
 
-    public ImagesAdapter(List<Image> data, int layoutRowId, @Nullable Callback callback) {
+    public ImagesAdapter(List<Image> data, int layoutRowId, @Nullable ImageCallback callback) {
         super(data, layoutRowId, callback);
     }
 
@@ -30,22 +32,41 @@ public class ImagesAdapter extends BaseRecyclerViewAdapter<ImagesAdapter.ViewHol
 
     @SuppressLint("DefaultLocale")
     @Override
-    public void onBindViewHolder(ImagesAdapter.ViewHolder holder, Image model) {
-        ImageLoader.getInstance().displayImage(model.getThumbImageUrl(), holder.ivImageThumb);
-        holder.tvImageDimension.setText(String.format("%dx%d", model.getWidth(), model.getHeight()));
+    public void onBindViewHolder(ImagesAdapter.ViewHolder holder, Image image) {
+        ImageLoader.getInstance().displayImage(image.getThumbImageUrl(), holder.ivImageThumb);
+        holder.tvImageDimension.setText(String.format("%dx%d", image.getWidth(), image.getHeight()));
+        holder.cbImage.setChecked(image.isSelected());
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
+        final CheckBox cbImage;
         final ImageView ivImageThumb;
         private final TextView tvImageDimension;
 
         ViewHolder(View itemView) {
             super(itemView);
-
             this.ivImageThumb = (ImageView) itemView.findViewById(R.id.ivImageThumb);
             this.tvImageDimension = (TextView) itemView.findViewById(R.id.tvImageDimension);
+            this.cbImage = (CheckBox) itemView.findViewById(R.id.cbImage);
+            this.cbImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                    if (isChecked) {
+                        ((ImageCallback) getCallback()).onImageSelected(getLayoutPosition());
+                    } else {
+                        ((ImageCallback) getCallback()).onImageUnSelected(getLayoutPosition());
+                    }
+                }
+            });
         }
+    }
+
+    public interface ImageCallback extends BaseRecyclerViewAdapter.Callback {
+        void onImageSelected(final int position);
+
+        void onImageUnSelected(final int position);
     }
 }

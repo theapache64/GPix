@@ -8,12 +8,14 @@ public class Image {
     public static final String KEY_IMAGE_URL = "image_url";
     private final String thumbImageUrl, imageUrl;
     private final int height, width;
+    private boolean isSelected;
 
-    public Image(String thumbImageUrl, String imageUrl, int height, int width) {
+    public Image(String thumbImageUrl, String imageUrl, int height, int width, boolean isSelected) {
         this.thumbImageUrl = thumbImageUrl;
         this.imageUrl = imageUrl;
         this.height = height;
         this.width = width;
+        this.isSelected = isSelected;
     }
 
     public String getThumbImageUrl() {
@@ -32,6 +34,10 @@ public class Image {
         return width;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
     @Override
     public String toString() {
         return "Image{" +
@@ -40,5 +46,9 @@ public class Image {
                 ", height=" + height +
                 ", width=" + width +
                 '}';
+    }
+
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
     }
 }
