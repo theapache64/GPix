@@ -22,7 +22,7 @@ public class Images extends BaseTable<Image> {
     public static final String TABLE_NAME_IMAGES = "images";
 
     private static final Images instance = new Images();
-    public static final int MAX_RESULT_VALIDITY_IN_DAYS = 5;
+    public static final int MAX_RESULT_VALIDITY_IN_DAYS = 15;
 
     private Images() {
         super(TABLE_NAME_IMAGES);
