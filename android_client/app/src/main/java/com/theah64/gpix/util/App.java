@@ -18,6 +18,8 @@ import com.theah64.gpix.R;
 
 public class App extends Application {
 
+    public static final boolean IS_DEBUG = true;
+
     private static void initImageLoader(final Context context) {
 
         ImageLoaderConfiguration.Builder config = new ImageLoaderConfiguration.Builder(context);

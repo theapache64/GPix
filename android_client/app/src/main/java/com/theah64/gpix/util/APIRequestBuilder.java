@@ -12,10 +12,10 @@ import okhttp3.Request;
  */
 public class APIRequestBuilder {
 
-    public static final String API_URL = "http://35.161.57.139:8080/gpix/v1/gpix";
+    public static final String API_URL = App.IS_DEBUG ? "http://192.168.43.234:8080/v1/gpix" : "http://35.161.57.139:8080/gpix/v1/gpix";
     public static final String KEY_KEYWORD = "keyword";
     private static final String X = APIRequestBuilder.class.getSimpleName();
-    private static final String AUTHORIZATION_KEY = "yu98fvG6G0";
+    private static final String AUTHORIZATION_KEY = "A0vja6BHNZ";
     private final Request.Builder requestBuilder = new Request.Builder();
     private final StringBuilder logBuilder = new StringBuilder();
     private FormBody.Builder params = new FormBody.Builder();
