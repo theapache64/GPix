@@ -19,19 +19,22 @@ public class NetworkHelper {
         final URL theURL = new URL(url);
         final HttpURLConnection urlCon = (HttpURLConnection) theURL.openConnection();
         urlCon.addRequestProperty("User-Agent", FAKE_USER_AGENT);
+        urlCon.setConnectTimeout(5000); //5 secs timeout.
 
         if (authorization != null) {
             //custom gpix server so add auth
             urlCon.addRequestProperty("Authorization", authorization);
         }
 
-        final BufferedReader br = new BufferedReader(new InputStreamReader(urlCon.getResponseCode() == 200 ? urlCon.getInputStream() : urlCon.getErrorStream()));
+        final BufferedReader br = new BufferedReader(new InputStreamReader(urlCon.getInputStream()));
         final StringBuilder sb = new StringBuilder();
         String line;
 
         while ((line = br.readLine()) != null) {
             sb.append(line).append("\n");
         }
+
+        System.out.println("Downloading finished");
 
         br.close();
 
