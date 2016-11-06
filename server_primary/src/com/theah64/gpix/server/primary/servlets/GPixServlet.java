@@ -47,6 +47,8 @@ public class GPixServlet extends AdvancedBaseServlet {
     @Override
     protected void doAdvancedPost() throws IOException, JSONException, GPix.GPixException {
 
+        System.out.println("---------------------");
+
         final String keyword = getStringParameter(Requests.COLUMN_KEYWORD);
         final int limit = getIntParameter(Requests.COLUMN_LIMIT, DEFAULT_RESULT_LIMIT);
         final String userId = getHeaderSecurity().getUserId();
@@ -55,25 +57,35 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
+        System.out.println("New search : " + keyword + " , count:  " + limit);
+
         if (images == null || (images.size() < limit && limit <= 100)) {
+
+            System.out.println("Connecting to server manager...");
 
             //Get server in usage order.
             final Servers serversTable = Servers.getInstance();
             final List<Server> servers = serversTable.getAll(Servers.COLUMN_IS_ACTIVE, Servers.TRUE);
 
+            System.out.println(servers.size() + " active server(s) found.");
+
             for (final Server server : servers) {
 
                 final String url = GPix.getEncodedUrl(server.getDataUrlFormat(), keyword);
-                System.out.println("URL: " + url);
+                System.out.println("Connecting to server: " + url);
                 final String googleData = NetworkHelper.downloadHtml(url, server.getAuthorizationKey());
 
                 final String requestId = Requests.getInstance().addv3(new Request(userId, server.getId(), keyword, limit));
 
                 if (googleData != null && googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
+                    System.out.println("Google data downloaded!");
+
                     //Images not available or available images are expired. so collect fresh data
                     final List<Image> googleImages = GPix.parse(googleData);
                     images = googleImages;
+
+                    System.out.println("Google data parsed: " + googleImages.size() + " image(s) found.");
 
                     //Adding images in a different thread.
                     new Thread(new Runnable() {
@@ -89,6 +101,8 @@ public class GPixServlet extends AdvancedBaseServlet {
 
                 } else {
 
+                    System.out.println("Server DOWN!" + server);
+
 
                     //Weird data, mail it to the admin
                     MailHelper.sendMail("theapache64@gmail.com", "GPix - MayDay|MayDay|MayDay - One DOWN!", "Hey, One of our server has been down! \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
@@ -101,6 +115,8 @@ public class GPixServlet extends AdvancedBaseServlet {
 
 
         } else {
+
+            System.out.println("Getting data from cache...");
 
             //Adding temp request.
             Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
@@ -131,6 +147,8 @@ public class GPixServlet extends AdvancedBaseServlet {
             joData.put(Images.TABLE_NAME_IMAGES, jaImages);
 
             getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
+
+            System.out.println("Search finished");
 
         } else {
             throw new GPix.GPixException("All available servers are busy.");
