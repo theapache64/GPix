@@ -27,7 +27,7 @@ public class Images extends BaseTable<Image> {
     private Images() {
         super(TABLE_NAME_IMAGES);
     }
-
+    
     public static Images getInstance() {
         return instance;
     }
