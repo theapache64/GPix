@@ -33,8 +33,9 @@ public class ImageDownloadManager {
     }
 
     public void start() {
-        callback.onStart();
         downloaded = 0;
+        
+        callback.onStart();
         startDownload(urls.get(downloaded));
         callback.onFinish();
     }
@@ -59,10 +60,13 @@ public class ImageDownloadManager {
                 final String imagePath = BitmapSaver.save(folderToSave, loadedImage);
                 Log.d(X, "Image downloaded to : " + imagePath);
                 next();
-                //TODO :Bwaaak
             }
 
             private void next() {
+
+                //Calculating progress
+                callback.onTotalProgress((downloaded + 1) * 100 / total);
+
                 if ((total - 1) > downloaded) {
                     startDownload(urls.get(downloaded++));
                 }
@@ -75,7 +79,7 @@ public class ImageDownloadManager {
         }, new ImageLoadingProgressListener() {
             @Override
             public void onProgressUpdate(String imageUri, View view, int current, int total) {
-
+                callback.onCurrentProgress(imageUri, (current * 100 / total));
             }
         });
     }
