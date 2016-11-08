@@ -134,9 +134,8 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     @Override
     public void onItemClick(int position) {
         Log.d(X, "Clicked on " + position);
-        final String imageUrl = getDataList().get(position).getImageUrl();
         final Intent imagePreviewIntent = new Intent(this, ImagePreviewActivity.class);
-        imagePreviewIntent.putExtra(Image.KEY_IMAGE_URL, imageUrl);
+        imagePreviewIntent.putExtra(Image.KEY, getDataList().get(position));
         startActivity(imagePreviewIntent);
     }
 

@@ -18,14 +18,14 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
 
     private ImageView tivImage;
     private FloatingActionButton fabRefresh;
-    private String url;
+    private Image image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
 
-        url = getStringOrThrow(Image.KEY_IMAGE_URL);
+        image = (Image) getSerializableOrThrow(Image.KEY);
 
         tivImage = (ImageView) findViewById(R.id.tivImage);
         tivImage.setOnClickListener(this);
@@ -38,7 +38,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
     private void loadImage() {
 
         //Loading image
-        ImageLoader.getInstance().displayImage(url, tivImage, new ImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(image.getImageUrl(), tivImage, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
                 fabRefresh.hide();
