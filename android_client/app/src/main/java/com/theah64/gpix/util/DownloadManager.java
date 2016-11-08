@@ -6,12 +6,12 @@ import java.util.List;
  * Created by theapache64 on 8/11/16.
  */
 
-public class Download {
+public class DownloadManager {
 
     private final List<String> urls;
     private final Callback callback;
 
-    public Download(List<String> urls, Callback callback) {
+    public DownloadManager(List<String> urls, Callback callback) {
         this.urls = urls;
         this.callback = callback;
     }
