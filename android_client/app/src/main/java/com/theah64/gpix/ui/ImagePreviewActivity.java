@@ -29,7 +29,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
 
         tivImage = (ImageView) findViewById(R.id.tivImage);
         tivImage.setOnClickListener(this);
-        fabRefresh = (FloatingActionButton) findViewById(R.id.fabRefresh);
+        fabRefresh = (FloatingActionButton) findViewById(R.id.fabRefreshOrDownload);
         fabRefresh.setOnClickListener(this);
 
         loadImage();
@@ -64,7 +64,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            
+
             case R.id.fabRefresh:
                 loadImage();
                 break;
