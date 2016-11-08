@@ -16,4 +16,5 @@
     <string name="Share">Share</string>
     <string name="Image_saved_s">Image saved %s</string>
     <string name="Failed_to_save_the_image">Failed to save the image</string>
+    <string name="HIDE">HIDE</string>
 </resources>
