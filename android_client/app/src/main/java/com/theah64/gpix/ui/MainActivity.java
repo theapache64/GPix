@@ -33,6 +33,7 @@ import okhttp3.Request;
 public class MainActivity extends BaseRecyclerViewActivity<Image> implements SearchView.OnQueryTextListener, BaseRecyclerViewAdapter.Callback, ImagesAdapter.ImageCallback {
 
     private static final String X = MainActivity.class.getSimpleName();
+    public static final String KEY_KEYWORD = "keyword";
     private String keyword = "Car";
     private RecyclerView rvImages;
 
@@ -135,6 +136,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     public void onItemClick(int position) {
         Log.d(X, "Clicked on " + position);
         final Intent imagePreviewIntent = new Intent(this, ImagePreviewActivity.class);
+        imagePreviewIntent.putExtra(KEY_KEYWORD, keyword);
         imagePreviewIntent.putExtra(Image.KEY, getDataList().get(position));
         startActivity(imagePreviewIntent);
     }

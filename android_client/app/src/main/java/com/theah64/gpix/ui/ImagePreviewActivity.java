@@ -14,6 +14,10 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.theah64.gpix.R;
 import com.theah64.gpix.models.Image;
 import com.theah64.gpix.ui.base.BaseAppCompatActivity;
+import com.theah64.gpix.util.App;
+import com.theah64.gpix.util.BitmapSaver;
+
+import java.io.File;
 
 
 public class ImagePreviewActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -21,12 +25,15 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
     private ImageView tivImage;
     private FloatingActionButton fabRefresh;
     private Image image;
+    private String keyword;
+    private Bitmap loadedBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
 
+        keyword = getStringOrThrow(MainActivity.KEY_KEYWORD);
         image = (Image) getSerializableOrThrow(Image.KEY);
 
         tivImage = (ImageView) findViewById(R.id.tivImage);
@@ -48,8 +55,31 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
 
         switch (item.getItemId()) {
 
-            case R.id.miDownload:
-                //TODO: Download image here
+            case R.id.miSave:
+                //TODO: Save image here
+
+                if (loadedBitmap != null) {
+
+                    //Just save the bitmap
+                    final File folderToSave = new File(App.getAppFolder() + File.separator + keyword);
+
+                    if (!folderToSave.exists() && !folderToSave.mkdirs()) {
+                        throw new IllegalArgumentException("Failed to create folder:  " + folderToSave);
+                    }
+
+                    final String absoluteImagePath = BitmapSaver.save(folderToSave, loadedBitmap);
+
+                    if (absoluteImagePath != null) {
+                        toast(getString(R.string.Image_saved_s, absoluteImagePath));
+                    } else {
+                        toast(R.string.Failed_to_save_the_image);
+                    }
+
+                } else {
+                    //Bitmap not loaded, so direct download
+
+                }
+
                 return true;
 
             case R.id.miDownloadThumb:
@@ -90,6 +120,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 fabRefresh.hide();
+                loadedBitmap = loadedImage;
             }
 
             @Override
