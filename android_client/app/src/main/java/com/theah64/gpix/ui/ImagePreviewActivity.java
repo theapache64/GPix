@@ -3,6 +3,8 @@ package com.theah64.gpix.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import java.io.File;
 
 public class ImagePreviewActivity extends BaseAppCompatActivity implements View.OnClickListener {
 
+    private static final String X = ImagePreviewActivity.class.getSimpleName();
     private ImageView tivImage;
     private FloatingActionButton fabRefresh;
     private Image image;
@@ -32,6 +35,10 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_preview);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        enableBackNavigation();
 
         keyword = getStringOrThrow(MainActivity.KEY_KEYWORD);
         image = (Image) getSerializableOrThrow(Image.KEY);
@@ -62,10 +69,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
 
                     //Just save the bitmap
                     final File folderToSave = new File(App.getAppFolder() + File.separator + keyword);
-
-                    if (!folderToSave.exists() && !folderToSave.mkdirs()) {
-                        throw new IllegalArgumentException("Failed to create folder:  " + folderToSave);
-                    }
+                    Log.d(X, "Folder created : " + folderToSave.mkdirs());
 
                     final String absoluteImagePath = BitmapSaver.save(folderToSave, loadedBitmap);
 
