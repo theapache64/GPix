@@ -3,6 +3,8 @@ package com.theah64.gpix.ui;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -33,6 +35,42 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
         fabRefresh.setOnClickListener(this);
 
         loadImage();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_preview, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.miDownload:
+                //TODO: Download image here
+                return true;
+
+            case R.id.miDownloadThumb:
+                //TODO: Download thumbnail here
+                return true;
+
+            case R.id.miCopyDownloadLink:
+                //TODO: Download link to clipboard
+                return true;
+
+            case R.id.miCopyThumbnailDownloadLink:
+                //TODO: Thumbnail link to clipboard
+                return true;
+
+            case R.id.miShare:
+                //TODO: Share current image
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void loadImage() {

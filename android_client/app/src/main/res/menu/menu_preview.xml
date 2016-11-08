@@ -16,4 +16,8 @@
     <item
         android:id="@+id/miCopyThumbnailDownloadLink"
         android:title="@string/CopyThumbnailLink" />
+
+    <item
+        android:id="@+id/miShare"
+        android:title="@string/Share" />
 </menu>

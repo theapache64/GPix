@@ -13,4 +13,5 @@
     <string name="CopyDownloadLink">Copy Download Link</string>
     <string name="DownloadThumbnail">Download Thumbnail</string>
     <string name="CopyThumbnailLink">Copy Thumbnail Link</string>
+    <string name="Share">Share</string>
 </resources>
