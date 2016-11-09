@@ -107,7 +107,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
                 //TODO: Thumbnail link to clipboard
                 return true;
 
-            case R.id.miShare:
+            case R.id.miShareImage:
                 //TODO: Share current image
                 return true;
 

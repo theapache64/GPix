@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import com.theah64.gpix.R;
 import com.theah64.gpix.adapters.BaseRecyclerViewAdapter;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private Menu menu;
     private List<Image> downloadList = new ArrayList<>();
     private SearchView svSearchImage;
+    private TextView tvSelectAllLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         ((CheckBox) findViewById(R.id.cvSelectAll)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+
+                downloadList.clear();
+
                 for (int i = 0; i < getDataList().size(); i++) {
 
                     if (isChecked) {
@@ -71,6 +76,8 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
                 getAdapter().notifyDataSetChanged();
             }
         });
+
+        tvSelectAllLabel = (TextView) findViewById(R.id.tvSelectAllLabel);
 
         super.onBeforeFirstContentLoad(R.id.iMain, null, null, false);
     }
@@ -104,7 +111,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
     @Override
     protected List<Image> parseData(APIResponse apiResponse) throws JSONException {
-        return parse(apiResponse.getJSONObjectData().getJSONArray("images"));
+        final List<Image> images = parse(apiResponse.getJSONObjectData().getJSONArray("images"));
+        tvSelectAllLabel.setText(getString(R.string.Select_all_d_images, images.size()));
+        return images;
     }
 
     private static List<Image> parse(JSONArray jaImages) throws JSONException {
@@ -121,6 +130,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
             imageList.add(new Image(thumbUrl, imageUrl, height, width, false));
 
         }
+
         return imageList;
     }
 
@@ -138,6 +148,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.keyword = query;
+        getSupportActionBar().setTitle(query);
         downloadList.clear();
         onFabRefreshClick();
         MenuItemCompat.collapseActionView(menu.findItem(R.id.miSearch));
@@ -167,6 +178,11 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
         downloadList.add(image);
         checkMenu();
+        refreshSelectedAllLabel();
+    }
+
+    private void refreshSelectedAllLabel() {
+        tvSelectAllLabel.setText(getString(R.string.d_images_selected, downloadList.size()));
     }
 
     @Override
@@ -178,6 +194,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         downloadList.remove(image);
 
         checkMenu();
+        refreshSelectedAllLabel();
     }
 
     @Override

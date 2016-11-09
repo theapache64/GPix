@@ -22,4 +22,6 @@
     <string name="Save_thumbnail">Save thumbnail</string>
     <string name="Save_image">Save image</string>
     <string name="ShareThumbnail">Share thumbnail</string>
+    <string name="Select_all_d_images">Select all %d images</string>
+    <string name="d_images_selected">%d image(s) selected</string>
 </resources>
