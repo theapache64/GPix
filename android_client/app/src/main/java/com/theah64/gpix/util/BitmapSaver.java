@@ -14,10 +14,10 @@ public class BitmapSaver {
 
     public static String save(File folder, Bitmap loadedBitmap) {
         FileOutputStream fos = null;
-        final String imagePath = folder + File.separator + RandomString.getRandomFilename(10, ".jpg");
+        final String imagePath = folder + File.separator + RandomString.getRandomFilename(10, ".png");
         try {
             fos = new FileOutputStream(imagePath);
-            loadedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            loadedBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
             return imagePath;
         } catch (IOException e) {
             e.printStackTrace();

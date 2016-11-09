@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.theah64.gpix.R;
 import com.theah64.gpix.ui.MainActivity;
@@ -17,6 +18,8 @@ import java.util.List;
 
 public class ImageDownloaderService extends Service {
 
+    private static final String X = ImageDownloaderService.class.getSimpleName();
+
     public ImageDownloaderService() {
     }
 
@@ -24,7 +27,7 @@ public class ImageDownloaderService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         final String keyword = intent.getStringExtra(MainActivity.KEY_KEYWORD);
-        final List<String> urls = intent.getStringArrayListExtra(MainActivity.KEY_KEYWORD);
+        final List<String> urls = intent.getStringArrayListExtra(MainActivity.KEY_IMAGE_URLS);
 
         if (urls != null && !urls.isEmpty()) {
 
@@ -42,17 +45,19 @@ public class ImageDownloaderService extends Service {
             new ImageDownloadManager(urls, new ImageDownloadManager.Callback() {
                 @Override
                 public void onStart() {
+                    Log.d(X, "Downloading started...");
                     builder.setProgress(100, 0, false);
                     nm.notify(notificationId, builder.build());
                 }
 
                 @Override
                 public void onCurrentProgress(String fileName, int perc) {
-
+                    Log.d(X, "Current progress : " + fileName + " , perc : " + perc);
                 }
 
                 @Override
                 public void onTotalProgress(int perc) {
+                    Log.d(X, "Total progress : " + perc);
                     builder.setProgress(100, perc, false);
                     nm.notify(notificationId, builder.build());
                 }

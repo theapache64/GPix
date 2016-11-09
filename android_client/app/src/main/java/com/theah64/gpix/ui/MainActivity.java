@@ -34,6 +34,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
     private static final String X = MainActivity.class.getSimpleName();
     public static final String KEY_KEYWORD = "keyword";
+    public static final String KEY_IMAGE_URLS = "image_urls";
     private String keyword = "Car";
     private RecyclerView rvImages;
 

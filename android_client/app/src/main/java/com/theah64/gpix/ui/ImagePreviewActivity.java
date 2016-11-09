@@ -1,5 +1,6 @@
 package com.theah64.gpix.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,11 +16,14 @@ import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.theah64.gpix.R;
 import com.theah64.gpix.models.Image;
+import com.theah64.gpix.services.ImageDownloaderService;
 import com.theah64.gpix.ui.base.BaseAppCompatActivity;
 import com.theah64.gpix.util.App;
 import com.theah64.gpix.util.BitmapSaver;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ImagePreviewActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -81,7 +85,12 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
 
                 } else {
                     //Bitmap not loaded, so direct download
-
+                    final ArrayList<String> urlList = new ArrayList<>();
+                    urlList.add(image.getImageUrl());
+                    final Intent imageDownloaderService = new Intent(this, ImageDownloaderService.class);
+                    imageDownloaderService.putExtra(MainActivity.KEY_KEYWORD, keyword);
+                    imageDownloaderService.putStringArrayListExtra(MainActivity.KEY_IMAGE_URLS, urlList);
+                    startService(imageDownloaderService);
                 }
 
                 return true;
