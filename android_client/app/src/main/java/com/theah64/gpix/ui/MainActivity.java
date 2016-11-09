@@ -9,7 +9,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,6 +44,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private RecyclerView rvImages;
     private Menu menu;
     private List<Image> downloadList = new ArrayList<>();
+    private SearchView svSearchImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
             }
         });
 
-        super.onBeforeFirstContentLoad(R.id.iMain, null);
+        super.onBeforeFirstContentLoad(R.id.iMain, null, null, false);
     }
 
 
@@ -129,16 +129,18 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_search, menu);
         final MenuItem miSearchDestinations = menu.findItem(R.id.miSearch);
-        final SearchView svBusDestination = (SearchView) MenuItemCompat.getActionView(miSearchDestinations);
-        svBusDestination.setQueryHint(getString(R.string.Search));
-        svBusDestination.setOnQueryTextListener(this);
+        svSearchImage = (SearchView) MenuItemCompat.getActionView(miSearchDestinations);
+        svSearchImage.setQueryHint(getString(R.string.Search));
+        svSearchImage.setOnQueryTextListener(this);
         return true;
     }
 
     @Override
     public boolean onQueryTextSubmit(String query) {
         this.keyword = query;
+        downloadList.clear();
         onFabRefreshClick();
+        MenuItemCompat.collapseActionView(menu.findItem(R.id.miSearch));
         return true;
     }
 
@@ -211,6 +213,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     }
 
     private void checkMenu() {
+
         if (downloadList.isEmpty()) {
             menu.removeItem(MENU_ITEM_DOWNLOAD_SELECTED);
             menu.removeItem(MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED);
