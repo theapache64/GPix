@@ -34,7 +34,7 @@ public class ImageDownloadManager {
 
     public void start() {
         downloaded = 0;
-        
+
         callback.onStart();
         startDownload(urls.get(downloaded));
         callback.onFinish();
