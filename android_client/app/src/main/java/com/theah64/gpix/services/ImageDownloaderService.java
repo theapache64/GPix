@@ -74,12 +74,13 @@ public class ImageDownloaderService extends Service {
                 @Override
                 public void onFinish() {
 
-                    final Intent dirIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                    dirIntent.setDataAndType(Uri.parse(folderToSave.getAbsolutePath()), "file/*");
+                    final Intent dirIntent = new Intent(Intent.ACTION_VIEW);
+                    dirIntent.setDataAndType(Uri.parse(folderToSave.getAbsolutePath()), "resource/folder");
 
                     builder.setContentTitle(urls.size() + " image(s) downloaded.")
                             .setContentText("To " + folderToSave)
-                            .setContentIntent(PendingIntent.getActivity(ImageDownloaderService.this, 0, dirIntent, 0))
+                            .setContentIntent(PendingIntent.getActivity(ImageDownloaderService.this
+                                    , 0, dirIntent, 0))
                             // Removes the progress bar
                             .setProgress(0, 0, false);
                     nm.notify(notificationId, builder.build());

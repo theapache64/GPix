@@ -51,7 +51,6 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private List<Image> downloadList = new ArrayList<>();
     private SearchView svSearchImage;
     private TextView tvSelectAllLabel;
-    private MenuItem miSearchImages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +76,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
                         onImageUnSelected(i);
                     }
                 }
+
+                getAdapter().notifyDataSetChanged();
+
             }
         });
 
@@ -141,7 +143,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     public boolean onCreateOptionsMenu(Menu menu) {
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_search, menu);
-        miSearchImages = menu.findItem(R.id.miSearch);
+        MenuItem miSearchImages = menu.findItem(R.id.miSearch);
         svSearchImage = (SearchView) MenuItemCompat.getActionView(miSearchImages);
         svSearchImage.setQueryHint(getString(R.string.Search));
         svSearchImage.setOnQueryTextListener(this);
@@ -150,9 +152,8 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-
         svSearchImage.onActionViewCollapsed();
-
+        menu.removeItem(MENU_ITEM_DOWNLOAD);
         this.keyword = query;
         getSupportActionBar().setTitle(query);
         downloadList.clear();
