@@ -37,7 +37,6 @@ public class ImageDownloadManager {
 
         callback.onStart();
         startDownload(urls.get(downloaded));
-        callback.onFinish();
     }
 
     private void startDownload(final String url) {
@@ -47,34 +46,37 @@ public class ImageDownloadManager {
         ImageLoader.getInstance().loadImage(url, null, null, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-
+                callback.onMessage("Starting download " + imageUri);
             }
 
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                next();
+                next("Failed: " + imageUri);
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 final String imagePath = BitmapSaver.save(folderToSave, loadedImage);
                 Log.d(X, "Image downloaded to : " + imagePath);
-                next();
+                next(imageUri);
             }
 
-            private void next() {
+            private void next(final String message) {
 
                 //Calculating progress
-                callback.onTotalProgress((downloaded + 1) * 100 / total);
+                callback.onTotalProgress(message, (downloaded + 1) * 100 / total);
 
                 if ((total - 1) > downloaded) {
                     startDownload(urls.get(downloaded++));
+                } else {
+                    callback.onFinish();
                 }
             }
 
             @Override
             public void onLoadingCancelled(String imageUri, View view) {
-                next();
+
+                next("Cancelled: " + imageUri);
             }
         }, new ImageLoadingProgressListener() {
             @Override
@@ -83,7 +85,7 @@ public class ImageDownloadManager {
                 final int perc = (current * 100 / total);
                 callback.onCurrentProgress(imageUri, perc);
                 if (total == 1) {
-                    callback.onTotalProgress(perc);
+                    callback.onTotalProgress("Downloading : " + imageUri, perc);
                 }
             }
         });
@@ -92,9 +94,11 @@ public class ImageDownloadManager {
     public interface Callback {
         void onStart();
 
+        void onMessage(final String message);
+
         void onCurrentProgress(final String fileName, int perc);
 
-        void onTotalProgress(int perc);
+        void onTotalProgress(final String message, int perc);
 
         void onFinish();
     }

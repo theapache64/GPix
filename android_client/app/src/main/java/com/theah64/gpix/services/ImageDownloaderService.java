@@ -32,14 +32,17 @@ public class ImageDownloaderService extends Service {
         if (urls != null && !urls.isEmpty()) {
 
             final File folderToSave = new File(App.getAppFolder() + File.separator + folder);
-
+            if (!folderToSave.exists() && !folderToSave.mkdirs()) {
+                throw new IllegalArgumentException("Failed to create folder : " + folderToSave);
+            }
 
             final int notificationId = 5656;
 
             //Building notification
             final NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setContentTitle("Downloading images to " + folder)
+                    .setContentTitle(folder)
+                    .setAutoCancel(false)
                     .setSmallIcon(R.drawable.ic_search_white_36dp);
 
             new ImageDownloadManager(urls, new ImageDownloadManager.Callback() {
@@ -51,20 +54,27 @@ public class ImageDownloaderService extends Service {
                 }
 
                 @Override
+                public void onMessage(String message) {
+                    builder.setContentText(message);
+                    nm.notify(notificationId, builder.build());
+                }
+
+                @Override
                 public void onCurrentProgress(String fileName, int perc) {
                     Log.d(X, "Current progress : " + fileName + " , perc : " + perc);
                 }
 
                 @Override
-                public void onTotalProgress(int perc) {
+                public void onTotalProgress(String message, int perc) {
                     Log.d(X, "Total progress : " + perc);
-                    builder.setProgress(100, perc, false);
+                    builder.setProgress(100, perc, false)
+                            .setContentText(message);
                     nm.notify(notificationId, builder.build());
                 }
 
                 @Override
                 public void onFinish() {
-                    builder.setContentText("Download complete")
+                    builder.setContentText("Download completed")
                             // Removes the progress bar
                             .setProgress(0, 0, false);
                     nm.notify(notificationId, builder.build());
