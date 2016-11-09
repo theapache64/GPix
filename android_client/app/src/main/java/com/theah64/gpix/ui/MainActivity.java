@@ -9,6 +9,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -17,6 +18,7 @@ import com.theah64.gpix.R;
 import com.theah64.gpix.adapters.BaseRecyclerViewAdapter;
 import com.theah64.gpix.adapters.ImagesAdapter;
 import com.theah64.gpix.models.Image;
+import com.theah64.gpix.services.ImageDownloaderService;
 import com.theah64.gpix.ui.base.BaseRecyclerViewActivity;
 import com.theah64.gpix.util.APIRequestBuilder;
 import com.theah64.gpix.util.APIResponse;
@@ -35,8 +37,12 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private static final String X = MainActivity.class.getSimpleName();
     public static final String KEY_KEYWORD = "keyword";
     public static final String KEY_IMAGE_URLS = "image_urls";
+    private static final int MENU_ITEM_DOWNLOAD_SELECTED = 1;
+    private static final int MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED = 2;
     private String keyword = "Car";
     private RecyclerView rvImages;
+    private Menu menu;
+    private List<Image> downloadList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +57,15 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         ((CheckBox) findViewById(R.id.cvSelectAll)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                for (final Image image : getDataList()) {
-                    image.setSelected(isChecked);
+                for (int i = 0; i < getDataList().size(); i++) {
+
+                    if (isChecked) {
+                        onImageSelected(i);
+                    } else {
+                        onImageUnSelected(i);
+                    }
                 }
+
                 getAdapter().notifyDataSetChanged();
             }
         });
@@ -112,6 +124,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_search, menu);
         final MenuItem miSearchDestinations = menu.findItem(R.id.miSearch);
         final SearchView svBusDestination = (SearchView) MenuItemCompat.getActionView(miSearchDestinations);
@@ -147,6 +160,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         final Image image = getDataList().get(position);
         image.setSelected(true);
         Log.d(X, "Image selected : " + image);
+
+        downloadList.add(image);
+        checkMenu();
     }
 
     @Override
@@ -154,5 +170,55 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         final Image image = getDataList().get(position);
         image.setSelected(false);
         Log.d(X, "Image unselected: " + image);
+
+        downloadList.remove(image.getImageUrl());
+
+        checkMenu();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_ITEM_DOWNLOAD_SELECTED:
+                startDownload(MENU_ITEM_DOWNLOAD_SELECTED);
+                return true;
+
+            case MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED:
+                startDownload(MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void startDownload(int downloadType) {
+
+        final Intent idsIntent = new Intent(this, ImageDownloaderService.class);
+
+        final ArrayList<String> imageUrls = new ArrayList<>();
+
+        for (final Image image : downloadList) {
+            imageUrls.add(downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? image.getImageUrl() : image.getThumbImageUrl());
+        }
+
+        idsIntent.putStringArrayListExtra(KEY_IMAGE_URLS, imageUrls);
+
+        idsIntent.putExtra(KEY_KEYWORD, keyword);
+        startService(idsIntent);
+
+    }
+
+    private void checkMenu() {
+        if (downloadList.isEmpty()) {
+            menu.removeItem(MENU_ITEM_DOWNLOAD_SELECTED);
+            menu.removeItem(MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED);
+        } else {
+            if (menu.findItem(MENU_ITEM_DOWNLOAD_SELECTED) == null) {
+                //add(int groupId, int itemId, int order, CharSequence title)
+                menu.add(0, MENU_ITEM_DOWNLOAD_SELECTED, 0, R.string.Download_selected);
+                menu.add(0, MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED, 0, R.string.Download_selected_thumb);
+            }
+        }
     }
 }

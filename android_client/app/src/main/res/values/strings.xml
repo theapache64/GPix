@@ -18,4 +18,6 @@
     <string name="Failed_to_save_the_image">Failed to save the image</string>
     <string name="HIDE">HIDE</string>
     <string name="Preview">Preview</string>
+    <string name="Download_selected">Download Selected</string>
+    <string name="Download_selected_thumb">Download Thumbnails</string>
 </resources>
