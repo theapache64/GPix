@@ -1,15 +1,20 @@
 package com.theah64.gpix.ui;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -38,8 +43,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private static final String X = MainActivity.class.getSimpleName();
     public static final String KEY_KEYWORD = "keyword";
     public static final String KEY_IMAGE_URLS = "image_urls";
-    private static final int MENU_ITEM_DOWNLOAD_SELECTED = 1;
-    private static final int MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED = 2;
+    private static final int MENU_ITEM_DOWNLOAD = 1;
     public static final String KEY_FOLDER = "folder";
     private String keyword = "Car";
     private RecyclerView rvImages;
@@ -73,8 +77,6 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
                         onImageUnSelected(i);
                     }
                 }
-
-                getAdapter().notifyDataSetChanged();
             }
         });
 
@@ -203,12 +205,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case MENU_ITEM_DOWNLOAD_SELECTED:
-                startDownload(MENU_ITEM_DOWNLOAD_SELECTED);
-                return true;
 
-            case MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED:
-                startDownload(MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED);
+            case MENU_ITEM_DOWNLOAD:
+                showDownloadDialog();
                 return true;
 
             default:
@@ -216,32 +215,64 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         }
     }
 
-    private void startDownload(int downloadType) {
+    private void showDownloadDialog() {
+        @SuppressLint("InflateParams") final View downloadDialogLayout = LayoutInflater.from(this).inflate(R.layout.download_dialog_layout, null);
+
+        final AlertDialog.Builder downloadDialogBuilder = new AlertDialog.Builder(this)
+                .setTitle(R.string.Download)
+                .setMessage(R.string.I_want_to_download)
+                .setView(downloadDialogLayout)
+                .setPositiveButton(R.string.Download, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        final boolean isImageChecked = ((CheckBox) downloadDialogLayout.findViewById(R.id.cbImage)).isChecked();
+                        final boolean isThumbnailChecked = ((CheckBox) downloadDialogLayout.findViewById(R.id.cbThumbnail)).isChecked();
+
+                        final ArrayList<String> downloadUrls = new ArrayList<String>();
+
+                        for (final Image image : downloadList) {
+                            if (isImageChecked) {
+                                downloadUrls.add(image.getImageUrl());
+                            }
+                            if (isThumbnailChecked) {
+                                downloadUrls.add(image.getThumbImageUrl());
+                            }
+                        }
+
+                        if (downloadUrls.isEmpty()) {
+                            //No images selected
+                            toast(R.string.Download_cancelled);
+                        } else {
+                            startDownload(downloadUrls);
+                        }
+
+
+                    }
+                });
+
+        downloadDialogBuilder.create().show();
+    }
+
+    private void startDownload(final ArrayList<String> imageUrls) {
 
         final Intent idsIntent = new Intent(this, ImageDownloaderService.class);
-
-        final ArrayList<String> imageUrls = new ArrayList<>();
-
-        for (final Image image : downloadList) {
-            imageUrls.add(downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? image.getImageUrl() : image.getThumbImageUrl());
-        }
-
         idsIntent.putStringArrayListExtra(KEY_IMAGE_URLS, imageUrls);
-
-        idsIntent.putExtra(KEY_FOLDER, keyword + File.separator + (downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? "img" : "thumb"));
+        idsIntent.putExtra(KEY_FOLDER, keyword);
         startService(idsIntent);
+
+        toast(R.string.Download_started);
     }
 
     private void checkMenu() {
 
         if (downloadList.isEmpty()) {
-            menu.removeItem(MENU_ITEM_DOWNLOAD_SELECTED);
-            menu.removeItem(MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED);
+            menu.removeItem(MENU_ITEM_DOWNLOAD);
         } else {
-            if (menu.findItem(MENU_ITEM_DOWNLOAD_SELECTED) == null) {
+            if (menu.findItem(MENU_ITEM_DOWNLOAD) == null) {
                 //add(int groupId, int itemId, int order, CharSequence title)
-                menu.add(0, MENU_ITEM_DOWNLOAD_SELECTED, 0, R.string.Download_selected);
-                menu.add(0, MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED, 0, R.string.Download_selected_thumb);
+                final MenuItem miDownload = menu.add(0, MENU_ITEM_DOWNLOAD, 0, R.string.Download).setIcon(R.drawable.ic_file_download_white_24dp);
+                MenuItemCompat.setShowAsAction(miDownload, MenuItemCompat.SHOW_AS_ACTION_ALWAYS);
             }
         }
     }

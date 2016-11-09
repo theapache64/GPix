@@ -4,48 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvFileName"
+    <CheckBox
+        android:id="@+id/cbImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="my-sample=image.jpg" />
+        android:text="@string/Image" />
 
-    <ProgressBar
-        android:id="@+id/pbCurrent"
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/cbThumbnail"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:indeterminate="true" />
-
-    <ProgressBar
-        android:id="@+id/pbTotal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="right"
-        android:orientation="horizontal">
-
-        <!--Cancel download button-->
-        <Button
-            android:id="@+id/bCancelDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@android:string/cancel" />
-
-        <!--Hide button-->
-        <Button
-            android:id="@+id/bHideDownload"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/HIDE" />
-
-
-    </LinearLayout>
+        android:text="@string/Thumbnail" />
 
 </LinearLayout>

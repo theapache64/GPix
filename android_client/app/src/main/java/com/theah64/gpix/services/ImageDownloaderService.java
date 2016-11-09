@@ -1,9 +1,11 @@
 package com.theah64.gpix.services;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -43,6 +45,7 @@ public class ImageDownloaderService extends Service {
             final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                     .setContentTitle(folder)
                     .setAutoCancel(false)
+                    .setStyle(new NotificationCompat.BigTextStyle())
                     .setSmallIcon(R.drawable.ic_search_white_36dp);
 
             new ImageDownloadManager(urls, new ImageDownloadManager.Callback() {
@@ -54,14 +57,10 @@ public class ImageDownloaderService extends Service {
                 }
 
                 @Override
-                public void onMessage(String message) {
-                    builder.setContentText(message);
-                    nm.notify(notificationId, builder.build());
-                }
-
-                @Override
                 public void onCurrentProgress(String fileName, int perc) {
                     Log.d(X, "Current progress : " + fileName + " , perc : " + perc);
+                    builder.setContentText(perc + "%" + " -> " + fileName);
+                    nm.notify(notificationId, builder.build());
                 }
 
                 @Override
@@ -74,7 +73,13 @@ public class ImageDownloaderService extends Service {
 
                 @Override
                 public void onFinish() {
-                    builder.setContentText("Download completed")
+
+                    final Intent dirIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    dirIntent.setDataAndType(Uri.parse(folderToSave.getAbsolutePath()), "file/*");
+
+                    builder.setContentTitle(urls.size() + " image(s) downloaded.")
+                            .setContentText("To " + folderToSave)
+                            .setContentIntent(PendingIntent.getActivity(ImageDownloaderService.this, 0, dirIntent, 0))
                             // Removes the progress bar
                             .setProgress(0, 0, false);
                     nm.notify(notificationId, builder.build());

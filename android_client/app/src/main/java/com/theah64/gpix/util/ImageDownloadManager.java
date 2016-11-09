@@ -46,7 +46,7 @@ public class ImageDownloadManager {
         ImageLoader.getInstance().loadImage(url, null, null, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                callback.onMessage("Starting download " + imageUri);
+                callback.onCurrentProgress(imageUri, 0);
             }
 
             @Override
@@ -94,7 +94,6 @@ public class ImageDownloadManager {
     public interface Callback {
         void onStart();
 
-        void onMessage(final String message);
 
         void onCurrentProgress(final String fileName, int perc);
 
