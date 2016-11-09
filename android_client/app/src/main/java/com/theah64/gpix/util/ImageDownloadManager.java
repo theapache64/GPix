@@ -79,7 +79,12 @@ public class ImageDownloadManager {
         }, new ImageLoadingProgressListener() {
             @Override
             public void onProgressUpdate(String imageUri, View view, int current, int total) {
-                callback.onCurrentProgress(imageUri, (current * 100 / total));
+
+                final int perc = (current * 100 / total);
+                callback.onCurrentProgress(imageUri, perc);
+                if (total == 1) {
+                    callback.onTotalProgress(perc);
+                }
             }
         });
     }
