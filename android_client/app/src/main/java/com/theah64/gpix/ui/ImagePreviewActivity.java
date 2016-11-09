@@ -23,7 +23,6 @@ import com.theah64.gpix.util.BitmapSaver;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class ImagePreviewActivity extends BaseAppCompatActivity implements View.OnClickListener {
@@ -75,7 +74,7 @@ public class ImagePreviewActivity extends BaseAppCompatActivity implements View.
                     final File folderToSave = new File(App.getAppFolder() + File.separator + keyword);
                     Log.d(X, "Folder created : " + folderToSave.mkdirs());
 
-                    final String absoluteImagePath = BitmapSaver.save(folderToSave, loadedBitmap);
+                    final String absoluteImagePath = BitmapSaver.save(imageUri, folderToSave, loadedBitmap);
 
                     if (absoluteImagePath != null) {
                         toast(getString(R.string.Image_saved_s, absoluteImagePath));

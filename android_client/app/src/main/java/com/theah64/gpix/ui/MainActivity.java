@@ -32,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,6 +50,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     private List<Image> downloadList = new ArrayList<>();
     private SearchView svSearchImage;
     private TextView tvSelectAllLabel;
+    private CheckBox cbSelectAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,9 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         rvImages = (RecyclerView) findViewById(R.id.rvImages);
         rvImages.setLayoutManager(new GridLayoutManager(this, 2));
 
-        ((CheckBox) findViewById(R.id.cvSelectAll)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cbSelectAll = (CheckBox) findViewById(R.id.cbSelectAll);
+        cbSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
 
@@ -152,13 +154,14 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        svSearchImage.onActionViewCollapsed();
-        menu.removeItem(MENU_ITEM_DOWNLOAD);
-        this.keyword = query;
-        getSupportActionBar().setTitle(query);
-        downloadList.clear();
-        onFabRefreshClick();
-        return true;
+        svSearchImage.onActionViewCollapsed(); //Hiding keyboard
+        menu.removeItem(MENU_ITEM_DOWNLOAD); //Removing download menu
+        cbSelectAll.setChecked(false); //If select all checked - uncheck it
+        this.keyword = query; // increasing visibility
+        getSupportActionBar().setTitle(query); //setting query as the title
+        downloadList.clear(); //clearing old download list if any
+        onFabRefreshClick(); // GET THE DATA
+        return true; //Yeah, we handled it here.
     }
 
     @Override

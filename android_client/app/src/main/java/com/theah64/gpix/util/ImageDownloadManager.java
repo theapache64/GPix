@@ -56,7 +56,7 @@ public class ImageDownloadManager {
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                final String imagePath = BitmapSaver.save(folderToSave, loadedImage);
+                final String imagePath = BitmapSaver.save(imageUri,folderToSave, loadedImage);
                 Log.d(X, "Image downloaded to : " + imagePath);
                 next(imageUri);
             }

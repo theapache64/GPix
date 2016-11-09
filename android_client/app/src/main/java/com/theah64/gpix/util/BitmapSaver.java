@@ -12,12 +12,15 @@ import java.io.IOException;
 
 public class BitmapSaver {
 
-    public static String save(File folder, Bitmap loadedBitmap) {
+    public static String save(String imageUri, File folder, Bitmap loadedBitmap) {
         FileOutputStream fos = null;
-        final String imagePath = folder + File.separator + RandomString.getRandomFilename(10, ".png");
+
+        final DomainParser domainParser = new DomainParser(imageUri);
+        final String imagePath = folder + File.separator + RandomString.getRandomFilename(10, domainParser.getExtension());
+
         try {
             fos = new FileOutputStream(imagePath);
-            loadedBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            loadedBitmap.compress(domainParser.getCompressionFormat(), 100, fos);
             return imagePath;
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,4 +36,38 @@ public class BitmapSaver {
         }
         return null;
     }
+
+    private static class DomainParser {
+
+        private static final String DEFAULT_IMAGE_EXTENSION = ".png";
+        private static final String IMAGE_EXT_JPG = ".jpg";
+        private static final String IMAGE_EXT_JPEG = ".jpeg";
+        private final String extension;
+
+
+        DomainParser(String url) {
+            if (url.contains(".")) {
+                final String[] dotSplit = url.split("\\.");
+                this.extension = "." + dotSplit[dotSplit.length - 1];
+            } else {
+                this.extension = DEFAULT_IMAGE_EXTENSION;
+            }
+
+        }
+
+        String getExtension() {
+            return this.extension;
+        }
+
+        Bitmap.CompressFormat getCompressionFormat() {
+            switch (this.extension) {
+                case IMAGE_EXT_JPG:
+                case IMAGE_EXT_JPEG:
+                    return Bitmap.CompressFormat.JPEG;
+                default:
+                    return Bitmap.CompressFormat.PNG;
+            }
+        }
+    }
+
 }

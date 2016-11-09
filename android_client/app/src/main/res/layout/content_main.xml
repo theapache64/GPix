@@ -27,7 +27,7 @@
             />
 
         <CheckBox
-            android:id="@+id/cvSelectAll"
+            android:id="@+id/cbSelectAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

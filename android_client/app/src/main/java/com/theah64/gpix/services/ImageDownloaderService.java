@@ -66,7 +66,8 @@ public class ImageDownloaderService extends Service {
                 @Override
                 public void onTotalProgress(String message, int perc) {
                     Log.d(X, "Total progress : " + perc);
-                    builder.setProgress(100, perc, false)
+                    builder.setContentTitle(perc + "% ->" + folder)
+                            .setProgress(100, perc, false)
                             .setContentText(message);
                     nm.notify(notificationId, builder.build());
                 }
