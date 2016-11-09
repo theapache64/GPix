@@ -21,7 +21,7 @@ import java.io.File;
 
 public class App extends Application {
 
-    private static final File APP_FOLDER = new File(Environment.getExternalStorageDirectory() + "/" + "gpix");
+    private static final File APP_FOLDER = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + "gpix");
 
     public static final boolean IS_DEBUG = true;
 
