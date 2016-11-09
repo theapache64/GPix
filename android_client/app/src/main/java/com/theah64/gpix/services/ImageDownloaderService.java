@@ -26,12 +26,12 @@ public class ImageDownloaderService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        final String keyword = intent.getStringExtra(MainActivity.KEY_KEYWORD);
+        final String folder = intent.getStringExtra(MainActivity.KEY_FOLDER);
         final List<String> urls = intent.getStringArrayListExtra(MainActivity.KEY_IMAGE_URLS);
 
         if (urls != null && !urls.isEmpty()) {
 
-            final File folderToSave = new File(App.getAppFolder() + File.separator + keyword);
+            final File folderToSave = new File(App.getAppFolder() + File.separator + folder);
 
 
             final int notificationId = 5656;

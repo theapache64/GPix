@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
     public static final String KEY_IMAGE_URLS = "image_urls";
     private static final int MENU_ITEM_DOWNLOAD_SELECTED = 1;
     private static final int MENU_ITEM_DOWNLOAD_THUMBNAIL_SELECTED = 2;
+    public static final String KEY_FOLDER = "folder";
     private String keyword = "Car";
     private RecyclerView rvImages;
     private Menu menu;
@@ -204,7 +206,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
         idsIntent.putStringArrayListExtra(KEY_IMAGE_URLS, imageUrls);
 
-        idsIntent.putExtra(KEY_KEYWORD, keyword);
+        idsIntent.putExtra(KEY_FOLDER, downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? "img" : "thumb" + File.separator + keyword);
         startService(idsIntent);
 
     }
