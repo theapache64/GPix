@@ -173,7 +173,7 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
         image.setSelected(false);
         Log.d(X, "Image unselected: " + image);
 
-        downloadList.remove(image.getImageUrl());
+        downloadList.remove(image);
 
         checkMenu();
     }
@@ -206,9 +206,8 @@ public class MainActivity extends BaseRecyclerViewActivity<Image> implements Sea
 
         idsIntent.putStringArrayListExtra(KEY_IMAGE_URLS, imageUrls);
 
-        idsIntent.putExtra(KEY_FOLDER, downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? "img" : "thumb" + File.separator + keyword);
+        idsIntent.putExtra(KEY_FOLDER, keyword + File.separator + (downloadType == MENU_ITEM_DOWNLOAD_SELECTED ? "img" : "thumb"));
         startService(idsIntent);
-
     }
 
     private void checkMenu() {

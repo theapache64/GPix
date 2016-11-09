@@ -39,7 +39,7 @@ public class ImageDownloaderService extends Service {
             //Building notification
             final NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setContentTitle("The Title")
+                    .setContentTitle("Downloading images to " + folder)
                     .setSmallIcon(R.drawable.ic_search_white_36dp);
 
             new ImageDownloadManager(urls, new ImageDownloadManager.Callback() {
