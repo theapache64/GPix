@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class GPix {
 
-    private static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
+    public static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
     public static final String D1 = "<div class=\"rg_meta\">";
     public static final String D2 = "</div></div><!--n-->";
 
@@ -38,6 +38,8 @@ public class GPix {
 
         System.out.println("URL: " + url);
         final String r1 = NetworkHelper.downloadHtml(url, authorization);
+
+        System.out.println(r1.length());
 
         final List<Image> imageList = parse(r1);
 

@@ -1,6 +1,9 @@
 package com.theah64.gpix.server.primary.servlets;
 
+import com.theah64.gpix.server.primary.core.GPix;
+import com.theah64.gpix.server.primary.core.NetworkHelper;
 import com.theah64.gpix.server.primary.database.Connection;
+import org.json.JSONException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,21 +20,10 @@ import java.sql.SQLException;
 public class TestServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        for (int i = 0; i < 100000; i++) {
-
-            System.out.println("--------------------------");
-
-            final java.sql.Connection con = Connection.getConnection();
-            System.out.println("Opened connection " + i);
-            try {
-                con.close();
-                System.out.println("Closed connection " + i);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            System.out.println("--------------------------");
-
+        try {
+            System.out.println(new GPix().search(GPix.SEARCH_URL_FORMAT, "car", null).size());
+        } catch (GPix.GPixException | JSONException e) {
+            e.printStackTrace();
         }
-
     }
 }
