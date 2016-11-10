@@ -9,4 +9,25 @@
     <string name="Searching">Searching…</string>
     <string name="No_image_found">No image found</string>
     <string name="title_activity_image_preview">ImagePreviewActivity</string>
+    <string name="Save">Save</string>
+    <string name="CopyDownloadLink">Copy image link</string>
+    <string name="CopyThumbnailLink">Copy thumbnail link</string>
+    <string name="ShareImage">Share image</string>
+    <string name="Image_saved_s">Image saved %s</string>
+    <string name="Failed_to_save_the_image">Failed to save the image</string>
+    <string name="HIDE">HIDE</string>
+    <string name="Preview">Preview</string>
+    <string name="Download_selected">Download Selected</string>
+    <string name="Download_selected_thumb">Download Thumbnails</string>
+    <string name="Save_thumbnail">Save thumbnail</string>
+    <string name="Save_image">Save image</string>
+    <string name="ShareThumbnail">Share thumbnail</string>
+    <string name="Select_all_d_images">Select all %d images</string>
+    <string name="d_images_selected">%d image(s) selected</string>
+    <string name="Thumbnail">Thumbnail</string>
+    <string name="Image">Image</string>
+    <string name="Download">Download</string>
+    <string name="I_want_to_download">I want to download</string>
+    <string name="Download_cancelled">Download cancelled</string>
+    <string name="Download_started">Download started</string>
 </resources>

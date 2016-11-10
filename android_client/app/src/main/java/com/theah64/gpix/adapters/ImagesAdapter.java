@@ -61,6 +61,13 @@ public class ImagesAdapter extends BaseRecyclerViewAdapter<ImagesAdapter.ViewHol
                     }
                 }
             });
+
+            this.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getCallback().onItemClick(getLayoutPosition());
+                }
+            });
         }
     }
 

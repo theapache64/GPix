@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/miSave"
+        android:title="@string/Save_image" />
+
+    <item
+        android:id="@+id/miDownloadThumb"
+        android:title="@string/Save_thumbnail" />
+
+    <item
+        android:id="@+id/miCopyDownloadLink"
+        android:title="@string/CopyDownloadLink" />
+
+    <item
+        android:id="@+id/miCopyThumbnailDownloadLink"
+        android:title="@string/CopyThumbnailLink" />
+
+    <item
+        android:id="@+id/miShareImage"
+        android:title="@string/ShareImage" />
+    <item
+        android:id="@+id/miShareThumbnail"
+        android:title="@string/ShareThumbnail" />
+</menu>
