@@ -2,23 +2,23 @@
 GPix - An unofficial google images client to download bulk images with just a KEYWORD.
 
 ## API
-GPix has it's own public API hosted at http://35.161.57.139:8080/gpix/v1
+GPix has it's own public API hosted at http://theapache64.xyz:8080/gpix/v1
 
 #### How to use the API ?
 **Step 1 - Obtain the API key.**
 
-To get the API key, visit http://35.161.57.139:8080/gpix/v1/get_api_key?email=[YOUR_EMAIL_ADDRESS]
+To get the API key, visit http://theapache64.xyz:8080/gpix/v1/get_api_key?email=[YOUR_EMAIL_ADDRESS]
 replace [YOUR_EMAIL_ADDRESS] with your email address.
 
 **Step 2 - Get the JSON**
 
-Attach the API key with `Authorization` header and give a `GET` request to http://35.161.57.139:8080/gpix/v1/gpix?keyword=[KEYWORD].
+Attach the API key with `Authorization` header and give a `GET` request to http://theapache64.xyz:8080/gpix/v1/gpix?keyword=[KEYWORD].
 
 #### API Usage example
 
 To get the API key
 
-GET - http://35.161.57.139:8080/gpix/v1/get_api_key?email=example@something.com
+GET - http://theapache64.xyz:8080/gpix/v1/get_api_key?email=example@something.com
 
 Result - 
 ```json
@@ -30,7 +30,7 @@ Result -
 ```
 
 To get some car images
-GET - http://35.161.57.139:8080/gpix/v1/gpix?keyword=Car&limit=2
+GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Car&limit=2
 
 ```json
 {
