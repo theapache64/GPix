@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * Created by theapache64 on 30/10/16.
  */
-
 public class ImagesAdapter extends BaseRecyclerViewAdapter<ImagesAdapter.ViewHolder, Image> {
 
     public ImagesAdapter(List<Image> data, int layoutRowId, @Nullable ImageCallback callback) {
