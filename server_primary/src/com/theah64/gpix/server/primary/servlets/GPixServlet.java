@@ -61,6 +61,9 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         if (images == null || (images.size() < limit && limit <= 100)) {
 
+            //Selecting approach of data collection
+
+
             System.out.println("Connecting to server manager...");
 
             //Get server in usage order.

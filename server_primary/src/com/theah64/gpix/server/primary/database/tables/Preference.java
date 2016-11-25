@@ -2,6 +2,7 @@ package com.theah64.gpix.server.primary.database.tables;
 
 
 import com.theah64.gpix.server.primary.database.Connection;
+import com.theah64.gpix.server.primary.utils.CommonUtils;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,9 +29,6 @@ public class Preference extends BaseTable<String> {
         return instance;
     }
 
-    public String getValue(final String key) {
-        return get(COLUMN_KEY, key);
-    }
 
     @Override
     public String get(String column, String key) {
@@ -58,5 +56,14 @@ public class Preference extends BaseTable<String> {
             }
         }
         return value;
+    }
+
+
+    public String getString(final String key) {
+        return get(COLUMN_KEY, key);
+    }
+
+    public boolean getBoolean(final String key) {
+        return CommonUtils.parseBoolean(get(COLUMN_KEY, key));
     }
 }

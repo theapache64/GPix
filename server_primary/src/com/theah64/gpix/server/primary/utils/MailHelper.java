@@ -29,8 +29,8 @@ public class MailHelper {
         if (gmailUsername == null || gmailPassword == null) {
             final Preference preference = Preference.getInstance();
 
-            gmailUsername = preference.getValue(KEY_GMAIL_USERNAME);
-            gmailPassword = preference.getValue(KEY_GMAIL_PASSWORD);
+            gmailUsername = preference.getString(KEY_GMAIL_USERNAME);
+            gmailPassword = preference.getString(KEY_GMAIL_PASSWORD);
         }
 
         final Properties properties = new Properties();
