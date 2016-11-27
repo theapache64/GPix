@@ -7,7 +7,6 @@ import com.theah64.gpix.server.primary.models.Server;
 import com.theah64.gpix.server.primary.utils.Request;
 import org.json.JSONException;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

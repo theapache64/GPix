@@ -12,9 +12,9 @@ import java.sql.SQLException;
  */
 public class Users extends BaseTable<User> {
 
-    private static final Users instance = new Users();
     public static final String COLUMN_API_KEY = "api_key";
     public static final String COLUMN_EMAIL = "email";
+    private static final Users instance = new Users();
 
     private Users() {
         super("users");

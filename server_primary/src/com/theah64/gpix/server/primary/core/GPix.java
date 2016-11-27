@@ -31,25 +31,6 @@ public class GPix {
         return search(SEARCH_URL_FORMAT, keyword, false);
     }*/
 
-    @NotNull
-    public List<Image> search(String searchUrlFormat, String keyword, String authorization) throws GPixException, IOException, JSONException {
-
-        final String url = getEncodedUrl(searchUrlFormat, keyword);
-
-        System.out.println("URL: " + url);
-        final String r1 = NetworkHelper.downloadHtml(url, authorization);
-
-        System.out.println(r1.length());
-
-        final List<Image> imageList = parse(r1);
-
-        if (imageList == null || imageList.isEmpty()) {
-            throw new GPixException("No image found for " + keyword);
-        }
-
-        return imageList;
-    }
-
     public static String getEncodedUrl(String url, String data) throws UnsupportedEncodingException {
         return String.format(url, URLEncoder.encode(data, "UTF-8"));
     }
@@ -92,6 +73,25 @@ public class GPix {
                 }
 
             }
+        }
+
+        return imageList;
+    }
+
+    @NotNull
+    public List<Image> search(String searchUrlFormat, String keyword, String authorization) throws GPixException, IOException, JSONException {
+
+        final String url = getEncodedUrl(searchUrlFormat, keyword);
+
+        System.out.println("URL: " + url);
+        final String r1 = NetworkHelper.downloadHtml(url, authorization);
+
+        System.out.println(r1.length());
+
+        final List<Image> imageList = parse(r1);
+
+        if (imageList == null || imageList.isEmpty()) {
+            throw new GPixException("No image found for " + keyword);
         }
 
         return imageList;

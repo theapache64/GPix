@@ -2,14 +2,15 @@ package com.theah64.gpix.server.primary.servlets;
 
 import com.theah64.gpix.server.primary.database.tables.Users;
 import com.theah64.gpix.server.primary.models.User;
-import com.theah64.gpix.server.primary.utils.*;
+import com.theah64.gpix.server.primary.utils.APIResponse;
+import com.theah64.gpix.server.primary.utils.MailHelper;
+import com.theah64.gpix.server.primary.utils.RandomString;
+import com.theah64.gpix.server.primary.utils.Request;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 /**

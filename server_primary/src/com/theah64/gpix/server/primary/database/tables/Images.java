@@ -20,14 +20,13 @@ public class Images extends BaseTable<Image> {
     public static final String COLUMN_HEIGHT = "height";
     public static final String COLUMN_WIDTH = "width";
     public static final String TABLE_NAME_IMAGES = "images";
-
-    private static final Images instance = new Images();
     public static final int MAX_RESULT_VALIDITY_IN_DAYS = 15;
+    private static final Images instance = new Images();
 
     private Images() {
         super(TABLE_NAME_IMAGES);
     }
-    
+
     public static Images getInstance() {
         return instance;
     }

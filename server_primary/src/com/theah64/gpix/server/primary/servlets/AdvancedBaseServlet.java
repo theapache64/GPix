@@ -6,7 +6,6 @@ import com.theah64.gpix.server.primary.utils.HeaderSecurity;
 import com.theah64.gpix.server.primary.utils.Request;
 import org.json.JSONException;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +17,35 @@ import java.io.PrintWriter;
  */
 public abstract class AdvancedBaseServlet extends HttpServlet {
 
+    public static final String VERSION_CODE = "/v1";
+    //Basic request paramaters
+    protected static final String KEY_ERROR = "error";
+    protected static final String KEY_MESSAGE = "message";
+    protected static final String KEY_DATA_TYPE = "data_type";
+    protected static final String KEY_DATA = "data"; //file Part
+    protected static final String CONTENT_TYPE_JSON = "application/json";
+    private static final String ERROR_GET_NOT_SUPPORTED = "GET method not supported";
+    private static final String ERROR_POST_NOT_SUPPORTED = "POST method not supported";
     private Request request;
     private HeaderSecurity hs;
     private PrintWriter out;
     private HttpServletRequest httpServletRequest;
+
+    protected static void setGETMethodNotSupported(HttpServletResponse response) throws IOException {
+        notSupported(ERROR_GET_NOT_SUPPORTED, response);
+    }
+
+    protected static void POSTMethodNotSupported(HttpServletResponse response) throws IOException {
+        notSupported(ERROR_POST_NOT_SUPPORTED, response);
+    }
+
+    private static void notSupported(String methodErrorMessage, HttpServletResponse response) throws IOException {
+        response.setContentType(CONTENT_TYPE_JSON);
+        final PrintWriter out = response.getWriter();
+
+        //GET Method not supported
+        out.write(new APIResponse(methodErrorMessage).getResponse());
+    }
 
     public PrintWriter getWriter() {
         return out;
@@ -52,7 +76,6 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
         }
     }
 
-
     protected String getContentType() {
         return CONTENT_TYPE_JSON;
     }
@@ -63,12 +86,6 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
 
     protected abstract void doAdvancedPost() throws Request.RequestException, IOException, JSONException, GPix.GPixException;
 
-    public class ServletException extends Exception {
-        public ServletException(String message) {
-            super(message);
-        }
-    }
-
     public HeaderSecurity getHeaderSecurity() {
         if (!isSecureServlet()) {
             throw new IllegalArgumentException("It's not a secure servlet");
@@ -76,39 +93,9 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
         return hs;
     }
 
-    //Basic request paramaters
-    protected static final String KEY_ERROR = "error";
-    protected static final String KEY_MESSAGE = "message";
-    protected static final String KEY_DATA_TYPE = "data_type";
-    protected static final String KEY_DATA = "data"; //file Part
-
-
-    protected static final String CONTENT_TYPE_JSON = "application/json";
-    private static final String ERROR_GET_NOT_SUPPORTED = "GET method not supported";
-    private static final String ERROR_POST_NOT_SUPPORTED = "POST method not supported";
-    public static final String VERSION_CODE = "/v1";
-
-
-    protected static void setGETMethodNotSupported(HttpServletResponse response) throws IOException {
-        notSupported(ERROR_GET_NOT_SUPPORTED, response);
-    }
-
-    protected static void POSTMethodNotSupported(HttpServletResponse response) throws IOException {
-        notSupported(ERROR_POST_NOT_SUPPORTED, response);
-    }
-
-    private static void notSupported(String methodErrorMessage, HttpServletResponse response) throws IOException {
-        response.setContentType(CONTENT_TYPE_JSON);
-        final PrintWriter out = response.getWriter();
-
-        //GET Method not supported
-        out.write(new APIResponse(methodErrorMessage).getResponse());
-    }
-
     public String getStringParameter(String key) {
         return request.getStringParameter(key);
     }
-
 
     public int getIntParameter(String key, int defValue) {
 
@@ -139,5 +126,11 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
 
     public long getLongParameter(String key) {
         return request.getLongParameter(key);
+    }
+
+    public class ServletException extends Exception {
+        public ServletException(String message) {
+            super(message);
+        }
     }
 }
