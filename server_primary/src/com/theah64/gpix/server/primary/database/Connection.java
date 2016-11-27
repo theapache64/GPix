@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * Created by theapache64 on 10/13/2015.
  */
 public class Connection {
-
+    
     public static final boolean debugMode = true;
     private static DataSource ds;
 
