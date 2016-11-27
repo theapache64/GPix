@@ -1,5 +1,6 @@
 package com.theah64.gpix.server.primary.servlets;
 
+import com.theah64.gpix.server.primary.database.tables.Preference;
 import com.theah64.gpix.server.primary.database.tables.Users;
 import com.theah64.gpix.server.primary.models.User;
 import com.theah64.gpix.server.primary.utils.APIResponse;
@@ -67,7 +68,7 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
                         @Override
                         public void run() {
                             //Sending mail to admin about the new member join
-                            MailHelper.sendMail("theapache64@gmail.com", "New user joined", message);
+                            MailHelper.sendMail(Preference.getInstance().getString(Preference.KEY_ADMIN_EMAIL), "New user joined", message);
                         }
                     }).start();
 
