@@ -24,4 +24,13 @@ public class User {
     public String getApiKey() {
         return apiKey;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", apiKey='" + apiKey + '\'' +
+                '}';
+    }
 }

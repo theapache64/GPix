@@ -47,22 +47,30 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
         if (emailPattern.matcher(email).matches()) {
 
             //Checking if the email already has an api_key.
-            final User oldUser = Users.getInstance().get(Users.COLUMN_EMAIL, email);
-            final String apiKey;
+            User user = Users.getInstance().get(Users.COLUMN_EMAIL, email);
             final boolean isAdded;
 
-            if (oldUser != null) {
-                apiKey = oldUser.getApiKey();
+            if (user != null) {
                 isAdded = true;
             } else {
-
-                apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
-                isAdded = Users.getInstance().add(new User(null, email, apiKey));
+                final String apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
+                user = new User(null, email, apiKey);
+                isAdded = Users.getInstance().add(user);
             }
 
             if (isAdded) {
 
-                if (MailHelper.sendApiKey(email, apiKey)) {
+                if (MailHelper.sendApiKey(user.getEmail(), user.getApiKey())) {
+
+                    final String message = String.format("Hey, New user established\n\nUser: %s\n\nThat's it. :) ", user.toString());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Sending mail to admin about the new member join
+                            MailHelper.sendMail("theapache64@gmail.com", "New user joined", message);
+                        }
+                    }).start();
+
                     getWriter().write(new APIResponse("API key sent to " + email).getResponse());
                 } else {
                     getWriter().write(new APIResponse("Failed to generate new api key for " + email).getResponse());
