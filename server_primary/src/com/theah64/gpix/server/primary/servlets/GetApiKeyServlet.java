@@ -68,7 +68,7 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
                         @Override
                         public void run() {
                             //Sending mail to admin about the new member join
-                            MailHelper.sendMail(Preference.getInstance().getString(Preference.KEY_ADMIN_EMAIL), "New user joined", message);
+                            MailHelper.sendMail(Preference.getInstance().getString(Preference.KEY_ADMIN_EMAIL), "GPix - New user joined", message);
                         }
                     }).start();
 
