@@ -26,6 +26,7 @@ public class Users extends BaseTable<User> {
 
     @Override
     public boolean add(User newUser) {
+
         boolean isUserAdded = false;
         final String query = "INSERT INTO users (email,api_key) VALUES (?,?);";
         final java.sql.Connection con = Connection.getConnection();
@@ -56,19 +57,22 @@ public class Users extends BaseTable<User> {
 
         User user = null;
 
-        final String query = String.format("SELECT id, email,api_key FROM users WHERE %s = ?", column);
+        final String query = String.format("SELECT id, email,api_key FROM users WHERE %s = ? LIMIT 1 ", column);
 
         final java.sql.Connection con = Connection.getConnection();
         try {
 
             final PreparedStatement ps = con.prepareStatement(query);
+            ps.setString(1, value);
             final ResultSet rs = ps.executeQuery();
 
-            final String id = rs.getString(COLUMN_ID);
-            final String name = rs.getString(COLUMN_NAME);
-            final String apiKey = rs.getString(COLUMN_API_KEY);
+            if (rs.first()) {
+                final String id = rs.getString(COLUMN_ID);
+                final String email = rs.getString(COLUMN_EMAIL);
+                final String apiKey = rs.getString(COLUMN_API_KEY);
 
-            user = new User(id, name, apiKey);
+                user = new User(id, email, apiKey);
+            }
 
             rs.close();
             ps.close();

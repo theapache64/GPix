@@ -45,9 +45,19 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
 
         if (emailPattern.matcher(email).matches()) {
 
-            final String apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
+            //Checking if the email already has an api_key.
+            final User oldUser = Users.getInstance().get(Users.COLUMN_EMAIL, email);
+            final String apiKey;
+            final boolean isAdded;
 
-            final boolean isAdded = Users.getInstance().add(new User(null, email, apiKey));
+            if (oldUser != null) {
+                apiKey = oldUser.getApiKey();
+                isAdded = true;
+            } else {
+
+                apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
+                isAdded = Users.getInstance().add(new User(null, email, apiKey));
+            }
 
             if (isAdded) {
 
