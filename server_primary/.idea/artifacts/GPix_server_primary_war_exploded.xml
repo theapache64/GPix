@@ -1,8 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="gpix">
-    <output-path>$PROJECT_DIR$/out/artifacts/gpix</output-path>
+  <artifact type="exploded-war" name="GPix_server_primary:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/GPix_server_primary_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="GPix_server_primary/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="GPix_server_primary" />
@@ -12,6 +11,7 @@
           <element id="library" level="project" name="mail" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="GPix_server_primary/web/Web" />
     </root>
   </artifact>
 </component>
