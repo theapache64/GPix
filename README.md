@@ -1,24 +1,27 @@
 # GPix
-GPix - An unofficial google images client to download bulk images with just a KEYWORD.
+GPix - An unofficial Google Images API.
 
 ## API
-GPix has it's own public API hosted at http://theapache64.xyz:8080/gpix/v1
+API-end-point: http://theapache64.xyz:8080/gpix/v1
 
 #### How to use the API ?
 **Step 1 - Obtain the API key.**
 
 To get the API key, visit http://theapache64.xyz:8080/gpix/v1/get_api_key?email=[YOUR_EMAIL_ADDRESS]
-replace [YOUR_EMAIL_ADDRESS] with your email address.
+where [YOUR_EMAIL_ADDRESS] is your email address.
 
-**Step 2 - Get the JSON**
+Then we'll send your API key to the given email.
 
-Attach the API key with `Authorization` header and give a `GET` request to http://theapache64.xyz:8080/gpix/v1/gpix?keyword=[KEYWORD].
+**Step 2 -Finally, Get the result JSON**
+
+Attach the API key with `Authorization` header and give a `GET` or `POST` request to http://theapache64.xyz:8080/gpix/v1/gpix?keyword=[KEYWORD].
+where [KEYWORD] is the keyword you want to search, for example : Car, Jacob Black etc.
 
 #### API Usage example
 
 To get the API key
 
-GET - http://theapache64.xyz:8080/gpix/v1/get_api_key?email=example@something.com
+`GET` - http://theapache64.xyz:8080/gpix/v1/get_api_key?email=example@something.com
 
 Result - 
 ```json
@@ -29,12 +32,12 @@ Result -
 }
 ```
 
-To get some car images
-GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Car&limit=2
+To get 50 images of Audi.
+GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Audi&limit=50
 
 ```json
 {
-  "message": "2 images(s) available",
+  "message": "50 images(s) available",
   "error": false,
   "data": {
     "images": [
@@ -44,12 +47,7 @@ GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Car&limit=2
         "width": 800,
         "thumb_url": "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSaYHCVo5mY4cHGietbQfD96Am6gXcFTDZDT7Lz2cQ52mBWtCo69w"
       },
-      {
-        "height": 600,
-        "image_url": "http://www.enterprise.com/content/dam/global-vehicle-images/cars/FORD_FOCU_2012-1.png",
-        "width": 800,
-        "thumb_url": "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSq94Ywt2zsMdUVum0XSb49oAYDMA-gmKy1eJVTqUD4j8yK_pSo"
-      }
+      ...
     ]
   },
   "error_code": 0
@@ -57,6 +55,8 @@ GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Car&limit=2
 ```
 
 ## Command line interface
+
+We've also a command line application written in `Java` to download bulk images.
 
 Download the latest `jar` file from the release and run it from terminal/cmd.
 `java -jar gpix.jar -help`
@@ -85,4 +85,10 @@ Please shoot issues to theapache64@gmail.com
 ## Android Application
 (coming soon)
 
-|loveweakensthebrain|dump-fam-alone|xam-network
+## Poor documentation!
+If you feel the documentation is poor or you still don't know how to use the GPix API, please shoot me your query to theapache64@gmail.com :). Happy to help.
+
+#Bugs ?
+Report an issue or shoot me a mail to theapache64@gmail.com .
+
+|loveweakensthebrain|dump-fam-alone|xam-network|like-v2|
