@@ -14,7 +14,7 @@ Then we'll send your API key to the given email.
 
 **Step 2 -Finally, Get the result JSON**
 
-Attach the API key with `Authorization` header and give a `GET` or `POST` request to http://theapache64.xyz:8080/gpix/v1/gpix?keyword=[KEYWORD].
+Attach the API key either with `Authorization` header or request parameter `Authorization` and give a `GET` or `POST` request to http://theapache64.xyz:8080/gpix/v1/gpix?keyword=[KEYWORD].
 where [KEYWORD] is the keyword you want to search, for example : Car, Jacob Black etc.
 
 #### API Usage example
