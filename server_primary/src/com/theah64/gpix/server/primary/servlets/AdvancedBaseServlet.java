@@ -1,6 +1,7 @@
 package com.theah64.gpix.server.primary.servlets;
 
 import com.theah64.gpix.server.primary.core.GPix;
+import com.theah64.gpix.server.primary.database.tables.Preference;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.HeaderSecurity;
 import com.theah64.gpix.server.primary.utils.Request;
@@ -18,11 +19,6 @@ import java.io.PrintWriter;
 public abstract class AdvancedBaseServlet extends HttpServlet {
 
     public static final String VERSION_CODE = "/v1";
-    //Basic request paramaters
-    protected static final String KEY_ERROR = "error";
-    protected static final String KEY_MESSAGE = "message";
-    protected static final String KEY_DATA_TYPE = "data_type";
-    protected static final String KEY_DATA = "data"; //file Part
     protected static final String CONTENT_TYPE_JSON = "application/json";
     private static final String ERROR_GET_NOT_SUPPORTED = "GET method not supported";
     private static final String ERROR_POST_NOT_SUPPORTED = "POST method not supported";
@@ -60,13 +56,30 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
         out = resp.getWriter();
 
         try {
-            if (isSecureServlet()) {
-                hs = new HeaderSecurity(req.getHeader(HeaderSecurity.KEY_AUTHORIZATION));
-            }
 
             if (getRequiredParameters() != null) {
                 request = new Request(req, getRequiredParameters());
             }
+            
+
+            if (isSecureServlet()) {
+
+                //Checking if the apikey present in header
+                String apiKey = req.getHeader(HeaderSecurity.KEY_AUTHORIZATION);
+
+                if (apiKey == null) {
+                    //not present in header, so checking on the request
+                    apiKey = getStringParameter(HeaderSecurity.KEY_AUTHORIZATION);
+                }
+
+                if (apiKey == null) {
+                    //neither the header nor the request. so using test api key.
+                    apiKey = Preference.getInstance().getString(Preference.KEY_TEST_API_KEY);
+                }
+
+                hs = new HeaderSecurity(apiKey);
+            }
+
 
             doAdvancedPost();
 
