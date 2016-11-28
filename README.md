@@ -21,19 +21,19 @@ where [KEYWORD] is the keyword you want to search, for example : Car, Jacob Blac
 
 To get the API key
 
-`GET` - http://theapache64.xyz:8080/gpix/v1/get_api_key?email=example@something.com
+`GET` - http://theapache64.xyz:8080/gpix/v1/get_api_key?email=[YOUR-EMAIL-ADDRESS-GOES-HERE]
 
 Result - 
 ```json
 {
-    "message": "API key sent to example@something.com",
+    "message": "API key sent to your-email-address",
     "error": false,
     "error_code": 0
 }
 ```
 
-To get 50 images of Audi.
-GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Audi&limit=50
+To get 50 images of Audi. (here am using the test API key with the GET request)
+GET - http://theapache64.xyz:8080/gpix/v1/gpix?Authorization=testApiKey&keyword=Audi&limit=50
 
 ```json
 {
@@ -53,6 +53,8 @@ GET - http://theapache64.xyz:8080/gpix/v1/gpix?keyword=Audi&limit=50
   "error_code": 0
 }
 ```
+
+NOTE: Do not use the `testApiKey` for commercial purposes. It may change in future.
 
 ## Command line interface
 
