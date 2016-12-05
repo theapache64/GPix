@@ -3,6 +3,11 @@
     <output-path>$PROJECT_DIR$/out/artifacts/GPix_server_primary_war</output-path>
     <root id="archive" name="GPix_server_primary_war.war">
       <element id="artifact" artifact-name="GPix_server_primary:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mail" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

@@ -6,7 +6,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="GPix_server_primary" />
         </element>
-        <element id="directory" name="lib" />
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mail" />
+        </element>
       </element>
       <element id="javaee-facet-resources" facet="GPix_server_primary/web/Web" />
     </root>
