@@ -87,6 +87,9 @@ Please shoot issues to theapache64@gmail.com
 ## Android Application
 (coming soon)
 
+## TODOs
+- Make a status page to display users , the number of hits and last hit query.
+
 ## Poor documentation!
 If you feel the documentation is poor or you still don't know how to use the GPix API, please shoot me your query to theapache64@gmail.com :). Happy to help.
 
