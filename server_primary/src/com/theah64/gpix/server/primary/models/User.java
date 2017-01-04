@@ -5,12 +5,21 @@ package com.theah64.gpix.server.primary.models;
  */
 public class User {
 
-    private final String id, email, apiKey;
+    private final String id, email, apiKey, lastHit;
+    private final long totalHits;
+    private final boolean isActive;
 
-    public User(String id, String email, String apiKey) {
+    public User(String id, String email, String apiKey, String lastHit, long totalHits, boolean isActive) {
         this.id = id;
         this.email = email;
         this.apiKey = apiKey;
+        this.lastHit = lastHit;
+        this.totalHits = totalHits;
+        this.isActive = isActive;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public String getId() {
@@ -25,12 +34,22 @@ public class User {
         return apiKey;
     }
 
+    public String getLastHit() {
+        return lastHit;
+    }
+
+    public long getTotalHits() {
+        return totalHits;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
                 ", email='" + email + '\'' +
                 ", apiKey='" + apiKey + '\'' +
+                ", lastHit='" + lastHit + '\'' +
+                ", totalHits=" + totalHits +
                 '}';
     }
 }

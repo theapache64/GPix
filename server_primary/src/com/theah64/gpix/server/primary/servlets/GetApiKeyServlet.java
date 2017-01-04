@@ -55,7 +55,7 @@ public class GetApiKeyServlet extends AdvancedBaseServlet {
                 isAdded = true;
             } else {
                 final String apiKey = RandomString.getNewApiKey(API_KEY_LENGTH);
-                user = new User(null, email, apiKey);
+                user = new User(null, email, apiKey, null, 0, true);
                 isAdded = Users.getInstance().add(user);
             }
 

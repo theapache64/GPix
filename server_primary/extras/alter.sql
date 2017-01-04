@@ -1,1 +1,1 @@
-
+ALTER TABLE requests MODIFY keyword TEXT CHARACTER SET utf8 NOT NULL;
