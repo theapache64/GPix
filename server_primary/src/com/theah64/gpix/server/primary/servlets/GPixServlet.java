@@ -58,11 +58,12 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         final Images imagesTable = Images.getInstance();
 
-        List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
+        List<Image> images = null;//imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
         System.out.println("userId: " + userId + "\nkeyword: " + keyword + "\ncount:  " + limit);
 
-        if (images == null || (images.size() < limit && limit <= 100)) {
+        //if (images == null || (images.size() < limit && limit <= 100)) {
+        if (true) {
 
             //Selecting approach of data collection
             final boolean isDirectContact = Preference.getInstance().getBoolean(Preference.KEY_IS_DIRECT_CONTACT);
@@ -74,7 +75,7 @@ public class GPixServlet extends AdvancedBaseServlet {
                 final String googleUrl = String.format(GOOGLE_SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
                 final String googleData = NetworkHelper.downloadHtml(googleUrl, null);
 
-                final String requestId = Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
+                //final String requestId = Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
 
                 if (googleData != null && googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
@@ -87,12 +88,12 @@ public class GPixServlet extends AdvancedBaseServlet {
                     System.out.println("google data analyzed : " + googleImages.size() + " image(s) found.");
 
                     //Adding images in a different thread.
-                    new Thread(new Runnable() {
+                    /*new Thread(new Runnable() {
                         @Override
                         public void run() {
                             imagesTable.addAll(requestId, googleImages);
                         }
-                    }).start();
+                    }).start();*/
                 }
 
             } else {
@@ -114,7 +115,7 @@ public class GPixServlet extends AdvancedBaseServlet {
                     System.out.println("Connecting to server: " + url);
                     final String googleData = NetworkHelper.downloadHtml(url, server.getAuthorizationKey());
 
-                    final String requestId = Requests.getInstance().addv3(new Request(userId, server.getId(), keyword, limit));
+                    //final String requestId = Requests.getInstance().addv3(new Request(userId, server.getId(), keyword, limit));
 
                     if (googleData != null && googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
@@ -126,13 +127,13 @@ public class GPixServlet extends AdvancedBaseServlet {
 
                         System.out.println("Google data parsed: " + googleImages.size() + " image(s) found.");
 
-                        //Adding images in a different thread.
+                        /*//Adding images in a different thread.
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 imagesTable.addAll(requestId, googleImages);
                             }
-                        }).start();
+                        }).start();*/
 
 
                         //Jumping out from the loop, no need to check next server cuz the data has been collected.
@@ -143,7 +144,7 @@ public class GPixServlet extends AdvancedBaseServlet {
                         System.out.println("Server DOWN!" + server);
 
                         //Weird data, mail it to the admin
-                        MailHelper.sendMail("theapache64@gmail.com", "GPix - MayDay|MayDay|MayDay - One DOWN!", "Hey, One of our server has been down! \n\n GoogleDat: " + googleData + "\n\nRequest: " + requestId + "\n\n" + "Server : " + server);
+                        MailHelper.sendMail("theapache64@gmail.com", "GPix - MayDay|MayDay|MayDay - One DOWN!", "Hey, One of our server has been down! \n\n GoogleDat: " + googleData + "\n\nRequest: " + null + "\n\n" + "Server : " + server);
 
                         //Assuming the error is with the server, so is_active to false;
                         serversTable.update(Servers.COLUMN_ID, server.getId(), Servers.COLUMN_IS_ACTIVE, Servers.FALSE);
@@ -159,7 +160,7 @@ public class GPixServlet extends AdvancedBaseServlet {
             System.out.println("Getting data from cache...");
 
             //Adding temp request.
-            Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
+            //Requests.getInstance().addv3(new Request(userId, null, keyword, limit));
         }
 
         if (images != null) {

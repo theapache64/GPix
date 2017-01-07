@@ -31,7 +31,7 @@ public class Images extends BaseTable<Image> {
         return instance;
     }
 
-    public List<Image> getAll(String keyword, final int limit, final int validity) {
+    /*public List<Image> getAll(String keyword, final int limit, final int validity) {
         List<Image> images = null;
 
         final String query = String.format("SELECT i.image_url, i.thumb_url, i.height, i.width FROM images i INNER JOIN request_image_rel rr ON rr.image_id = i.id INNER JOIN requests r ON r.id = rr.request_id WHERE r.keyword = ? AND IFNULL(DATEDIFF(NOW(),r.created_at),0) <= %d LIMIT %d;", validity, limit);
@@ -69,9 +69,9 @@ public class Images extends BaseTable<Image> {
             }
         }
         return images;
-    }
+    }*/
 
-    public void addAll(final String requestId, List<Image> images) {
+    /*public void addAll(final String requestId, List<Image> images) {
 
         boolean isEverythingOk = false;
 
@@ -156,6 +156,6 @@ public class Images extends BaseTable<Image> {
             throw new IllegalArgumentException("Something went wrong while adding images to the database.");
         }
 
-    }
+    }*/
 }
 

@@ -24,8 +24,8 @@ public class Requests extends BaseTable<Request> {
         return instance;
     }
 
-    @Override
-    public String addv3(Request request) {
+    /*@Override
+    private String addv3(Request request) {
 
         String newRequestId = null;
 
@@ -62,5 +62,5 @@ public class Requests extends BaseTable<Request> {
             }
         }
         return newRequestId;
-    }
+    }*/
 }
