@@ -60,7 +60,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         List<Image> images = imagesTable.getAll(keyword, limit, Images.MAX_RESULT_VALIDITY_IN_DAYS);
 
-        System.out.println("New search : " + keyword + " , count:  " + limit);
+        System.out.println("userId: " + userId + "\nkeyword: " + keyword + "\ncount:  " + limit);
 
         if (images == null || (images.size() < limit && limit <= 100)) {
 
@@ -69,7 +69,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             if (isDirectContact) {
 
-                System.out.println("Direct approach");
+                System.out.println("approaching google server...");
 
                 final String googleUrl = String.format(GOOGLE_SEARCH_URL_FORMAT, URLEncoder.encode(keyword, "UTF-8"));
                 final String googleData = NetworkHelper.downloadHtml(googleUrl, null);
@@ -78,13 +78,13 @@ public class GPixServlet extends AdvancedBaseServlet {
 
                 if (googleData != null && googleData.contains(GPix.D1) && googleData.contains(GPix.D2)) {
 
-                    System.out.println("Google data downloaded!");
+                    System.out.println("downloaded data from google server");
 
                     //Images not available or available images are expired. so collect fresh data
                     final List<Image> googleImages = GPix.parse(googleData);
                     images = googleImages;
 
-                    System.out.println("Google data parsed: " + googleImages.size() + " image(s) found.");
+                    System.out.println("google data analyzed : " + googleImages.size() + " image(s) found.");
 
                     //Adding images in a different thread.
                     new Thread(new Runnable() {
@@ -164,6 +164,8 @@ public class GPixServlet extends AdvancedBaseServlet {
 
         if (images != null) {
 
+            System.out.println("preparing final output...");
+
             final JSONArray jaImages = new JSONArray();
 
 
@@ -188,7 +190,7 @@ public class GPixServlet extends AdvancedBaseServlet {
 
             getWriter().write(new APIResponse(jaImages.length() + " images(s) available", joData).getResponse());
 
-            System.out.println("Search finished");
+            System.out.println("output served.");
 
         } else {
             throw new GPix.GPixException("All available servers are busy.");
