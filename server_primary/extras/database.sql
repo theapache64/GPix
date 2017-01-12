@@ -39,8 +39,10 @@ id INT(11) NOT NULL AUTO_INCREMENT,
 email VARCHAR(100) NOT NULL,
 api_key VARCHAR (10) NOT NULL,
 is_active TINYINT(4)  NOT NULL  DEFAULT 1 ,
+block_reason TEXT DEFAULT NULL,
 PRIMARY KEY (id)
 );
+
 
 INSERT INTO users (email,api_key) VALUES ('test@gmail.com','WYAfuHwjCu');
 
