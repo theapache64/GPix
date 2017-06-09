@@ -40,7 +40,6 @@ public class NetworkHelper {
 
         final String data = sb.toString();
 
-        System.out.println("Data: "  +data);
         return !data.isEmpty() ? data : null;
     }
 
