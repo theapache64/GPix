@@ -37,7 +37,10 @@ public class NetworkHelper {
 
         br.close();
 
+
         final String data = sb.toString();
+
+        System.out.println("Data: "  +data);
         return !data.isEmpty() ? data : null;
     }
 

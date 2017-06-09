@@ -82,6 +82,8 @@ public class GPixServlet extends AdvancedBaseServlet {
                     System.out.println("downloaded data from google server");
 
                     //Images not available or available images are expired. so collect fresh data
+                    System.out.println("Downloaded data : " + googleData);
+
                     final List<Image> googleImages = GPix.parse(googleData);
                     images = googleImages;
 
@@ -94,6 +96,11 @@ public class GPixServlet extends AdvancedBaseServlet {
                             imagesTable.addAll(requestId, googleImages);
                         }
                     }).start();*/
+                } else {
+                    if (googleData != null) {
+                        System.out.println("Algorithm need to change!");
+                        MailHelper.sendMail("theapache64@gmail.com", "GPix - MayDay|MayDay|MayDay - ALGORITHM EXPIRED!!", "Hey\nWe need to update the algorithm\n-GPIX");
+                    }
                 }
 
             } else {
