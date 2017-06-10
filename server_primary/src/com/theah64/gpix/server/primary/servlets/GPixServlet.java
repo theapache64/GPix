@@ -200,7 +200,7 @@ public class GPixServlet extends AdvancedBaseServlet {
             System.out.println("output served.");
 
         } else {
-            throw new GPix.GPixException("All available servers are busy.");
+            throw new GPix.GPixException("No result found");
         }
 
     }

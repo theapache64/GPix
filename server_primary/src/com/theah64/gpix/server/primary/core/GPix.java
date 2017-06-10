@@ -17,8 +17,9 @@ import java.util.List;
 public class GPix {
 
     public static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
-    public static final String D1 = "<div class=\"rg_meta notranslate\">";
+    public static final String D1 = "<div class=\"rg_meta";
     public static final String D2 = "</div></div><!--n-->";
+    public static final String D3 = "\">";
 
     private static GPix instance = new GPix();
 
@@ -46,9 +47,10 @@ public class GPix {
             final JSONArray jaRs = new JSONArray();
 
             //Looping through r2Arr html
-            for (final String r2ArrNode : r2Arr) {
+            for (String r2ArrNode : r2Arr) {
+
                 if (r2ArrNode.contains(D2)) {
-                    final String r3 = r2ArrNode.split(D2)[0];
+                    String r3 = r2ArrNode.split(D2)[0].split(">")[1];
                     jaRs.put(new JSONObject(r3));
                 }
             }

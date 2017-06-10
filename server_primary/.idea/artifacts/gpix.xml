@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="war" name="GPix_server_primary:war">
-    <output-path>$PROJECT_DIR$/out/artifacts/GPix_server_primary_war</output-path>
-    <root id="archive" name="GPix_server_primary_war.war">
+  <artifact type="war" name="gpix">
+    <output-path>$PROJECT_DIR$/out/artifacts/gpix</output-path>
+    <root id="archive" name="gpix.war">
       <element id="artifact" artifact-name="GPix_server_primary:war exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
