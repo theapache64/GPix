@@ -1,4 +1,4 @@
-# GPix (CLOSED - Due to threat from google. :'( ) 
+# GPix
 GPix - An unofficial Google Images API.
 
 ## API
