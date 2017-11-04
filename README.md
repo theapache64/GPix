@@ -1,4 +1,4 @@
-# GPix - !Deceased!
+# GPix -
 GPix - An unofficial Google Images API.
 
 ## API

@@ -7,7 +7,6 @@ import com.theah64.gpix.server.primary.database.tables.Images;
 import com.theah64.gpix.server.primary.database.tables.Preference;
 import com.theah64.gpix.server.primary.database.tables.Requests;
 import com.theah64.gpix.server.primary.database.tables.Servers;
-import com.theah64.gpix.server.primary.models.Request;
 import com.theah64.gpix.server.primary.models.Server;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.MailHelper;
@@ -88,13 +87,6 @@ public class GPixServlet extends AdvancedBaseServlet {
 
                     System.out.println("google data analyzed : " + googleImages.size() + " image(s) found.");
 
-                    //Adding images in a different thread.
-                    /*new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            imagesTable.addAll(requestId, googleImages);
-                        }
-                    }).start();*/
                 } else {
                     if (googleData != null) {
                         System.out.println("Algorithm need to change!");

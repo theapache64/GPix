@@ -1,7 +1,6 @@
 package com.theah64.gpix.server.primary.core;
 
 import com.sun.istack.internal.NotNull;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,8 +15,8 @@ import java.util.List;
  */
 public class GPix {
 
-    public static final String SEARCH_URL_FORMAT = "https://www.google.co.in/search?q=%s&tbm=isch";
-    public static final String D1 = "<div class=\"rg_meta";
+    public static final String SEARCH_URL_FORMAT = "https://www.google.com/search?q=%s&tbm=isch";
+    public static final String D1 = "class=\"rg_meta notranslate\">";
     public static final String D2 = "</div></div><!--n-->";
     public static final String D3 = "\">";
 
@@ -42,39 +41,27 @@ public class GPix {
 
         if (firstData.contains(D1)) {
 
-            final String[] r2Arr = firstData.split(D1);
+            imageList = new ArrayList<>(100);
 
-            final JSONArray jaRs = new JSONArray();
+            final String[] f1 = firstData.split(D1);
 
-            //Looping through r2Arr html
-            for (String r2ArrNode : r2Arr) {
+            for (int i = 1; i < f1.length; i++) {
 
-                if (r2ArrNode.contains(D2)) {
-                    String r3 = r2ArrNode.split(D2)[0].split(">")[1];
-                    jaRs.put(new JSONObject(r3));
-                }
-            }
+                final String f2 = f1[i].split(D2)[0];
 
-            if (jaRs.length() > 0) {
+                final JSONObject joImageNode = new JSONObject(f2);
 
-                //Converting to GPixImage
-                imageList = new ArrayList<Image>(jaRs.length());
+                final String thumbImageUrl = joImageNode.getString("tu");
+                //Secured url -> normal
+                final String imageUrl = joImageNode.getString("ou").replaceAll("https://", "http://");
 
-                for (int i = 0; i < jaRs.length(); i++) {
+                final int height = joImageNode.getInt("oh");
+                final int width = joImageNode.getInt("ow");
 
-                    final JSONObject joImageNode = jaRs.getJSONObject(i);
-
-                    final String thumbImageUrl = joImageNode.getString("tu");
-                    //Secured url -> normal
-                    final String imageUrl = joImageNode.getString("ou").replaceAll("https://", "http://");
-
-                    final int height = joImageNode.getInt("oh");
-                    final int width = joImageNode.getInt("ow");
-
-                    imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
-                }
+                imageList.add(new Image(thumbImageUrl, imageUrl, height, width));
 
             }
+
         }
 
         return imageList;
