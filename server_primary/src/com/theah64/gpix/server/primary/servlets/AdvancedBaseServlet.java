@@ -63,6 +63,12 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
             if (isSecureServlet()) {
                 //Checking if the api key present in header
                 String apiKey = req.getHeader(HeaderSecurity.KEY_AUTHORIZATION);
+
+                if (apiKey == null) {
+                    //not present in header, so checking on the request
+                    apiKey = getStringParameter(HeaderSecurity.KEY_AUTHORIZATION);
+                }
+
                 hs = new HeaderSecurity(apiKey);
             }
 
