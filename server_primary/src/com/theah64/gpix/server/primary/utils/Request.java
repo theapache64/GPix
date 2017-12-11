@@ -97,7 +97,7 @@ public class Request {
         return value != null ? Long.parseLong(value) : -1;
     }
 
-    public static class RequestException extends Exception {
+    public static class RequestException extends Throwable {
         public RequestException(String message) {
             super(message);
         }

@@ -1,7 +1,6 @@
 package com.theah64.gpix.server.primary.servlets;
 
 import com.theah64.gpix.server.primary.core.GPix;
-import com.theah64.gpix.server.primary.database.tables.Preference;
 import com.theah64.gpix.server.primary.utils.APIResponse;
 import com.theah64.gpix.server.primary.utils.HeaderSecurity;
 import com.theah64.gpix.server.primary.utils.Request;
@@ -60,26 +59,12 @@ public abstract class AdvancedBaseServlet extends HttpServlet {
             if (getRequiredParameters() != null) {
                 request = new Request(req, getRequiredParameters());
             }
-            
 
             if (isSecureServlet()) {
-
-                //Checking if the apikey present in header
+                //Checking if the api key present in header
                 String apiKey = req.getHeader(HeaderSecurity.KEY_AUTHORIZATION);
-
-                if (apiKey == null) {
-                    //not present in header, so checking on the request
-                    apiKey = getStringParameter(HeaderSecurity.KEY_AUTHORIZATION);
-                }
-
-                if (apiKey == null) {
-                    //neither the header nor the request. so using test api key.
-                    apiKey = Preference.getInstance().getString(Preference.KEY_TEST_API_KEY);
-                }
-
                 hs = new HeaderSecurity(apiKey);
             }
-
 
             doAdvancedPost();
 

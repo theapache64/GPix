@@ -16,7 +16,7 @@ public class RandomString {
     }
 
 
-    public static String getRandomString(final int length) {
+    private static String getRandomString(final int length) {
         if (random == null) {
             random = new Random();
         }

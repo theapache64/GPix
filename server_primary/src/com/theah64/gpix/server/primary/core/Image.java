@@ -4,10 +4,11 @@ package com.theah64.gpix.server.primary.core;
  * Created by shifar on 15/10/16.
  */
 public class Image {
+
     private final String thumbImageUrl, imageUrl;
     private final int height, width;
 
-    public Image(String thumbImageUrl, String imageUrl, int height, int width) {
+    Image(String thumbImageUrl, String imageUrl, int height, int width) {
         this.thumbImageUrl = thumbImageUrl;
         this.imageUrl = imageUrl;
         this.height = height;

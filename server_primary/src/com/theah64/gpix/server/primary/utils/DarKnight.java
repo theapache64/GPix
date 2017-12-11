@@ -36,6 +36,7 @@ public class DarKnight {
     public static String getDecrypted(String encodedText) {
 
         Key salt = getSalt();
+
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, salt);

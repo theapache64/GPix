@@ -1,9 +1,6 @@
 package com.theah64.gpix.server.primary.utils;
 
 
-import com.theah64.gpix.server.primary.database.Connection;
-import com.theah64.gpix.server.primary.database.tables.Preference;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -14,24 +11,7 @@ import java.util.Properties;
  */
 public class MailHelper {
 
-    private static final String BASE_URL = Connection.isDebugMode() ? "http://localhost:8080" : "http://gpix-shifz.rhcloud.com";
-
-    private static final String KEY_GMAIL_USERNAME = "gmail_username";
-    private static final String KEY_GMAIL_PASSWORD = "gmail_password";
-    private static final String KEY_ADMIN_EMAIL = "admin_email";
-
-    private static String gmailUsername, gmailPassword;
-
-
     public static boolean sendMail(String email, final String subject, String message) {
-
-
-        if (gmailUsername == null || gmailPassword == null) {
-            final Preference preference = Preference.getInstance();
-
-            gmailUsername = preference.getString(KEY_GMAIL_USERNAME);
-            gmailPassword = preference.getString(KEY_GMAIL_PASSWORD);
-        }
 
         final Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -43,13 +23,13 @@ public class MailHelper {
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(gmailUsername, gmailPassword);
+                return new PasswordAuthentication(SecretConstants.GMAIL_USERNAME, SecretConstants.GMAIL_PASSWORD);
             }
         });
 
         Message mimeMessage = new MimeMessage(session);
         try {
-            mimeMessage.setFrom(new InternetAddress(gmailUsername));
+            mimeMessage.setFrom(new InternetAddress(SecretConstants.GMAIL_USERNAME));
             mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             mimeMessage.setSubject(subject);
             mimeMessage.setText(message);
